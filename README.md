@@ -1,2 +1,2 @@
-# Give-Email-Reports
-Receive comprehensive donations reports via email
+# Give - Email Reports
+Receive comprehensive donation reports via email
