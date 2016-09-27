@@ -59,17 +59,17 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 */
 		private function setup_constants() {
 
-			// Plugin version
+			// Plugin version.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0' );
 			}
 
-			// Plugin path
+			// Plugin path.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_DIR' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_DIR', plugin_dir_path( __FILE__ ) );
 			}
 
-			// Plugin URL
+			// Plugin URL.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_URL' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( __FILE__ ) );
 			}
@@ -84,6 +84,8 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * @return      void
 		 */
 		private function includes() {
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-settings.php';
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
 		}
 
@@ -96,26 +98,11 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 */
 		private function hooks() {
 
-			// Register settings.
-			add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
-			add_action( 'cmb2_render_email_report_preview', array( $this, 'add_email_report_preview' ), 10, 5 );
-
 			// Render the email report preview.
 			add_action( 'template_redirect', array( $this, 'give_email_reports_display_email_report_preview' ) );
 			add_filter( 'give_template_paths', array( $this, 'add_template_paths' ) );
 			add_filter( 'give_email_templates', array( $this, 'add_email_report_template' ) );
 			add_filter( 'give_email_content_type', array( $this, 'change_email_content_type' ), 10, 2 );
-
-
-			//@TODO: Check this
-			add_filter( 'give_settings_sanitize', array( $this, 'sanitize_settings' ), 10, 2 );
-
-			// Schedule cron event for daily email.
-			add_action( 'wp', array( $this, 'schedule_daily_email' ) );
-
-			// Remove from cron if plugin is deactivated.
-			register_deactivation_hook( __FILE__, array( $this, 'unschedule_daily_email' ) );
-
 
 			// Handle licensing.
 			if ( class_exists( 'Give_License' ) ) {
@@ -123,58 +110,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			}
 		}
 
-		/**
-		 * Sanitize the values for the give_email_reports settings.
-		 *
-		 * @param $value
-		 * @param $key
-		 *
-		 * @return int
-		 */
-		public function sanitize_settings( $value, $key ) {
 
-			if ( $key == 'give_email_reports_daily_email_delivery_time' ) {
-
-				$weekly_report = give_get_option( 'give_email_reports_daily_email_delivery_time' );
-
-				if ( $weekly_report != $value ) {
-					wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
-				}
-
-				return intval( $value );
-			}
-
-			return $value;
-		}
-
-		/**
-		 * Unschedule the cron job for the daily email if the plugin is deactivated.
-		 */
-		public function unschedule_daily_email() {
-			return wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
-		}
-
-		/**
-		 * Schedule the daily email report in cron.mail_reports_display_email_report_preview
-		 *
-		 * Pass the selected setting in the settings panel, but default to 18:00 local time
-		 */
-		public function schedule_daily_email() {
-
-			if ( ! wp_next_scheduled( 'give_email_reports_daily_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
-
-				$timezone         = get_option( 'timezone_string' );
-				$timezone_string  = ! empty( $timezone ) ? $timezone : 'UTC';
-				$target_time_zone = new DateTimeZone( $timezone_string );
-				$date_time        = new DateTime( 'now', $target_time_zone );
-
-				wp_schedule_event(
-					strtotime( give_get_option( 'give_email_reports_daily_email_delivery_time', 1800 ) . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) ),
-					'daily',
-					'give_email_reports_daily_email'
-				);
-			}
-		}
 
 		/**
 		 * Internationalization.
@@ -237,72 +173,15 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		/**
 		 * Change email content type.
 		 *
+		 * @param $content_type
+		 * @param $class
+		 *
 		 * @return string
 		 */
-		public function change_email_content_type( $content_type, $klass ) {
+		public function change_email_content_type( $content_type, $class ) {
 			return 'text/html';
 		}
 
-		/**
-		 * Add settings.
-		 *
-		 * @access      public
-		 * @since       1.0
-		 *
-		 * @param       array $settings The existing Give settings array
-		 *
-		 * @return      array The modified Give settings array
-		 */
-		public function settings( $settings ) {
-
-			$new_settings = array(
-				array(
-					'id'   => 'give_email_reports_settings',
-					'name' => __( 'Email Reports Settings', 'give-email-reports' ),
-					'type' => 'give_title',
-				),
-				array(
-					'id'   => 'email_reports_settings',
-					'name' => __( 'Preview Report', 'give-email-reports' ),
-					'desc' => '',
-					'type' => 'email_report_preview'
-				),
-				array(
-					'id'      => 'give_email_reports_daily_email_delivery_time',
-					'name'    => __( 'Daily Email Delivery Time', 'give-email-reports' ),
-					'desc'    => __( 'Select when you would like to receive your daily email report.', 'give-email-reports' ),
-					'type'    => 'select',
-					'options' => array(
-						'1300' => __( '1:00 PM', 'give-email-reports' ),
-						'1400' => __( '2:00 PM', 'give-email-reports' ),
-						'1500' => __( '3:00 PM', 'give-email-reports' ),
-						'1600' => __( '4:00 PM', 'give-email-reports' ),
-						'1700' => __( '5:00 PM', 'give-email-reports' ),
-						'1800' => __( '6:00 PM', 'give-email-reports' ),
-						'1900' => __( '7:00 PM', 'give-email-reports' ),
-						'2000' => __( '8:00 PM', 'give-email-reports' ),
-						'2100' => __( '9:00 PM', 'give-email-reports' ),
-						'2200' => __( '10:00 PM', 'give-email-reports' ),
-						'2300' => __( '11:00 PM', 'give-email-reports' ),
-					)
-				),
-			);
-
-			return array_merge( $settings, $new_settings );
-		}
-
-		/**
-		 * Give add email reports preview.
-		 *
-		 * @since 1.0
-		 */
-		public function add_email_report_preview() {
-			ob_start();
-			?>
-			<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Preview Email Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Email Report', 'give-email-reports' ); ?></a>
-			<?php
-			echo ob_get_clean();
-		}
 
 		/**
 		 * Displays the email preview.
@@ -337,6 +216,40 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			exit;
 
+		}
+
+		/**
+		 * Email report time schedule. Populates the admin field dropdown.
+		 *
+		 * @return mixed|void
+		 */
+		public function get_email_report_times() {
+			return apply_filters( 'give_email_report_times', array(
+				'0100' => __( '1:00 AM', 'give-email-reports' ),
+				'0200' => __( '2:00 AM', 'give-email-reports' ),
+				'0300' => __( '3:00 AM', 'give-email-reports' ),
+				'0400' => __( '4:00 AM', 'give-email-reports' ),
+				'0500' => __( '5:00 AM', 'give-email-reports' ),
+				'0600' => __( '6:00 AM', 'give-email-reports' ),
+				'0700' => __( '7:00 AM', 'give-email-reports' ),
+				'0800' => __( '8:00 AM', 'give-email-reports' ),
+				'0900' => __( '9:00 AM', 'give-email-reports' ),
+				'1000' => __( '10:00 AM', 'give-email-reports' ),
+				'1100' => __( '11:00 AM', 'give-email-reports' ),
+				'1200' => __( '12:00 AM', 'give-email-reports' ),
+				'1300' => __( '1:00 PM', 'give-email-reports' ),
+				'1400' => __( '2:00 PM', 'give-email-reports' ),
+				'1500' => __( '3:00 PM', 'give-email-reports' ),
+				'1600' => __( '4:00 PM', 'give-email-reports' ),
+				'1700' => __( '5:00 PM', 'give-email-reports' ),
+				'1800' => __( '6:00 PM', 'give-email-reports' ),
+				'1900' => __( '7:00 PM', 'give-email-reports' ),
+				'2000' => __( '8:00 PM', 'give-email-reports' ),
+				'2100' => __( '9:00 PM', 'give-email-reports' ),
+				'2200' => __( '10:00 PM', 'give-email-reports' ),
+				'2300' => __( '11:00 PM', 'give-email-reports' ),
+				'2400' => __( '12:00 PM', 'give-email-reports' ),
+			) );
 		}
 
 	}

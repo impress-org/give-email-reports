@@ -315,8 +315,8 @@ function give_email_reports_weekly_best_performing_forms() {
 				$color,
 				$list_item['name'],
 				give_currency_filter( give_format_amount( $list_item['earnings'] ) ),
-				$list_item['sales'],
-				_n( 'sale', 'sales', $list_item['sales'], 'give-email-reports' )
+				$list_item['donations'],
+				_n( 'donation', 'donations', $list_item['donations'], 'give-email-reports' )
 			);
 
 			if ( $color < 999999 ) {
