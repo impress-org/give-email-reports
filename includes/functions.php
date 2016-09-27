@@ -24,6 +24,7 @@ function give_email_reports_render_email( $message, $class ) {
 
 	return $message;
 }
+add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
 
 /**
  * Add email tags for reports.
@@ -33,7 +34,8 @@ function give_email_reports_render_email( $message, $class ) {
  * @return      array
  */
 function give_email_reports_add_email_tags( $tags ) {
-	return array_merge( $tags, array(
+
+	$report_tags = array(
 		array(
 			'tag'         => 'email_report_currency',
 			'description' => __( 'Adds the currency setting for the store.', 'give-email-reports' ),
@@ -84,7 +86,10 @@ function give_email_reports_add_email_tags( $tags ) {
 			'description' => __( 'Displays the least selling donation forms and their last sale date.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_cold_donation_forms'
 		),
-	) );
+	);
+
+	return array_merge( $tags, $report_tags );
+
 }
 
 /**
@@ -226,6 +231,7 @@ function give_email_reports_currency() {
  */
 function give_email_reports_daily_total() {
 	$stats = new Give_Payment_Stats();
+
 	return give_format_amount( $stats->get_earnings( 0, 'today', false ) );
 }
 

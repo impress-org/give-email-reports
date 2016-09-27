@@ -108,7 +108,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			add_filter( 'give_email_templates', array( $this, 'add_email_report_template' ) );
 			add_filter( 'give_email_content_type', array( $this, 'change_email_content_type' ), 10, 2 );
 
-			add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
 
 			//@TODO: Check this
 			add_filter( 'give_settings_sanitize', array( $this, 'sanitize_settings' ), 10, 2 );
