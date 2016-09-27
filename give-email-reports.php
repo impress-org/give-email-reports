@@ -92,7 +92,9 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			// Register settings.
 			add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
-			add_action( 'give_email_reports_settings', array( $this, 'give_email_reports_add_email_report_preview' ) );
+
+			add_action( 'cmb2_render_email_report_preview', array( $this, 'add_email_report_preview' ), 10, 5 );
+
 
 			// Render the email report preview.
 			add_action( 'template_redirect', array( $this, 'give_email_reports_display_email_report_preview' ) );
@@ -100,9 +102,9 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			add_filter( 'give_email_templates', array( $this, 'add_email_report_template' ) );
 			add_filter( 'give_email_content_type', array( $this, 'change_email_content_type' ), 10, 2 );
 
-			add_filter( 'give_email_tags', 'give_email_reports_add_email_tags' );
 			add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
 
+			//@TODO: Check this
 			add_filter( 'give_settings_sanitize', array( $this, 'sanitize_settings' ), 10, 2 );
 
 			// Schedule cron event for daily email.
@@ -129,10 +131,12 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * @return int
 		 */
 		public function sanitize_settings( $value, $key ) {
-			if ( $key == 'give_email_reports_daily_email_delivery_time' ) {
-				global $give_options;
 
-				if ( $give_options['give_email_reports_daily_email_delivery_time'] != $value ) {
+			if ( $key == 'give_email_reports_daily_email_delivery_time' ) {
+
+				$weekly_report = give_get_option( 'give_email_reports_daily_email_delivery_time' );
+
+				if ( $weekly_report != $value ) {
 					wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 				}
 
@@ -155,6 +159,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * Pass the selected setting in the settings panel, but default to 18:00 local time
 		 */
 		public function schedule_daily_email() {
+
 			if ( ! wp_next_scheduled( 'give_email_reports_daily_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
 				$timezone         = get_option( 'timezone_string' );
@@ -252,9 +257,15 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			$new_settings = array(
 				array(
 					'id'   => 'give_email_reports_settings',
-					'name' => '<strong>' . __( 'Email Reports Settings', 'give-email-reports' ) . '</strong>',
-					'desc' => __( 'Configure Give Email Reports Settings', 'give-email-reports' ),
-					'type' => 'header',
+					'name' => __( 'Email Reports Settings', 'give-email-reports' ),
+					'type' => 'give_title',
+				),
+
+				array(
+					'id'   => 'email_reports_settings',
+					'name' => __('Preview Report', 'give-email-reports'),
+					'desc' => '',
+					'type' => 'email_report_preview'
 				),
 				array(
 					'id'      => 'give_email_reports_daily_email_delivery_time',
@@ -275,12 +286,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 						'2300' => __( '11:00 PM', 'give-email-reports' ),
 					)
 				),
-				array(
-					'id'   => 'email_reports_settings',
-					'name' => '',
-					'desc' => '',
-					'type' => 'hook'
-				),
 			);
 
 			return array_merge( $settings, $new_settings );
@@ -291,7 +296,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 *
 		 * @since 1.0
 		 */
-		public function give_email_reports_add_email_report_preview() {
+		public function add_email_report_preview() {
 			ob_start();
 			?>
 			<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Preview Email Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Email Report', 'give-email-reports' ); ?></a>
@@ -315,14 +320,14 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 				return;
 			}
 
-			if ( ! current_user_can( 'manage_shop_settings' ) ) {
+			if ( ! current_user_can( 'manage_give_settings' ) ) {
 				return;
 			}
 
-			// $message will be rendered during give_email_message filter
+			// $message will be rendered during give_email_message filter.
 			$message = '';
 
-			// Swip out the email template before we send the email.
+			// Swap out the email template before we send the email.
 			add_action( 'give_email_header', 'give_email_reports_change_email_template' );
 
 			Give()->emails->html    = true;

@@ -1,8 +1,7 @@
 <?php
 /**
- * Helper Functions
+ * Helper Functions.
  */
-
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -12,28 +11,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Parse the template tags manually until parse_tags is supported outside of donation emails.
  *
- * @TODO: Verify this
- * @link  https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/eb3e7f7cacec154be1970507877d355195e09d97/includes/emails/class-edd-emails.php#L190-L201
- *
- * @param  [type] $message [description]
- * @param  [type] $klass   [description]
+ * @param   string     $message
+ * @param  Give_Emails $class
  *
  * @return string
  */
-function give_email_reports_render_email( $message, $klass ) {
-	if ( $klass->get_template() === 'report' ) {
-		$message = give_do_email_tags( $message, 0 );
+function give_email_reports_render_email( $message, $class ) {
+
+	if ( $class->get_template() === 'report' ) {
+
+
 	}
 
 	return $message;
 }
 
 /**
- * [give_email_reports_add_email_tags description]
+ * Add email tags for reports.
  *
- * @param  [type] $tags [description]
+ * @param  $tags array
  *
- * @return [type]       [description]
+ * @return      array
  */
 function give_email_reports_add_email_tags( $tags ) {
 	return array_merge( $tags, array(
@@ -84,17 +82,16 @@ function give_email_reports_add_email_tags( $tags ) {
 		),
 		array(
 			'tag'         => 'email_report_cold_selling_downloads',
-			'description' => __( 'Displays the least selling downloads and their last sale date.', 'give-email-reports' ),
+			'description' => __( 'Displays the least selling donation forms and their last sale date.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_cold_donation_forms'
 		),
 	) );
 }
 
 /**
- * Fetch six downloads sorted by the furthest
- * last sale date.
+ * Fetch six forms sorted by the furthest last donation date.
  *
- * @return html
+ * @return string
  */
 function give_email_reports_cold_donation_forms() {
 
@@ -111,16 +108,16 @@ function give_email_reports_cold_donation_forms() {
 
 	if ( ! empty( $result ) ) {
 
-		foreach ( $result as $download ) {
+		foreach ( $result as $form ) {
 
 			$result = $give_logs->get_connected_logs( array(
-				'post_parent'    => $download->ID,
+				'post_parent'    => $form->ID,
 				'log_type'       => 'sale',
 				'posts_per_page' => 1
 			) );
 
 			if ( ! empty( $result ) ) {
-				$last_sale_dates[ $download->post_title ] = $result[0]->post_date;
+				$last_sale_dates[ $form->post_title ] = $result[0]->post_date;
 			}
 		}
 
@@ -133,11 +130,11 @@ function give_email_reports_cold_donation_forms() {
 
 			ob_start();
 			echo '<ul>';
-			foreach ( $last_sale_dates as $download => $date ):
+			foreach ( $last_sale_dates as $form => $date ):
 
 				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last sold <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
 					$color_prefix,
-					$download,
+					$form,
 					date( 'F j, Y', strtotime( $date ) ),
 					human_time_diff( strtotime( $date ) )
 				);
@@ -154,7 +151,7 @@ function give_email_reports_cold_donation_forms() {
 		}
 
 	} else {
-		return '<p>' . __( 'No downloads found.', 'give-email-reports' ) . '</p>';
+		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 	}
 }
 
@@ -271,7 +268,7 @@ function give_email_reports_monthly_total() {
  * Outputs a list of all products sold within the last 7 days,
  * ordered from best-selling to least-selling
  *
- * @return html
+ * @return string
  */
 function give_email_reports_weekly_best_selling_downloads() {
 	$p_query = new Give_Payments_Query( array(
@@ -363,6 +360,7 @@ function give_email_reports_send_daily_email() {
 
 /**
  * Filter the email template to load the reporting template for this email.
+ *
  * @return void
  */
 function give_email_reports_change_email_template() {
@@ -372,9 +370,9 @@ function give_email_reports_change_email_template() {
 /**
  * Sets the suffix to use while looking for the email template to load.
  *
- * @param  string $template_name [description]
+ * @param  string $template_name
  *
- * @return string                [description]
+ * @return string
  */
 function give_email_reports_set_email_template( $template_name ) {
 	return 'report';
