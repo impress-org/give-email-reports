@@ -60,13 +60,19 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		private function setup_constants() {
 
 			// Plugin version
-			define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0' );
+			if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
+				define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0' );
+			}
 
 			// Plugin path
-			define( 'GIVE_EMAIL_REPORTS_DIR', plugin_dir_path( __FILE__ ) );
+			if ( ! defined( 'GIVE_EMAIL_REPORTS_DIR' ) ) {
+				define( 'GIVE_EMAIL_REPORTS_DIR', plugin_dir_path( __FILE__ ) );
+			}
 
 			// Plugin URL
-			define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( __FILE__ ) );
+			if ( ! defined( 'GIVE_EMAIL_REPORTS_URL' ) ) {
+				define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( __FILE__ ) );
+			}
 
 		}
 
@@ -154,7 +160,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 		/**
-		 * Schedule the daily email report in cron.
+		 * Schedule the daily email report in cron.mail_reports_display_email_report_preview
 		 *
 		 * Pass the selected setting in the settings panel, but default to 18:00 local time
 		 */
@@ -263,7 +269,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 				array(
 					'id'   => 'email_reports_settings',
-					'name' => __('Preview Report', 'give-email-reports'),
+					'name' => __( 'Preview Report', 'give-email-reports' ),
 					'desc' => '',
 					'type' => 'email_report_preview'
 				),
@@ -331,7 +337,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			add_action( 'give_email_header', 'give_email_reports_change_email_template' );
 
 			Give()->emails->html    = true;
-			Give()->emails->heading = sprintf( __( 'Daily Sales Report – %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
+			Give()->emails->heading = sprintf( __( 'Daily Donations Report – %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
 
 			echo Give()->emails->build_email( $message );
 
@@ -343,9 +349,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 }
 
 /**
- *
- * The main function responsible for returning the one true Give_Email_Reports
- * instance to functions everywhere.
+ * The main function responsible for returning the one true Give_Email_Reports instance to functions everywhere.
  *
  * @since       1.0
  *

@@ -19,8 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function give_email_reports_render_email( $message, $class ) {
 
 	if ( $class->get_template() === 'report' ) {
-
-
+		$message = give_do_email_tags( $message, 0 );
 	}
 
 	return $message;
@@ -226,8 +225,7 @@ function give_email_reports_currency() {
  * @return string
  */
 function give_email_reports_daily_total() {
-	$stats = new Give_Payment_Stats;
-
+	$stats = new Give_Payment_Stats();
 	return give_format_amount( $stats->get_earnings( 0, 'today', false ) );
 }
 
