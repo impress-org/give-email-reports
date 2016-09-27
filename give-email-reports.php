@@ -42,8 +42,8 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			if ( ! self::$instance ) {
 				self::$instance = new Give_Email_Reports();
 				self::$instance->setup_constants();
-				self::$instance->includes();
 				self::$instance->load_textdomain();
+				self::$instance->includes();
 				self::$instance->hooks();
 			}
 
@@ -98,9 +98,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			// Register settings.
 			add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
-
 			add_action( 'cmb2_render_email_report_preview', array( $this, 'add_email_report_preview' ), 10, 5 );
-
 
 			// Render the email report preview.
 			add_action( 'template_redirect', array( $this, 'give_email_reports_display_email_report_preview' ) );
@@ -118,8 +116,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			// Remove from cron if plugin is deactivated.
 			register_deactivation_hook( __FILE__, array( $this, 'unschedule_daily_email' ) );
 
-			// Send the daily email when the cron event triggers the store action.
-			add_action( 'give_email_reports_daily_email', 'give_email_reports_send_daily_email' );
 
 			// Handle licensing.
 			if ( class_exists( 'Give_License' ) ) {
@@ -248,7 +244,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 		/**
-		 * Add settings
+		 * Add settings.
 		 *
 		 * @access      public
 		 * @since       1.0
@@ -265,7 +261,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 					'name' => __( 'Email Reports Settings', 'give-email-reports' ),
 					'type' => 'give_title',
 				),
-
 				array(
 					'id'   => 'email_reports_settings',
 					'name' => __( 'Preview Report', 'give-email-reports' ),

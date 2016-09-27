@@ -24,6 +24,7 @@ function give_email_reports_render_email( $message, $class ) {
 
 	return $message;
 }
+
 add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
 
 /**
@@ -38,52 +39,52 @@ function give_email_reports_add_email_tags( $tags ) {
 	$report_tags = array(
 		array(
 			'tag'         => 'email_report_currency',
-			'description' => __( 'Adds the currency setting for the store.', 'give-email-reports' ),
+			'description' => __( 'Adds the currency setting for the site.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_currency'
 		),
 		array(
 			'tag'         => 'email_report_letters_of_days_in_week',
-			'description' => __( 'Adds the total amount earned for the day.', 'give-email-reports' ),
+			'description' => __( 'Adds the total amount donated for the day.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_letters_of_days_in_week'
 		),
 		array(
 			'tag'         => 'email_report_daily_total',
-			'description' => __( 'Adds the total amount earned for the day.', 'give-email-reports' ),
+			'description' => __( 'Adds the total amount donated for the day.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_daily_total'
 		),
 		array(
 			'tag'         => 'email_report_daily_transactions',
-			'description' => __( 'Adds the number of transactions for the day.', 'give-email-reports' ),
+			'description' => __( 'Adds the number of donations for the day.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_daily_transactions'
 		),
 		array(
-			'tag'         => 'email_report_weekly_best_selling_downloads',
-			'description' => __( 'Adds the total amount earned for the week.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_weekly_best_selling_downloads'
+			'tag'         => 'email_report_weekly_best_performing_forms',
+			'description' => __( 'Adds the total amount donated for the week.', 'give-email-reports' ),
+			'function'    => 'give_email_reports_weekly_best_performing_forms'
 		),
 		array(
 			'tag'         => 'email_report_weekly_total',
-			'description' => __( 'Adds the total amount earned for the week.', 'give-email-reports' ),
+			'description' => __( 'Adds the total amount donated for the week.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_weekly_total'
 		),
 		array(
 			'tag'         => 'email_report_monthly_total',
-			'description' => __( 'Adds the total amount earned for the monthly.', 'give-email-reports' ),
+			'description' => __( 'Adds the total amount donated for the month.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_monthly_total'
 		),
 		array(
 			'tag'         => 'email_report_rolling_weekly_total',
-			'description' => __( 'Adds the total amount earned for past seven days.', 'give-email-reports' ),
+			'description' => __( 'Adds the total amount donated for past seven days.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_rolling_weekly_total'
 		),
 		array(
 			'tag'         => 'email_report_rolling_monthly_total',
-			'description' => __( 'Adds the total amount earned for past thirty days.', 'give-email-reports' ),
+			'description' => __( 'Adds the total amount donated for past thirty days.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_rolling_monthly_total'
 		),
 		array(
-			'tag'         => 'email_report_cold_selling_downloads',
-			'description' => __( 'Displays the least selling donation forms and their last sale date.', 'give-email-reports' ),
+			'tag'         => 'email_report_cold_donation_forms',
+			'description' => __( 'Displays under-performing donation forms and their last donate date.', 'give-email-reports' ),
 			'function'    => 'give_email_reports_cold_donation_forms'
 		),
 	);
@@ -91,6 +92,8 @@ function give_email_reports_add_email_tags( $tags ) {
 	return array_merge( $tags, $report_tags );
 
 }
+
+add_filter( 'give_email_tags', 'give_email_reports_add_email_tags' );
 
 /**
  * Fetch six forms sorted by the furthest last donation date.
@@ -107,8 +110,9 @@ function give_email_reports_cold_donation_forms() {
 
 	$result = get_posts( $args );
 
-	$last_sale_dates = array();
-	global $give_logs;
+	$last_donation_dates = array();
+
+	$give_logs = new Give_Logging();
 
 	if ( ! empty( $result ) ) {
 
@@ -121,22 +125,22 @@ function give_email_reports_cold_donation_forms() {
 			) );
 
 			if ( ! empty( $result ) ) {
-				$last_sale_dates[ $form->post_title ] = $result[0]->post_date;
+				$last_donation_dates[ $form->post_title ] = $result[0]->post_date;
 			}
 		}
 
-		if ( ! empty( $last_sale_dates ) ) {
+		if ( ! empty( $last_donation_dates ) ) {
 
-			uasort( $last_sale_dates, 'give_email_reports_sort_cold_donation_forms' );
-			$last_sale_dates = array_slice( $last_sale_dates, 0, 6, true );
+			uasort( $last_donation_dates, 'give_email_reports_sort_cold_donation_forms' );
+			$last_donation_dates = array_slice( $last_donation_dates, 0, 6, true );
 
 			$color_prefix = 99;
 
 			ob_start();
 			echo '<ul>';
-			foreach ( $last_sale_dates as $form => $date ):
+			foreach ( $last_donation_dates as $form => $date ):
 
-				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last sold <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
+				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last donation <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
 					$color_prefix,
 					$form,
 					date( 'F j, Y', strtotime( $date ) ),
@@ -151,7 +155,7 @@ function give_email_reports_cold_donation_forms() {
 
 			return ob_get_clean();
 		} else {
-			return '<p>' . __( 'No sales found.', 'give-email-reports' ) . '</p>';
+			return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 		}
 
 	} else {
@@ -177,7 +181,7 @@ function give_email_reports_sort_cold_donation_forms( $a, $b ) {
  * @return string
  */
 function give_email_reports_rolling_weekly_total() {
-	$stats = new Give_Payment_Stats;
+	$stats = new Give_Payment_Stats();
 
 	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) );
 
@@ -189,8 +193,7 @@ function give_email_reports_rolling_weekly_total() {
  * @return string
  */
 function give_email_reports_rolling_monthly_total() {
-
-	$stats = new Give_Payment_Stats;
+	$stats = new Give_Payment_Stats();
 
 	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) );
 
@@ -216,7 +219,7 @@ function give_email_reports_letters_of_days_in_week() {
 }
 
 /**
- * Returns the currency symbol for the current store.
+ * Returns the currency symbol for the site.
  *
  * @return string
  */
@@ -241,7 +244,7 @@ function give_email_reports_daily_total() {
  * @return int
  */
 function give_email_reports_daily_transactions() {
-	$stats = new Give_Payment_Stats;
+	$stats = new Give_Payment_Stats();
 
 	return $stats->get_sales( false, 'today' );
 }
@@ -252,7 +255,7 @@ function give_email_reports_daily_transactions() {
  * @return string
  */
 function give_email_reports_weekly_total() {
-	$stats = new Give_Payment_Stats;
+	$stats = new Give_Payment_Stats();
 
 	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) );
 }
@@ -263,49 +266,45 @@ function give_email_reports_weekly_total() {
  * @return string
  */
 function give_email_reports_monthly_total() {
-	$stats = new Give_Payment_Stats;
+	$stats = new Give_Payment_Stats();
 
 	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) );
 }
 
 /**
- * Outputs a list of all products sold within the last 7 days,
- * ordered from best-selling to least-selling
+ * Outputs a list of all donation forms donated to within the last 7 days,
+ * ordered from most donations to least.
  *
  * @return string
  */
-function give_email_reports_weekly_best_selling_downloads() {
-	$p_query = new Give_Payments_Query( array(
+function give_email_reports_weekly_best_performing_forms() {
+
+	$args     = array(
 		'number'     => - 1,
 		'start_date' => '6 days ago 00:00',
 		'end_date'   => 'now',
 		'status'     => 'publish'
-	) );
-
-	$payments = $p_query->get_payments();
+	);
+	$query    = new Give_Payments_Query( $args );
+	$payments = $query->get_payments();
 	$stats    = array();
 
 	if ( ! empty( $payments ) ) {
 
-		foreach ( $payments as $order ) {
-			foreach ( $order->cart_details as $line_item ) {
-				// Skip if this item was purchased as part of a bundle
-				if ( isset( $line_item['in_bundle'] ) ) {
-					continue;
-				}
+		foreach ( $payments as $donation ) {
 
-				$earnings = isset( $stats[ $line_item['id'] ]['earnings'] ) ? $stats[ $line_item['id'] ]['earnings'] : 0;
-				$sales    = isset( $stats[ $line_item['id'] ]['sales'] ) ? $stats[ $line_item['id'] ]['sales'] : 0;
+			$earnings  = isset( $stats[ $donation->form_id ]['earnings'] ) ? $stats[ $donation->form_id ]['earnings'] : 0;
+			$donations = isset( $stats[ $donation->form_id ]['donations'] ) ? $stats[ $donation->form_id ]['donations'] : 0;
 
-				$stats[ $line_item['id'] ] = array(
-					'name'     => $line_item['name'],
-					'earnings' => $earnings + $line_item['price'],
-					'sales'    => $sales + $line_item['quantity'],
-				);
-			}
+			$stats[ $donation->form_id ] = array(
+				'name'      => $donation->form_title,
+				'earnings'  => $earnings + $donation->total,
+				'donations' => $donations + 1,
+			);
+
 		}
 
-		usort( $stats, 'give_email_reports_sort_best_selling_downloads' );
+		usort( $stats, 'give_email_reports_sort_best_performing_forms' );
 		$color = 111111;
 
 		ob_start();
@@ -328,39 +327,42 @@ function give_email_reports_weekly_best_selling_downloads() {
 
 		return ob_get_clean();
 	} else {
-		return '<p>' . __( 'No sales found.' ) . '</p>';
+		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 	}
 }
 
 /**
- * Sorts the given stats based on the best-selling downloads first.
+ * Sorts the given stats based on the best-performing donation forms first.
  *
- * @param  [type] $a [description]
- * @param  [type] $b [description]
+ * @param $a
+ * @param $b
  *
- * @return [type]    [description]
+ * @return bool
  */
-function give_email_reports_sort_best_selling_downloads( $a, $b ) {
+function give_email_reports_sort_best_performing_forms( $a, $b ) {
 	return $a['earnings'] < $b['earnings'];
 }
 
 /**
  * Triggers the daily sales report email generation and sending.
  *
- * @return [type] [description]
+ * Send the daily email when the cron event triggers the action.
  */
 function give_email_reports_send_daily_email() {
 
 	// $message will be rendered during give_email_message filter
 	$message = '';
 
-	// Swip out the email template before we send the email.
+	//Clear out the email template before we send the email.
 	add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
 	Give()->emails->html    = true;
-	Give()->emails->heading = sprintf( __( 'Daily Sales Report – %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
-	Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Daily Sales Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+	Give()->emails->heading = sprintf( __( 'Daily Donation Report – %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
+	Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+
 }
+
+add_action( 'give_email_reports_daily_email', 'give_email_reports_send_daily_email' );
 
 /**
  * Filter the email template to load the reporting template for this email.
