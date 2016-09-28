@@ -32,11 +32,12 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 */
 	public function settings( $settings ) {
 
-		$new_settings = array(
+		$email_reports_settings = array(
 			array(
-				'id'   => 'give_email_reports_settings',
 				'name' => __( 'Email Reports Settings', 'give-email-reports' ),
-				'type' => 'give_title',
+				'desc' => '<hr>',
+				'id'   => 'give_title',
+				'type' => 'give_title'
 			),
 			array(
 				'id'   => 'email_reports_settings',
@@ -72,7 +73,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			),
 		);
 
-		return array_merge( $settings, $new_settings );
+		return array_merge( $settings, $email_reports_settings );
 	}
 
 	/**
