@@ -17,7 +17,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			$this,
 			'add_email_report_weekly_schedule'
 		), 10, 5 );
-		
+
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'type' => 'email_report_preview'
 			),
 			array(
-				'name'              => 'Test Multi Checkbox',
+				'name'              => __( 'Report Frequency', 'give-email-reports' ),
 				'desc'              => __( 'Select the time frames that you would like to receive email reports.', 'give-email-reports' ),
 				'id'                => 'email_report_emails',
 				'type'              => 'multicheck',
@@ -119,6 +119,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			'7' => 'Sunday'
 		);
 		$days_options = '';
+
 		foreach ( $days as $day_code => $day ) {
 			$value['day'] = isset( $value['day'] ) ? $value['day'] : 'sunday';
 			$days_options .= '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, false ) . '>' . $day . '</option>';
@@ -146,7 +147,6 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week your would like to receive the weekly report.', 'give-email-reports' ); ?></p>
 
 		</div>
-
 
 		<?php echo ob_get_clean();
 	}
