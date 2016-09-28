@@ -137,7 +137,7 @@ function give_email_reports_cold_donation_forms() {
 			$color_prefix = 99;
 
 			ob_start();
-			echo '<ul>';
+			echo '<ul style="padding-left: 55px;padding-right: 30px;">';
 			foreach ( $last_donation_dates as $form => $date ):
 
 				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last donation <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
@@ -308,7 +308,7 @@ function give_email_reports_weekly_best_performing_forms() {
 		$color = 111111;
 
 		ob_start();
-		echo '<ul>';
+		echo '<ul style="padding-left: 55px;padding-right: 30px;">';
 		foreach ( $stats as $list_item ):
 
 			printf( '<li style="color: #%1$s; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
@@ -327,7 +327,7 @@ function give_email_reports_weekly_best_performing_forms() {
 
 		return ob_get_clean();
 	} else {
-		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+		return '<p style="padding-left:40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 	}
 }
 
@@ -343,26 +343,7 @@ function give_email_reports_sort_best_performing_forms( $a, $b ) {
 	return $a['earnings'] < $b['earnings'];
 }
 
-/**
- * Triggers the daily sales report email generation and sending.
- *
- * Send the daily email when the cron event triggers the action.
- */
-function give_email_reports_send_daily_email() {
 
-	// $message will be rendered during give_email_message filter
-	$message = '';
-
-	//Clear out the email template before we send the email.
-	add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
-
-	Give()->emails->html    = true;
-	Give()->emails->heading = sprintf( __( 'Daily Donation Report – %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
-	Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
-
-}
-
-add_action( 'give_email_reports_daily_email', 'give_email_reports_send_daily_email' );
 
 /**
  * Filter the email template to load the reporting template for this email.

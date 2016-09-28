@@ -19,9 +19,13 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		), 10, 5 );
 
 
-		//@TODO: Check this
-		add_filter( 'give_settings_sanitize', array( $this, 'sanitize_settings' ), 10, 2 );
+		add_action( 'give_email_report_emails', array( $this, 'testing_hook' ) );
 
+	}
+
+
+	public function testing_hook() {
+		die( 'here!' );
 	}
 
 	/**
@@ -50,7 +54,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			),
 			array(
 				'name'              => 'Test Multi Checkbox',
-				'desc'              => __( 'Select the time frames that you would like to receive reports for via email.', 'give-email-reports' ),
+				'desc'              => __( 'Select the time frames that you would like to receive email reports.', 'give-email-reports' ),
 				'id'                => 'email_report_emails',
 				'type'              => 'multicheck',
 				'select_all_button' => false,
@@ -103,66 +107,56 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 */
 	public function add_email_report_weekly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
 
+		//Times.
 		$times        = $this->get_email_report_times();
 		$time_options = '';
 		foreach ( $times as $military => $time ) {
+			$value['time'] = isset( $value['time'] ) ? $value['time'] : '1800';
 			$time_options .= '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
 		}
 
-		$days         = array( 'monday' => 'Monday', 'tuesday' => 'Tuesday' );
+		//Days.
+		$days         = array(
+			'0' => 'Sunday',
+			'1' => 'Monday',
+			'2' => 'Tuesday',
+			'3' => 'Wednesday',
+			'4' => 'Thursday',
+			'5' => 'Friday',
+			'6' => 'Saturday',
+			'7' => 'Sunday'
+		);
 		$days_options = '';
 		foreach ( $days as $day_code => $day ) {
+			$value['day'] = isset( $value['day'] ) ? $value['day'] : 'sunday';
 			$days_options .= '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, false ) . '>' . $day . '</option>';
 		}
 		ob_start(); ?>
-		<div><p class="hidden">
-				<label for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-donation-emails' ); ?></label>
-			</p>
+		<div>
+			<label class="hidden" for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-donation-emails' ); ?></label>
+
 			<?php echo $field_type->select( array(
 				'name'    => $field_type->_name( '[day]' ),
 				'id'      => $field_type->_id( '_day' ),
 				'options' => $days_options,
 				'desc'    => '',
 			) ); ?>
-		</div>
-		<div><p>
-				<label for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-donation-emails' ); ?></label>
-			</p>
+
+			<label class="hidden" for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-donation-emails' ); ?></label>
+
 			<?php echo $field_type->select( array(
 				'name'    => $field_type->_name( '[time]' ),
 				'id'      => $field_type->_id( '_time' ),
-				'default' => '1900',
 				'options' => $time_options,
 				'desc'    => '',
 			) ); ?>
+
+			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week your would like to receive the weekly report.', 'give-email-reports' ); ?></p>
+
 		</div>
 
+
 		<?php echo ob_get_clean();
-	}
-
-
-	/**
-	 * Sanitize the values for the give_email_reports settings.
-	 *
-	 * @param $value
-	 * @param $key
-	 *
-	 * @return int
-	 */
-	public function sanitize_settings( $value, $key ) {
-
-		if ( $key == 'give_email_reports_daily_email_delivery_time' ) {
-
-			$weekly_report = give_get_option( 'give_email_reports_daily_email_delivery_time' );
-
-			if ( $weekly_report != $value ) {
-				wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
-			}
-
-			return intval( $value );
-		}
-
-		return $value;
 	}
 
 }

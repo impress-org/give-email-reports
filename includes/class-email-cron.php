@@ -25,7 +25,50 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$this->report_choices = give_get_option( 'email_report_emails' );
 
+		//Send emails
+		add_action( 'give_email_reports_daily_email', array( $this, 'send_daily_email' ) );
+		add_action( 'give_email_reports_weekly_email', array( $this, 'send_weekly_email' ) );
+
 	}
+
+	/**
+	 * Triggers the daily sales report email generation and sending.
+	 *
+	 * Send the daily email when the cron event triggers the action.
+	 */
+	public function send_daily_email() {
+
+		// $message will be rendered during give_email_message filter
+		$message = '';
+
+		//Clear out the email template before we send the email.
+		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
+
+		Give()->emails->html    = true;
+		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
+		Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+
+	}
+
+	/**
+	 * Triggers the daily sales report email generation and sending.
+	 *
+	 * Send the daily email when the cron event triggers the action.
+	 */
+	public function send_weekly_email() {
+
+		// $message will be rendered during give_email_message filter
+		$message = '';
+
+		//Clear out the email template before we send the email.
+		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
+
+		Give()->emails->html    = true;
+		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
+		Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+
+	}
+
 
 	/**
 	 * Unschedule the cron job for the daily email if the plugin is deactivated.
@@ -34,7 +77,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 		wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 		wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
-
 	}
 
 	/**
@@ -80,7 +122,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 			return false;
 		}
 
-		//Ensure the cron isn't already scheduled and constant isn't set
+		//Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
 			$timezone         = get_option( 'timezone_string' );
@@ -88,7 +130,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 			$target_time_zone = new DateTimeZone( $timezone_string );
 			$date_time        = new DateTime( 'now', $target_time_zone );
 
-			$time = strtotime( give_get_option( 'give_email_reports_weekly_email_delivery_time', 1800 ) . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) );
+			$weekly_option = give_get_option( 'give_email_reports_weekly_email_delivery_time');
+
+			$time = strtotime( $weekly_option['time'] . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) );
 
 			wp_schedule_event(
 				$time,
@@ -99,7 +143,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		return true;
 	}
-
 
 
 	/**

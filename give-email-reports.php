@@ -210,7 +210,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			add_action( 'give_email_header', 'give_email_reports_change_email_template' );
 
 			Give()->emails->html    = true;
-			Give()->emails->heading = sprintf( __( 'Daily Donations Report – %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
+			Give()->emails->heading = sprintf( __( 'Daily Donations Report <br> %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
 
 			echo Give()->emails->build_email( $message );
 
