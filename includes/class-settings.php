@@ -17,15 +17,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			$this,
 			'add_email_report_weekly_schedule'
 		), 10, 5 );
-
-
-		add_action( 'give_email_report_emails', array( $this, 'testing_hook' ) );
-
-	}
-
-
-	public function testing_hook() {
-		die( 'here!' );
+		
 	}
 
 	/**
