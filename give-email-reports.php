@@ -111,7 +111,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 
-
 		/**
 		 * Internationalization.
 		 *
