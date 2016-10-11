@@ -131,20 +131,18 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$timezone         = get_option( 'timezone_string' );
-			$timezone_string  = ! empty( $timezone ) ? $timezone : 'UTC';
-			$target_time_zone = new DateTimeZone( $timezone_string );
-			$date_time        = new DateTime( 'now', $target_time_zone );
-
 			$weekly_option = give_get_option( 'give_email_reports_weekly_email_delivery_time' );
 
-			$time = strtotime( $weekly_option['time'] . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) );
+			$days = $this->get_week_days();
+
+			$local_time = strtotime( "this {$days[ $weekly_option['day'] ]} T{$weekly_option['time']}", current_time('timestamp') );
+			$gmt_time   = get_gmt_from_date( date( 'Y-m-d h:i:s', $local_time ), 'U' );
 
 			wp_schedule_event(
-				$time,
-				'weekly',
-				'give_email_reports_weekly_email'
-			);
+					$gmt_time,
+					'weekly',
+					'give_email_reports_weekly_email'
+				);
 		}
 
 		return true;
@@ -191,7 +189,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 	/**
 	 * Get list of weekdays.
-	 * 
+	 *
 	 * @return array
 	 */
 	public function get_week_days(){
