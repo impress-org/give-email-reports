@@ -17,6 +17,10 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			$this,
 			'add_email_report_weekly_schedule'
 		), 10, 5 );
+		add_action( 'cmb2_render_email_report_monthly_schedule', array(
+			$this,
+			'add_email_report_monthly_schedule'
+		), 10, 5 );
 
 	}
 
@@ -62,6 +66,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'name'    => __( 'Daily Email Delivery Time', 'give-email-reports' ),
 				'desc'    => __( 'Select when you would like to receive your daily email report.', 'give-email-reports' ),
 				'type'    => 'select',
+				'row_classes'    => 'cmb-type-email-report-daily-schedule',
 				'default' => '1900',
 				'options' => $this->get_email_report_times()
 			),
@@ -70,6 +75,12 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'name' => __( 'Weekly Email Delivery Time', 'give-email-reports' ),
 				'desc' => __( 'Select when you would like to receive your weekly email report.', 'give-email-reports' ),
 				'type' => 'email_report_weekly_schedule',
+			),
+			array(
+				'id'   => 'give_email_reports_monthly_email_delivery_time',
+				'name' => __( 'Monthly Email Delivery Time', 'give-email-reports' ),
+				'desc' => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
+				'type' => 'email_report_monthly_schedule',
 			),
 		);
 
@@ -84,7 +95,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	public function add_email_report_preview() {
 		ob_start();
 		?>
-		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report' ), home_url() ) ); ?>" class="button-secondary" target="_blank" title="<?php _e( 'Preview Email Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Email Report', 'give-email-reports' ); ?></a>
+		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report' ), home_url() ) ); ?>"
+		   class="button-secondary" target="_blank"
+		   title="<?php _e( 'Preview Email Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Email Report', 'give-email-reports' ); ?></a>
 		<?php
 		echo ob_get_clean();
 	}
@@ -101,15 +114,10 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	public function add_email_report_weekly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
 
 		//Times.
-		$times        = $this->get_email_report_times();
-		$time_options = '';
-		foreach ( $times as $military => $time ) {
-			$value['time'] = isset( $value['time'] ) ? $value['time'] : '1800';
-			$time_options .= '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
-		}
+		$times = $this->get_email_report_times();
 
 		//Days.
-		$days         = array(
+		$days = array(
 			'0' => 'Sunday',
 			'1' => 'Monday',
 			'2' => 'Tuesday',
@@ -119,38 +127,98 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			'6' => 'Saturday',
 			'7' => 'Sunday'
 		);
-		$days_options = '';
 
-		foreach ( $days as $day_code => $day ) {
-			$value['day'] = isset( $value['day'] ) ? $value['day'] : 'sunday';
-			$days_options .= '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, false ) . '>' . $day . '</option>';
-		}
 		ob_start(); ?>
-		<div>
-			<label class="hidden" for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-donation-emails' ); ?></label>
+		<div class="give-email-reports-weekly">
+			<label class="hidden"
+			       for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-donation-emails' ); ?></label>
 
-			<?php echo $field_type->select( array(
-				'name'    => $field_type->_name( '[day]' ),
-				'id'      => $field_type->_id( '_day' ),
-				'options' => $days_options,
-				'desc'    => '',
-			) ); ?>
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>"
+			        id="<?php echo $field_type->_id( '_day' ); ?>">
+				<?php
+				//Day select dropdown
+				foreach ( $days as $day_code => $day ) {
+					$value['day'] = isset( $value['day'] ) ? $value['day'] : 'sunday';
+					echo '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, true ) . '>' . $day . '</option>';
+				} ?>
+			</select>
 
-			<label class="hidden" for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-donation-emails' ); ?></label>
+			<label class="hidden"
+			       for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-donation-emails' ); ?></label>
 
-			<?php echo $field_type->select( array(
-				'name'    => $field_type->_name( '[time]' ),
-				'id'      => $field_type->_id( '_time' ),
-				'options' => $time_options,
-				'desc'    => '',
-			) ); ?>
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>"
+			        id="<?php echo $field_type->_id( '_time' ); ?>">
+				<?php
+				//Time select options.
+				foreach ( $times as $military => $time ) {
+					$value['time'] = isset( $value['time'] ) ? $value['time'] : '1900';
+					echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
+				} ?>
+			</select>
 
-			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week your would like to receive the weekly report.', 'give-email-reports' ); ?></p>
+			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
 
 		</div>
 
 		<?php echo ob_get_clean();
 	}
+
+
+	/**
+	 * Give add Monthly email reports preview.
+	 *
+	 * @param $field
+	 * @param $value
+	 * @param $object_id
+	 * @param $object_type
+	 * @param $field_type CMB2_Types
+	 */
+	public function add_email_report_monthly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
+
+		//Times.
+		$times = $this->get_email_report_times();
+
+		//Days.
+		$days = array(
+			'0' => 'First Day',
+			'1' => 'Last Day',
+		);
+
+		ob_start(); ?>
+		<div class="give-email-reports-monthly">
+			<label class="hidden"
+			       for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Month', 'give-donation-emails' ); ?></label>
+
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>"
+			        id="<?php echo $field_type->_id( '_day' ); ?>">
+				<?php
+				//Day select dropdown
+				foreach ( $days as $day_code => $day ) {
+					$value['day'] = isset( $value['day'] ) ? $value['day'] : '0';
+					echo '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, true ) . '>' . $day . '</option>';
+				} ?>
+			</select>
+
+			<label class="hidden"
+			       for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-donation-emails' ); ?></label>
+
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>"
+			        id="<?php echo $field_type->_id( '_time' ); ?>">
+				<?php
+				//Time select options.
+				foreach ( $times as $military => $time ) {
+					$value['time'] = isset( $value['time'] ) ? $value['time'] : '1900';
+					echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
+				} ?>
+			</select>
+
+			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the month would like to receive the monthly report.', 'give-email-reports' ); ?></p>
+
+		</div>
+
+		<?php echo ob_get_clean();
+	}
+
 
 }
 

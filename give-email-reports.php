@@ -87,6 +87,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-settings.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/scripts.php';
 		}
 
 		/**
@@ -148,6 +149,8 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * Add the custom template path for the email reporting templates.
 		 *
 		 * @param array $file_paths priority-based paths to check for templates
+		 *
+		 * @return mixed
 		 */
 		public function add_template_paths( $file_paths ) {
 			$file_paths[20] = trailingslashit( plugin_dir_path( __FILE__ ) ) . 'templates/';

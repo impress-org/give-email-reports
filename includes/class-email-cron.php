@@ -89,7 +89,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	public function schedule_daily_email() {
 
 		//Only proceed if daily email is enabled.
-		if ( empty($this->report_choices) || is_array($this->report_choices) && ! in_array( 'daily', $this->report_choices ) ) {
+		if ( empty( $this->report_choices ) || is_array( $this->report_choices ) && ! in_array( 'daily', $this->report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 
@@ -121,7 +121,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	public function schedule_weekly_email() {
 
 		//Only proceed if daily email is enabled.
-		if ( empty($this->report_choices) || is_array($this->report_choices) && ! in_array( 'weekly', $this->report_choices ) ) {
+		if ( empty( $this->report_choices ) || is_array( $this->report_choices ) && ! in_array( 'weekly', $this->report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 
@@ -158,8 +158,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function schedule_monthly_email() {
 
+
 		//Only proceed if monthly email is enabled.
-		if ( empty($this->report_choices) || is_array($this->report_choices) && ! in_array( 'monthly', $this->report_choices ) ) {
+		if ( empty( $this->report_choices ) || is_array( $this->report_choices ) && ! in_array( 'monthly', $this->report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
 
@@ -174,11 +175,13 @@ class Give_Email_Cron extends Give_Email_Reports {
 			$target_time_zone = new DateTimeZone( $timezone_string );
 			$date_time        = new DateTime( 'now', $target_time_zone );
 
-			$time = strtotime( give_get_option( 'give_email_reports_monthly_email_delivery_time', 1800 ) . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) );
+			$monthly_time = give_get_option( 'give_email_reports_monthly_email_delivery_time', 1800 );
+
+			$time = strtotime( $monthly_time['time'] . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) );
 
 			wp_schedule_event(
 				$time,
-				'weekly',
+				'monthly',
 				'give_email_reports_monthly_email'
 			);
 		}

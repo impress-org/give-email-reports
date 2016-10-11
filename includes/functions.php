@@ -93,7 +93,7 @@ function give_email_reports_add_email_tags( $tags ) {
 
 }
 
-add_filter( 'give_email_tags', 'give_email_reports_add_email_tags' );
+//add_filter( 'give_email_tags', 'give_email_reports_add_email_tags' );
 
 /**
  * Fetch six forms sorted by the furthest last donation date.
@@ -277,7 +277,7 @@ function give_email_reports_monthly_total() {
  *
  * @return string
  */
-function give_email_reports_weekly_best_performing_forms() {
+function give_email_reports_best_performing_forms() {
 
 	$args     = array(
 		'number'     => - 1,
