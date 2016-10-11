@@ -159,7 +159,7 @@ function give_email_reports_total( $report_period ) {
 			$start_date = '6 days ago 00:00';
 			$end_date   = 'now';
 			break;
-		case 'montly':
+		case 'monthly':
 			$start_date = '30 days ago 00:00';
 			$end_date   = 'now';
 			break;
