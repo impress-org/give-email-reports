@@ -45,7 +45,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			),
 			array(
 				'id'   => 'email_reports_settings',
-				'name' => __( 'Preview Report', 'give-email-reports' ),
+				'name' => __( 'Preview Reports', 'give-email-reports' ),
 				'desc' => '',
 				'type' => 'email_report_preview'
 			),
@@ -186,8 +186,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 		//Days.
 		$days = array(
-			'0' => 'First Day',
-			'1' => 'Last Day',
+			'first' => 'First Day',
+			'last' => 'Last Day',
 		);
 
 		ob_start(); ?>

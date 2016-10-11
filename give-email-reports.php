@@ -105,7 +105,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			add_filter( 'give_email_templates', array( $this, 'add_email_report_template' ) );
 			add_filter( 'give_email_content_type', array( $this, 'change_email_content_type' ), 10, 2 );
 
-
 			// Handle licensing.
 			if ( class_exists( 'Give_License' ) ) {
 				new Give_License( __FILE__, 'Give Email Reports', GIVE_EMAIL_REPORTS_VERSION, 'WordImpress' );
