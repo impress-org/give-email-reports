@@ -212,8 +212,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			give_get_template_part( 'emails/body-report-' . $_GET['report'], Give()->emails->get_template(), true );
 			$message = ob_get_clean();
 
-
-				// Swap out the email template before we send the email.
+			// Swap out the email template before we send the email.
 			add_action( 'give_email_header', 'give_email_reports_change_email_template' );
 
 			Give()->emails->html    = true;

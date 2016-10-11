@@ -9,29 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Render the email
- *
- * @param   string     $message
- * @param  Give_Emails $class
- *
- * @return string
- */
-function give_email_reports_render_email( $message, $class ) {
-
-	//Only report templates
-	if ( $class->get_template() === 'report' ) {
-
-
-
-
-	}
-
-	return $message;
-}
-
-//add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
-
-/**
  * Fetch six forms sorted by the furthest last donation date.
  *
  * @return string
@@ -166,12 +143,29 @@ function give_email_reports_currency() {
 /**
  * Returns the total earnings for today.
  *
+ * @param $report_period string
+ *
  * @return string
  */
-function give_email_reports_daily_total() {
+function give_email_reports_total( $report_period ) {
+
 	$stats = new Give_Payment_Stats();
 
-	return give_format_amount( $stats->get_earnings( 0, 'today', false ) );
+	$start_date = 'today';
+	$end_date   = false;
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '6 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'montly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = 'now';
+			break;
+	}
+
+	return give_format_amount( $stats->get_earnings( 0, $start_date, $end_date ) );
 }
 
 /**
@@ -278,7 +272,6 @@ function give_email_reports_best_performing_forms() {
 function give_email_reports_sort_best_performing_forms( $a, $b ) {
 	return $a['earnings'] < $b['earnings'];
 }
-
 
 
 /**

@@ -22,7 +22,7 @@ HEYO
 			<h1 style="font-size: 48px; line-height: 1em; margin: 0; color:#4EAD61;">
 				<?php if ( give_get_option( 'currency_position' ) == 'before' ): ?>
 					<span
-						style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?><?php echo give_email_reports_daily_total(); ?>
+						style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?><?php echo give_email_reports_total(); ?>
 				<?php if ( give_get_option( 'currency_position' ) == 'after' ): ?><span
 					style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?>
 			</h1>

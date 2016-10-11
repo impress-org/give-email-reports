@@ -7,13 +7,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-WEEKLY
 <table style="text-align: center !important; width: 100%; table-layout: fixed;">
 	<tbody>
 	<tr>
 		<td colspan="3" style="padding: 0 0 25px;">
-			<h3 style="margin: 0;"><?php echo date( 'F j, Y' ); ?></h3>
-			<p style="margin: 0;"><?php printf( __( ' %1$s!', 'give-email-reports' ), date( 'l', current_time( 'timestamp' ) ) ); ?></p>
+			<h3 style="margin: 0;"><?php echo date( 'F j, Y' ); ?> - <?php echo date( 'F j, Y' ); ?></h3>
+			<p style="margin: 0;"><?php printf( __( 'Happy %1$s!', 'give-email-reports' ), date( 'l', current_time( 'timestamp' ) ) ); ?></p>
 		</td>
 	</tr>
 
@@ -22,12 +21,15 @@ WEEKLY
 			<h1 style="font-size: 48px; line-height: 1em; margin: 0; color:#4EAD61;">
 				<?php if ( give_get_option( 'currency_position' ) == 'before' ): ?>
 					<span
-						style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?><?php echo give_email_reports_daily_total(); ?>
+						style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?><?php echo give_email_reports_total('weekly'); ?>
 				<?php if ( give_get_option( 'currency_position' ) == 'after' ): ?><span
 					style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?>
 			</h1>
-			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_daily_transactions() . ' ' . __( 'donations today', 'give-email-reports' ); ?></h2>
-			<h3 style="margin: 0; color: #333;"><?php echo give_email_reports_rolling_weekly_total() . ' ' . __( 'past seven days', 'give-email-reports' ); ?></h3>
+			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_daily_transactions() . ' ' . __( 'donations this week', 'give-email-reports' ); ?></h2>
+			<h3 style="margin: 0; color: #333;"><?php
+				//Get number of donations increase / decrease week over week
+				
+				?></h3>
 		</td>
 	</tr>
 
