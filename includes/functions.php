@@ -171,16 +171,35 @@ function give_email_reports_total( $report_period ) {
 /**
  * Returns the number of transactions for today.
  *
- * @return int
+ * @param $report_period
+ *
+ * @return float|int
  */
-function give_email_reports_daily_transactions() {
+function give_email_reports_transactions( $report_period ) {
+
 	$stats = new Give_Payment_Stats();
 
-	return $stats->get_sales( false, 'today' );
+	$start_date = 'today';
+	$end_date   = false;
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '6 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = 'now';
+			break;
+	}
+
+	return $stats->get_sales( false, $start_date, $end_date );
 }
 
 /**
  * Gets the total earnings for the current week.
+ *
+ * @param $report_period string
  *
  * @return string
  */
@@ -202,17 +221,48 @@ function give_email_reports_monthly_total() {
 }
 
 /**
- * Outputs a list of all donation forms donated to within the last 7 days,
- * ordered from most donations to least.
+ * Gets the total earnings for the current month
  *
  * @return string
  */
-function give_email_reports_best_performing_forms() {
+function give_email_reports_yearly_total() {
+	$stats = new Give_Payment_Stats();
+
+	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year' ) ) );
+}
+
+/**
+ * Outputs a list of all donation forms donated to within the last 7 days,
+ * ordered from most donations to least.
+ *
+ * @param $report_period
+ *
+ * @return string
+ */
+function give_email_reports_best_performing_forms( $report_period ) {
+
+	$start_date = 'today';
+	$end_date   = false;
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '6 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'yearly':
+			$start_date = 'this_year';
+			$end_date   = 'now';
+			break;
+	}
 
 	$args     = array(
 		'number'     => - 1,
-		'start_date' => '6 days ago 00:00',
-		'end_date'   => 'now',
+		'start_date' => $start_date,
+		'end_date'   => $end_date,
 		'status'     => 'publish'
 	);
 	$query    = new Give_Payments_Query( $args );

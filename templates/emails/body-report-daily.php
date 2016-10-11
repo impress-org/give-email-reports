@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php if ( give_get_option( 'currency_position' ) == 'after' ): ?><span
 					style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?>
 			</h1>
-			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_daily_transactions() . ' ' . __( 'donations today', 'give-email-reports' ); ?></h2>
+			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_transactions( 'daily' ) . ' ' . __( 'donations today', 'give-email-reports' ); ?></h2>
 			<h3 style="margin: 0; color: #333;"><?php echo give_email_reports_rolling_weekly_total() . ' ' . __( 'past seven days', 'give-email-reports' ); ?></h3>
 		</td>
 	</tr>
@@ -33,24 +33,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<tr>
 		<td style="padding: 30px; text-align: center;">
 			<span
-				style="display: block; font-size:18px; font-weight: bold;color:#4EAD61;"><?php echo give_email_reports_weekly_total(); ?></span>
-			<small style="display: block;font-size:14px;"><?php _e( 'this week', 'give-email-reports' ); ?></small>
+				style="display: block; font-size:22px; font-weight: bold;color:#4EAD61;"><?php echo give_email_reports_weekly_total(); ?></span>
+			<small style="display: block;font-size:16px;"><?php _e( 'this week', 'give-email-reports' ); ?></small>
 		</td>
 		<td style="padding: 30px; text-align: center;">
 			<span
-				style="display: block; font-size:18px; font-weight: bold;color:#4EAD61;"><?php echo give_email_reports_monthly_total(); ?></span>
-			<small style="display: block;font-size:14px;"><?php _e( 'this month', 'give-email-reports' ); ?></small>
+				style="display: block; font-size:22px; font-weight: bold;color:#4EAD61;"><?php echo give_email_reports_monthly_total(); ?></span>
+			<small style="display: block;font-size:16px;"><?php _e( 'this month', 'give-email-reports' ); ?></small>
 		</td>
 		<td style="padding: 30px; text-align: center;">
 			<span
-				style="display: block; font-size:18px; font-weight: bold;color:#4EAD61;"><?php echo give_email_reports_rolling_monthly_total(); ?></span>
-			<small style="display: block;font-size:14px;"><?php _e( 'past 30 days', 'give-email-reports' ); ?></small>
+				style="display: block; font-size:22px; font-weight: bold;color:#4EAD61;"><?php echo give_email_reports_rolling_monthly_total(); ?></span>
+			<small style="display: block;font-size:16px;"><?php _e( 'past 30 days', 'give-email-reports' ); ?></small>
 		</td>
 	</tr>
 	<tr>
 		<td colspan="3" style="text-align: left !important;">
 			<h3 style="margin: 0; padding-left: 40px;"><?php _e( 'The best performing donation forms this week:', 'give-email-reports' ); ?></h3>
-			<?php echo give_email_reports_best_performing_forms(); ?>
+			<?php echo give_email_reports_best_performing_forms('weekly'); ?>
 		</td>
 	</tr>
 
