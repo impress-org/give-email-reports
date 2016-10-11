@@ -9,80 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Fetch six forms sorted by the furthest last donation date.
- *
- * @return string
- */
-function give_email_reports_cold_donation_forms() {
-
-	$args = array(
-		'post_type'      => 'give_forms',
-		'post_status'    => 'publish',
-		'posts_per_page' => - 1,
-	);
-
-	$result = get_posts( $args );
-
-	$last_donation_dates = array();
-
-	$give_logs = new Give_Logging();
-
-	if ( ! empty( $result ) ) {
-
-		foreach ( $result as $form ) {
-
-			$result = $give_logs->get_connected_logs( array(
-				'post_parent'    => $form->ID,
-				'log_type'       => 'sale',
-				'posts_per_page' => 1
-			) );
-
-			if ( ! empty( $result ) ) {
-				$last_donation_dates[ $form->post_title ] = $result[0]->post_date;
-			}
-		}
-
-		if ( ! empty( $last_donation_dates ) ) {
-
-			uasort( $last_donation_dates, 'give_email_reports_sort_cold_donation_forms' );
-			$last_donation_dates = array_slice( $last_donation_dates, 0, 6, true );
-
-			$color_prefix = 99;
-
-			ob_start();
-			echo '<ul style="padding-left: 55px;padding-right: 30px;">';
-			foreach ( $last_donation_dates as $form => $date ):
-
-				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last donation <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
-					$color_prefix,
-					$form,
-					date( 'F j, Y', strtotime( $date ) ),
-					human_time_diff( strtotime( $date ) )
-				);
-
-				if ( $color_prefix > 11 ) {
-					$color_prefix -= 11;
-				}
-			endforeach;
-			echo '</ul>';
-
-			return ob_get_clean();
-		} else {
-			return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
-		}
-
-	} else {
-		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
-	}
-}
-
-/**
  * Sort the passed array based on the furthest donation date.
  *
- * @param  [type] $a [description]
- * @param  [type] $b [description]
+ * @param $a
+ * @param $b
  *
- * @return [type]    [description]
+ * @return false|int
  */
 function give_email_reports_sort_cold_donation_forms( $a, $b ) {
 	return strtotime( $a ) - strtotime( $b );
@@ -232,6 +164,49 @@ function give_email_reports_yearly_total() {
 }
 
 /**
+ * Sorts the given stats based on the best-performing donation forms first.
+ *
+ * @param $a
+ * @param $b
+ *
+ * @return bool
+ */
+function give_email_reports_sort_best_performing_forms( $a, $b ) {
+	return $a['earnings'] < $b['earnings'];
+}
+
+
+/**
+ * Filter the email template to load the reporting template for this email.
+ *
+ * @return void
+ */
+function give_email_reports_change_email_template() {
+	add_filter( 'give_email_template', 'give_email_reports_set_email_template' );
+}
+
+/**
+ * Sets the suffix to use while looking for the email template to load.
+ *
+ * @param  string $template_name
+ *
+ * @return string
+ */
+function give_email_reports_set_email_template( $template_name ) {
+	return 'report';
+}
+
+/**
+ * Triggers the weekly sales report email generation and sending.
+ *
+ * @todo
+ */
+function give_email_reports_weekly_email() {
+	return false;
+}
+
+
+/**
  * Outputs a list of all donation forms donated to within the last 7 days,
  * ordered from most donations to least.
  *
@@ -285,22 +260,23 @@ function give_email_reports_best_performing_forms( $report_period ) {
 		}
 
 		usort( $stats, 'give_email_reports_sort_best_performing_forms' );
-		$color = 111111;
+
+		$color_prefix = 99;
 
 		ob_start();
 		echo '<ul style="padding-left: 55px;padding-right: 30px;">';
 		foreach ( $stats as $list_item ):
 
-			printf( '<li style="color: #%1$s; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
-				$color,
+			printf( '<li style="color: #00%1$s00; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
+				$color_prefix,
 				$list_item['name'],
 				give_currency_filter( give_format_amount( $list_item['earnings'] ) ),
 				$list_item['donations'],
 				_n( 'donation', 'donations', $list_item['donations'], 'give-email-reports' )
 			);
 
-			if ( $color < 999999 ) {
-				$color += 111111;
+			if ( $color_prefix > 11 ) {
+				$color_prefix -= 11;
 			}
 		endforeach;
 		echo '</ul>';
@@ -311,44 +287,71 @@ function give_email_reports_best_performing_forms( $report_period ) {
 	}
 }
 
-/**
- * Sorts the given stats based on the best-performing donation forms first.
- *
- * @param $a
- * @param $b
- *
- * @return bool
- */
-function give_email_reports_sort_best_performing_forms( $a, $b ) {
-	return $a['earnings'] < $b['earnings'];
-}
-
 
 /**
- * Filter the email template to load the reporting template for this email.
- *
- * @return void
- */
-function give_email_reports_change_email_template() {
-	add_filter( 'give_email_template', 'give_email_reports_set_email_template' );
-}
-
-/**
- * Sets the suffix to use while looking for the email template to load.
- *
- * @param  string $template_name
+ * Fetch six forms sorted by the furthest last donation date.
  *
  * @return string
  */
-function give_email_reports_set_email_template( $template_name ) {
-	return 'report';
-}
+function give_email_reports_cold_donation_forms() {
 
-/**
- * Triggers the weekly sales report email generation and sending.
- *
- * @todo
- */
-function give_email_reports_weekly_email() {
-	return false;
+	$args = array(
+		'post_type'      => 'give_forms',
+		'post_status'    => 'publish',
+		'posts_per_page' => - 1,
+	);
+
+	$result = get_posts( $args );
+
+	$last_donation_dates = array();
+
+	$give_logs = new Give_Logging();
+
+	if ( ! empty( $result ) ) {
+
+		foreach ( $result as $form ) {
+
+			$result = $give_logs->get_connected_logs( array(
+				'post_parent'    => $form->ID,
+				'log_type'       => 'sale',
+				'posts_per_page' => 1
+			) );
+
+			if ( ! empty( $result ) ) {
+				$last_donation_dates[ $form->post_title ] = $result[0]->post_date;
+			}
+		}
+
+		if ( ! empty( $last_donation_dates ) ) {
+
+			uasort( $last_donation_dates, 'give_email_reports_sort_cold_donation_forms' );
+			$last_donation_dates = array_slice( $last_donation_dates, 0, 6, true );
+
+			$color_prefix = 99;
+
+			ob_start();
+			echo '<ul style="padding-left: 55px;padding-right: 30px;">';
+			foreach ( $last_donation_dates as $form => $date ):
+
+				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last donation <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
+					$color_prefix,
+					$form,
+					date( 'F j, Y', strtotime( $date ) ),
+					human_time_diff( strtotime( $date ) )
+				);
+
+				if ( $color_prefix > 11 ) {
+					$color_prefix -= 11;
+				}
+			endforeach;
+			echo '</ul>';
+
+			return ob_get_clean();
+		} else {
+			return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+		}
+
+	} else {
+		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+	}
 }
