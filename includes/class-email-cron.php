@@ -15,15 +15,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function __construct() {
 
-		// Schedule cron event for various emails.
-		add_action( 'init', array( $this, 'schedule_daily_email' ) );
-		add_action( 'init', array( $this, 'schedule_weekly_email' ) );
-		add_action( 'init', array( $this, 'schedule_monthly_email' ) );
 
 		// Remove from cron if plugin is deactivated.
 		register_deactivation_hook( __FILE__, array( $this, 'unschedule_emails' ) );
 
-		$this->report_choices = give_get_option( 'email_report_emails' );
+		// Schedule cron event for various emails.
+		add_action( 'update_option_give_settings', array( $this, 'schedule_daily_email' ), 10, 3 );
+		add_action( 'update_option_give_settings', array( $this, 'schedule_weekly_email' ), 10, 3 );
+		add_action( 'update_option_give_settings', array( $this, 'schedule_monthly_email' ), 10, 3 );
 
 		//Send emails
 		add_action( 'give_email_reports_daily_email', array( $this, 'send_daily_email' ) );
@@ -92,10 +91,12 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 *
 	 * @return bool
 	 */
-	public function schedule_daily_email() {
+	public function schedule_daily_email( $old_value, $value, $option ) {
+
+		$report_choices = isset( $value[ 'email_report_emails' ]) ? $value[ 'email_report_emails' ] : '';
 
 		//Only proceed if daily email is enabled.
-		if ( empty( $this->report_choices ) || is_array( $this->report_choices ) && ! in_array( 'daily', $this->report_choices ) ) {
+		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'daily', $report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 
@@ -124,10 +125,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 *
 	 * @return bool
 	 */
-	public function schedule_weekly_email() {
+	public function schedule_weekly_email($old_value, $value, $option) {
 
+		$report_choices = isset( $value[ 'email_report_emails' ]) ? $value[ 'email_report_emails' ] : '';
+
+		error_log( print_r( $report_choices, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+		error_log( print_r( in_array( 'weekly', $report_choices ), true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 		//Only proceed if daily email is enabled.
-		if ( empty( $this->report_choices ) || is_array( $this->report_choices ) && ! in_array( 'weekly', $this->report_choices ) ) {
+		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'weekly', $report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 
@@ -160,14 +165,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 *
 	 * @return bool
 	 */
-	public function schedule_monthly_email() {
+	public function schedule_monthly_email($old_value, $value, $option) {
 
+		$report_choices = isset( $value[ 'email_report_emails' ]) ? $value[ 'email_report_emails' ] : '';
 
 		//Only proceed if monthly email is enabled.
-		if ( empty( $this->report_choices ) || is_array( $this->report_choices ) && ! in_array( 'monthly', $this->report_choices ) ) {
+		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'monthly', $report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
-
 			return false;
 		}
 
