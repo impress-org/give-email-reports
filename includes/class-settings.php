@@ -95,9 +95,15 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	public function add_email_report_preview() {
 		ob_start();
 		?>
-		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report' ), home_url() ) ); ?>"
+		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report', 'report' => 'daily' ), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
-		   title="<?php _e( 'Preview Email Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Email Report', 'give-email-reports' ); ?></a>
+		   title="<?php _e( 'Preview Daily Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Daily Report', 'give-email-reports' ); ?></a>
+		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report', 'report' => 'weekly' ), home_url() ) ); ?>"
+		   class="button-secondary" target="_blank"
+		   title="<?php _e( 'Preview Weekly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Weekly Report', 'give-email-reports' ); ?></a>
+		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report', 'report' => 'monthly' ), home_url() ) ); ?>"
+		   class="button-secondary" target="_blank"
+		   title="<?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?></a>
 		<?php
 		echo ob_get_clean();
 	}

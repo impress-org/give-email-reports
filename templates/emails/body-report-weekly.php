@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_daily_transactions() . ' ' . __( 'donations this week', 'give-email-reports' ); ?></h2>
 			<h3 style="margin: 0; color: #333;"><?php
 				//Get number of donations increase / decrease week over week
-				
+
 				?></h3>
 		</td>
 	</tr>

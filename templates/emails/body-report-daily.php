@@ -7,7 +7,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 ?>
-HEYO
 <table style="text-align: center !important; width: 100%; table-layout: fixed;">
 	<tbody>
 	<tr>
