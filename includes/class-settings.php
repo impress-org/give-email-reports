@@ -156,7 +156,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				} ?>
 			</select>
 
-			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
+			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
 
 		</div>
 
@@ -212,7 +212,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				} ?>
 			</select>
 
-			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the month would like to receive the monthly report.', 'give-email-reports' ); ?></p>
+			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the month and time that would like to receive the monthly report.', 'give-email-reports' ); ?></p>
 
 		</div>
 
