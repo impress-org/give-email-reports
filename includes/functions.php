@@ -9,91 +9,284 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Parse the template tags manually until parse_tags is supported outside of donation emails.
+ * Sort the passed array based on the furthest donation date.
  *
- * @param   string     $message
- * @param  Give_Emails $class
+ * @param $a
+ * @param $b
+ *
+ * @return false|int
+ */
+function give_email_reports_sort_cold_donation_forms( $a, $b ) {
+	return strtotime( $a ) - strtotime( $b );
+}
+
+/**
+ * Returns the earnings amount for the past 7 days, including today.
  *
  * @return string
  */
-function give_email_reports_render_email( $message, $class ) {
+function give_email_reports_rolling_weekly_total() {
+	$stats = new Give_Payment_Stats();
 
-	if ( $class->get_template() === 'report' ) {
-		$message = give_do_email_tags( $message, 0 );
-	}
+	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) );
 
-	return $message;
 }
-
-add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
 
 /**
- * Add email tags for reports.
+ * Give Email reports monthly total.
  *
- * @param  $tags array
- *
- * @return      array
+ * @return string
  */
-function give_email_reports_add_email_tags( $tags ) {
+function give_email_reports_rolling_monthly_total() {
+	$stats = new Give_Payment_Stats();
 
-	$report_tags = array(
-		array(
-			'tag'         => 'email_report_currency',
-			'description' => __( 'Adds the currency setting for the site.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_currency'
-		),
-		array(
-			'tag'         => 'email_report_letters_of_days_in_week',
-			'description' => __( 'Adds the total amount donated for the day.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_letters_of_days_in_week'
-		),
-		array(
-			'tag'         => 'email_report_daily_total',
-			'description' => __( 'Adds the total amount donated for the day.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_daily_total'
-		),
-		array(
-			'tag'         => 'email_report_daily_transactions',
-			'description' => __( 'Adds the number of donations for the day.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_daily_transactions'
-		),
-		array(
-			'tag'         => 'email_report_weekly_best_performing_forms',
-			'description' => __( 'Adds the total amount donated for the week.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_weekly_best_performing_forms'
-		),
-		array(
-			'tag'         => 'email_report_weekly_total',
-			'description' => __( 'Adds the total amount donated for the week.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_weekly_total'
-		),
-		array(
-			'tag'         => 'email_report_monthly_total',
-			'description' => __( 'Adds the total amount donated for the month.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_monthly_total'
-		),
-		array(
-			'tag'         => 'email_report_rolling_weekly_total',
-			'description' => __( 'Adds the total amount donated for past seven days.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_rolling_weekly_total'
-		),
-		array(
-			'tag'         => 'email_report_rolling_monthly_total',
-			'description' => __( 'Adds the total amount donated for past thirty days.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_rolling_monthly_total'
-		),
-		array(
-			'tag'         => 'email_report_cold_donation_forms',
-			'description' => __( 'Displays under-performing donation forms and their last donate date.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_cold_donation_forms'
-		),
-	);
-
-	return array_merge( $tags, $report_tags );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) );
 
 }
 
-//add_filter( 'give_email_tags', 'give_email_reports_add_email_tags' );
+/**
+ * Letter days of the week.
+ *
+ * @return array
+ */
+function give_email_reports_letters_of_days_in_week() {
+
+	$letters_of_days_in_week = array();
+
+	$timestamp = time();
+
+	for ( $i = 0; $i < 7; $i ++ ) {
+		$letters_of_days_in_week[] = substr( date( 'D', $timestamp ), 0, 1 );
+		$timestamp -= 24 * 3600;
+	}
+
+	return $letters_of_days_in_week;
+}
+
+/**
+ * Returns the currency symbol for the site.
+ *
+ * @return string
+ */
+function give_email_reports_currency() {
+	return give_currency_filter( '' );
+}
+
+/**
+ * Returns the total earnings for today.
+ *
+ * @param $report_period string
+ *
+ * @return string
+ */
+function give_email_reports_total( $report_period ) {
+
+	$stats = new Give_Payment_Stats();
+
+	$start_date = 'today';
+	$end_date   = false;
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '6 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = 'now';
+			break;
+	}
+
+	return give_format_amount( $stats->get_earnings( 0, $start_date, $end_date ) );
+}
+
+/**
+ * Returns the number of transactions for today.
+ *
+ * @param $report_period
+ *
+ * @return float|int
+ */
+function give_email_reports_donations( $report_period ) {
+
+	$stats = new Give_Payment_Stats();
+
+	$start_date = 'today';
+	$end_date   = false;
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '6 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = 'now';
+			break;
+	}
+
+	return $stats->get_sales( false, $start_date, $end_date );
+}
+
+/**
+ * Gets the total earnings for the current week.
+ *
+ * @param $report_period string
+ *
+ * @return string
+ */
+function give_email_reports_weekly_total() {
+	$stats = new Give_Payment_Stats();
+
+	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) );
+}
+
+/**
+ * Gets the total earnings for the current month
+ *
+ * @return string
+ */
+function give_email_reports_monthly_total() {
+	$stats = new Give_Payment_Stats();
+
+	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) );
+}
+
+/**
+ * Gets the total earnings for the current month
+ *
+ * @return string
+ */
+function give_email_reports_yearly_total() {
+	$stats = new Give_Payment_Stats();
+
+	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year' ) ) );
+}
+
+/**
+ * Sorts the given stats based on the best-performing donation forms first.
+ *
+ * @param $a
+ * @param $b
+ *
+ * @return bool
+ */
+function give_email_reports_sort_best_performing_forms( $a, $b ) {
+	return $a['earnings'] < $b['earnings'];
+}
+
+
+/**
+ * Filter the email template to load the reporting template for this email.
+ *
+ * @return void
+ */
+function give_email_reports_change_email_template() {
+	add_filter( 'give_email_template', 'give_email_reports_set_email_template' );
+}
+
+/**
+ * Sets the suffix to use while looking for the email template to load.
+ *
+ * @param  string $template_name
+ *
+ * @return string
+ */
+function give_email_reports_set_email_template( $template_name ) {
+	return 'report';
+}
+
+/**
+ * Triggers the weekly sales report email generation and sending.
+ *
+ * @todo
+ */
+function give_email_reports_weekly_email() {
+	return false;
+}
+
+
+/**
+ * Outputs a list of all donation forms donated to within the last 7 days,
+ * ordered from most donations to least.
+ *
+ * @param $report_period
+ *
+ * @return string
+ */
+function give_email_reports_best_performing_forms( $report_period ) {
+
+	$start_date = 'today';
+	$end_date   = false;
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '6 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = 'now';
+			break;
+		case 'yearly':
+			$start_date = 'this_year';
+			$end_date   = 'now';
+			break;
+	}
+
+	$args     = array(
+		'number'     => - 1,
+		'start_date' => $start_date,
+		'end_date'   => $end_date,
+		'status'     => 'publish'
+	);
+	$query    = new Give_Payments_Query( $args );
+	$payments = $query->get_payments();
+	$stats    = array();
+
+	if ( ! empty( $payments ) ) {
+
+		foreach ( $payments as $donation ) {
+
+			$earnings  = isset( $stats[ $donation->form_id ]['earnings'] ) ? $stats[ $donation->form_id ]['earnings'] : 0;
+			$donations = isset( $stats[ $donation->form_id ]['donations'] ) ? $stats[ $donation->form_id ]['donations'] : 0;
+
+			$stats[ $donation->form_id ] = array(
+				'name'      => $donation->form_title,
+				'earnings'  => $earnings + $donation->total,
+				'donations' => $donations + 1,
+			);
+
+		}
+
+		usort( $stats, 'give_email_reports_sort_best_performing_forms' );
+
+		$color_prefix = 99;
+
+		ob_start();
+		echo '<ul style="padding-left: 55px;padding-right: 30px;">';
+		foreach ( $stats as $list_item ):
+
+			printf( '<li style="color: #00%1$s00; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
+				$color_prefix,
+				$list_item['name'],
+				give_currency_filter( give_format_amount( $list_item['earnings'] ) ),
+				$list_item['donations'],
+				_n( 'donation', 'donations', $list_item['donations'], 'give-email-reports' )
+			);
+
+			if ( $color_prefix > 11 ) {
+				$color_prefix -= 11;
+			}
+		endforeach;
+		echo '</ul>';
+
+		return ob_get_clean();
+	} else {
+		return '<p style="padding-left:40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+	}
+}
+
 
 /**
  * Fetch six forms sorted by the furthest last donation date.
@@ -163,213 +356,47 @@ function give_email_reports_cold_donation_forms() {
 	}
 }
 
-/**
- * Sort the passed array based on the furthest donation date.
- *
- * @param  [type] $a [description]
- * @param  [type] $b [description]
- *
- * @return [type]    [description]
- */
-function give_email_reports_sort_cold_donation_forms( $a, $b ) {
-	return strtotime( $a ) - strtotime( $b );
-}
 
 /**
- * Returns the earnings amount for the past 7 days, including today.
+ * @param $report_period
  *
- * @return string
+ * @return mixed
  */
-function give_email_reports_rolling_weekly_total() {
+function give_email_reports_donation_difference( $report_period ) {
+
+	$current_donations = give_email_reports_donations( $report_period );
+
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) );
+	$start_date = 'today';
+	$end_date   = false;
+	$text       = __( 'Yesterday', 'give-email-reports' );
 
-}
-
-/**
- * Give Email reports monthly total.
- *
- * @return string
- */
-function give_email_reports_rolling_monthly_total() {
-	$stats = new Give_Payment_Stats();
-
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) );
-
-}
-
-/**
- * Letter days of the week.
- *
- * @return array
- */
-function give_email_reports_letters_of_days_in_week() {
-
-	$letters_of_days_in_week = array();
-
-	$timestamp = time();
-
-	for ( $i = 0; $i < 7; $i ++ ) {
-		$letters_of_days_in_week[] = substr( date( 'D', $timestamp ), 0, 1 );
-		$timestamp -= 24 * 3600;
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '13 days ago 00:00';
+			$end_date   = '7 days ago 24:00';
+			$text       = __( 'last week', 'give-email-reports' );
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = '60 days ago 24:00';
+			$text       = __( 'last month', 'give-email-reports' );
+			break;
 	}
 
-	return $letters_of_days_in_week;
-}
+	$past_donations = $stats->get_sales( false, $start_date, $end_date );
+	$difference = $current_donations - $past_donations;
 
-/**
- * Returns the currency symbol for the site.
- *
- * @return string
- */
-function give_email_reports_currency() {
-	return give_currency_filter( '' );
-}
-
-/**
- * Returns the total earnings for today.
- *
- * @return string
- */
-function give_email_reports_daily_total() {
-	$stats = new Give_Payment_Stats();
-
-	return give_format_amount( $stats->get_earnings( 0, 'today', false ) );
-}
-
-/**
- * Returns the number of transactions for today.
- *
- * @return int
- */
-function give_email_reports_daily_transactions() {
-	$stats = new Give_Payment_Stats();
-
-	return $stats->get_sales( false, 'today' );
-}
-
-/**
- * Gets the total earnings for the current week.
- *
- * @return string
- */
-function give_email_reports_weekly_total() {
-	$stats = new Give_Payment_Stats();
-
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) );
-}
-
-/**
- * Gets the total earnings for the current month
- *
- * @return string
- */
-function give_email_reports_monthly_total() {
-	$stats = new Give_Payment_Stats();
-
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) );
-}
-
-/**
- * Outputs a list of all donation forms donated to within the last 7 days,
- * ordered from most donations to least.
- *
- * @return string
- */
-function give_email_reports_best_performing_forms() {
-
-	$args     = array(
-		'number'     => - 1,
-		'start_date' => '6 days ago 00:00',
-		'end_date'   => 'now',
-		'status'     => 'publish'
-	);
-	$query    = new Give_Payments_Query( $args );
-	$payments = $query->get_payments();
-	$stats    = array();
-
-	if ( ! empty( $payments ) ) {
-
-		foreach ( $payments as $donation ) {
-
-			$earnings  = isset( $stats[ $donation->form_id ]['earnings'] ) ? $stats[ $donation->form_id ]['earnings'] : 0;
-			$donations = isset( $stats[ $donation->form_id ]['donations'] ) ? $stats[ $donation->form_id ]['donations'] : 0;
-
-			$stats[ $donation->form_id ] = array(
-				'name'      => $donation->form_title,
-				'earnings'  => $earnings + $donation->total,
-				'donations' => $donations + 1,
-			);
-
-		}
-
-		usort( $stats, 'give_email_reports_sort_best_performing_forms' );
-		$color = 111111;
-
-		ob_start();
-		echo '<ul style="padding-left: 55px;padding-right: 30px;">';
-		foreach ( $stats as $list_item ):
-
-			printf( '<li style="color: #%1$s; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
-				$color,
-				$list_item['name'],
-				give_currency_filter( give_format_amount( $list_item['earnings'] ) ),
-				$list_item['donations'],
-				_n( 'donation', 'donations', $list_item['donations'], 'give-email-reports' )
-			);
-
-			if ( $color < 999999 ) {
-				$color += 111111;
-			}
-		endforeach;
-		echo '</ul>';
-
-		return ob_get_clean();
-	} else {
-		return '<p style="padding-left:40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+	if ( $difference == 0 ) {
+		//No change
+		$output = '&#9670; ' . sprintf( __( 'Same number donations as %s', 'give-email-reports' ), $text );
+	} elseif ( $difference < 0 ) {
+		$output = '<span style="color:#990000;">&#9662;</span> ' . sprintf( __( '%1$s donations compared to %2$s', 'give-email-reports' ), $difference, $text );
+	} elseif ( $difference ) {
+		$output = '<span style="color:#4EAD61;">&#9652;</span> +' . sprintf( __( '%1$s donations compared to %2$s', 'give-email-reports' ), $difference, $text );
 	}
-}
 
-/**
- * Sorts the given stats based on the best-performing donation forms first.
- *
- * @param $a
- * @param $b
- *
- * @return bool
- */
-function give_email_reports_sort_best_performing_forms( $a, $b ) {
-	return $a['earnings'] < $b['earnings'];
-}
+	echo $output;
 
-
-
-/**
- * Filter the email template to load the reporting template for this email.
- *
- * @return void
- */
-function give_email_reports_change_email_template() {
-	add_filter( 'give_email_template', 'give_email_reports_set_email_template' );
-}
-
-/**
- * Sets the suffix to use while looking for the email template to load.
- *
- * @param  string $template_name
- *
- * @return string
- */
-function give_email_reports_set_email_template( $template_name ) {
-	return 'report';
-}
-
-/**
- * Triggers the weekly sales report email generation and sending.
- *
- * @todo
- */
-function give_email_reports_weekly_email() {
-	return false;
 }
