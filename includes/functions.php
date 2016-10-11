@@ -107,7 +107,7 @@ function give_email_reports_total( $report_period ) {
  *
  * @return float|int
  */
-function give_email_reports_transactions( $report_period ) {
+function give_email_reports_donations( $report_period ) {
 
 	$stats = new Give_Payment_Stats();
 
@@ -354,4 +354,49 @@ function give_email_reports_cold_donation_forms() {
 	} else {
 		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 	}
+}
+
+
+/**
+ * @param $report_period
+ *
+ * @return mixed
+ */
+function give_email_reports_donation_difference( $report_period ) {
+
+	$current_donations = give_email_reports_donations( $report_period );
+
+	$stats = new Give_Payment_Stats();
+
+	$start_date = 'today';
+	$end_date   = false;
+	$text       = __( 'Yesterday', 'give-email-reports' );
+
+	switch ( $report_period ) {
+		case 'weekly':
+			$start_date = '13 days ago 00:00';
+			$end_date   = '7 days ago 24:00';
+			$text       = __( 'last week', 'give-email-reports' );
+			break;
+		case 'monthly':
+			$start_date = '30 days ago 00:00';
+			$end_date   = '60 days ago 24:00';
+			$text       = __( 'last month', 'give-email-reports' );
+			break;
+	}
+
+	$past_donations = $stats->get_sales( false, $start_date, $end_date );
+	$difference = $current_donations - $past_donations;
+
+	if ( $difference == 0 ) {
+		//No change
+		$output = '&#9670; ' . sprintf( __( 'Same number donations as %s', 'give-email-reports' ), $text );
+	} elseif ( $difference < 0 ) {
+		$output = '<span style="color:#990000;">&#9662;</span> ' . sprintf( __( '%1$s donations compared to %2$s', 'give-email-reports' ), $difference, $text );
+	} elseif ( $difference ) {
+		$output = '<span style="color:#4EAD61;">&#9652;</span> +' . sprintf( __( '%1$s donations compared to %2$s', 'give-email-reports' ), $difference, $text );
+	}
+
+	echo $output;
+
 }

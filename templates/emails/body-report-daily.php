@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<?php if ( give_get_option( 'currency_position' ) == 'after' ): ?><span
 					style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?>
 			</h1>
-			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_transactions( 'daily' ) . ' ' . __( 'donations today', 'give-email-reports' ); ?></h2>
+			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_donations( 'daily' ) . ' ' . __( 'donations today', 'give-email-reports' ); ?></h2>
 			<h3 style="margin: 0; color: #333;"><?php echo give_email_reports_rolling_weekly_total() . ' ' . __( 'past seven days', 'give-email-reports' ); ?></h3>
 		</td>
 	</tr>
