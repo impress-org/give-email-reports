@@ -46,7 +46,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-		Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+
+		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails() );
+
+		Give()->emails->send( $recipients, sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
 
 	}
 
@@ -65,7 +68,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-		Give()->emails->send( give_get_admin_notice_emails(), sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+
+		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails() );
+
+		Give()->emails->send( $recipients, sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
 
 	}
 

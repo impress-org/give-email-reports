@@ -100,10 +100,11 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		private function hooks() {
 
 			// Render the email report preview.
-			add_action( 'template_redirect', array( $this, 'give_email_reports_display_email_report_preview' ) );
 			add_filter( 'give_template_paths', array( $this, 'add_template_paths' ) );
+			add_action( 'template_redirect', array( $this, 'report_preview' ) );
 			add_filter( 'give_email_templates', array( $this, 'add_email_report_template' ) );
 			add_filter( 'give_email_content_type', array( $this, 'change_email_content_type' ), 10, 2 );
+
 
 			// Handle licensing.
 			if ( class_exists( 'Give_License' ) ) {
@@ -191,9 +192,10 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * @since 1.0
 		 * @return void
 		 */
-		public function give_email_reports_display_email_report_preview() {
+		public function report_preview() {
 
-			if ( empty( $_GET['give_action'] ) ) {
+			//Sanity check: need the following vars to get started.
+			if ( empty( $_GET['give_action'] ) || empty( $_GET['report'] ) ) {
 				return;
 			}
 
@@ -206,13 +208,16 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			}
 
 			// $message will be rendered during give_email_message filter.
-			$message = '';
+			ob_start();
+			give_get_template_part( 'emails/body-report-' . $_GET['report'], Give()->emails->get_template(), true );
+			$message = ob_get_clean();
 
-			// Swap out the email template before we send the email.
+
+				// Swap out the email template before we send the email.
 			add_action( 'give_email_header', 'give_email_reports_change_email_template' );
 
 			Give()->emails->html    = true;
-			Give()->emails->heading = sprintf( __( 'Daily Donations Report <br> %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) );
+			Give()->emails->heading = sprintf( __( '%s Donations Report', 'give-email-reports' ), ucfirst( $_GET['report'] ) ) . '<br>' . get_bloginfo( 'name' );
 
 			echo Give()->emails->build_email( $message );
 

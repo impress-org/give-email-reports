@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Parse the template tags manually until parse_tags is supported outside of donation emails.
+ * Render the email
  *
  * @param   string     $message
  * @param  Give_Emails $class
@@ -18,82 +18,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_email_reports_render_email( $message, $class ) {
 
+	//Only report templates
 	if ( $class->get_template() === 'report' ) {
-		$message = give_do_email_tags( $message, 0 );
+
+
+
+
 	}
 
 	return $message;
 }
 
-add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
-
-/**
- * Add email tags for reports.
- *
- * @param  $tags array
- *
- * @return      array
- */
-function give_email_reports_add_email_tags( $tags ) {
-
-	$report_tags = array(
-		array(
-			'tag'         => 'email_report_currency',
-			'description' => __( 'Adds the currency setting for the site.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_currency'
-		),
-		array(
-			'tag'         => 'email_report_letters_of_days_in_week',
-			'description' => __( 'Adds the total amount donated for the day.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_letters_of_days_in_week'
-		),
-		array(
-			'tag'         => 'email_report_daily_total',
-			'description' => __( 'Adds the total amount donated for the day.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_daily_total'
-		),
-		array(
-			'tag'         => 'email_report_daily_transactions',
-			'description' => __( 'Adds the number of donations for the day.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_daily_transactions'
-		),
-		array(
-			'tag'         => 'email_report_weekly_best_performing_forms',
-			'description' => __( 'Adds the total amount donated for the week.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_weekly_best_performing_forms'
-		),
-		array(
-			'tag'         => 'email_report_weekly_total',
-			'description' => __( 'Adds the total amount donated for the week.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_weekly_total'
-		),
-		array(
-			'tag'         => 'email_report_monthly_total',
-			'description' => __( 'Adds the total amount donated for the month.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_monthly_total'
-		),
-		array(
-			'tag'         => 'email_report_rolling_weekly_total',
-			'description' => __( 'Adds the total amount donated for past seven days.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_rolling_weekly_total'
-		),
-		array(
-			'tag'         => 'email_report_rolling_monthly_total',
-			'description' => __( 'Adds the total amount donated for past thirty days.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_rolling_monthly_total'
-		),
-		array(
-			'tag'         => 'email_report_cold_donation_forms',
-			'description' => __( 'Displays under-performing donation forms and their last donate date.', 'give-email-reports' ),
-			'function'    => 'give_email_reports_cold_donation_forms'
-		),
-	);
-
-	return array_merge( $tags, $report_tags );
-
-}
-
-//add_filter( 'give_email_tags', 'give_email_reports_add_email_tags' );
+//add_filter( 'give_email_message', 'give_email_reports_render_email', 10, 2 );
 
 /**
  * Fetch six forms sorted by the furthest last donation date.
