@@ -135,14 +135,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 			$days = $this->get_week_days();
 
-			$local_time = strtotime( "this {$days[ $weekly_option['day'] ]} T{$weekly_option['time']}", current_time('timestamp') );
+			$local_time = strtotime( "this {$days[ $weekly_option['day'] ]} T{$weekly_option['time']}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d h:i:s', $local_time ), 'U' );
 
 			wp_schedule_event(
-					$gmt_time,
-					'weekly',
-					'give_email_reports_weekly_email'
-				);
+				$gmt_time,
+				'weekly',
+				'give_email_reports_weekly_email'
+			);
 		}
 
 		return true;
@@ -192,7 +192,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 *
 	 * @return array
 	 */
-	public function get_week_days(){
+	public function get_week_days() {
 		//Days.
 		return array(
 			'0' => 'Sunday',
@@ -202,7 +202,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 			'4' => 'Thursday',
 			'5' => 'Friday',
 			'6' => 'Saturday',
-			'7' => 'Sunday'
+			'7' => 'Sunday',
 		);
 	}
 
