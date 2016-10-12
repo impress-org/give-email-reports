@@ -73,6 +73,9 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_URL' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( __FILE__ ) );
 			}
+			if ( ! defined( 'GIVE_EMAIL_REPORTS_BASENAME' ) ) {
+				define( 'GIVE_EMAIL_REPORTS_BASENAME', plugin_basename( __FILE__ ) );
+			}
 
 		}
 
