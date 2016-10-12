@@ -28,6 +28,56 @@ class Give_Email_Cron extends Give_Email_Reports {
 	}
 
 	/**
+	 * Reschedule monthly email.
+	 *
+	 * @return false|string
+	 */
+	private function reschedule_monthly_email() {
+		$give_settings = give_get_settings();
+		$monthly       = $give_settings['give_email_reports_monthly_email_delivery_time'];
+
+		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time('timestamp' ) );
+		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+		wp_schedule_single_event(
+			$gmt_time,
+			'give_email_reports_monthly_email'
+		);
+	}
+
+	/**
+	 * Get list of all scheduled cron.
+	 * 
+	 * @return mixed|void
+	 */
+	private function _get_cron_array() {
+		return get_option('cron');
+	}
+
+	/**
+	 * Check if monthly cron exist or not.
+	 *
+	 * @param string $hook Cron hook name.
+	 *
+	 * @return bool
+	 */
+	private function is_next_scheduled( $hook ) {
+		$crons  = $this->_get_cron_array();
+		$status = false;
+
+		if( ! empty( $crons ) ) {
+			foreach ( $crons as $timestamps ) {
+				if( in_array( $hook, $timestamps ) ) {
+					$status = true;
+					break;
+				}
+			}
+		}
+
+		return $status;
+	}
+
+	/**
 	 * Triggers the daily sales report email generation and sending.
 	 *
 	 * Send the daily email when the cron event triggers the action.
@@ -97,6 +147,8 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		Give()->emails->send( $recipients, sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
 
+		// Reschedule monthly email.
+		$this->reschedule_monthly_email();
 	}
 
 
@@ -204,7 +256,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		}
 
 		//Ensure the cron isn't already scheduled and constant isn't set.
-		if ( ! wp_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+		if ( ! $this->is_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 			$monthly = $value['give_email_reports_monthly_email_delivery_time'];
 
 			$local_time = strtotime( "{$monthly['day']} day of this month T{$monthly['time']}", current_time('timestamp' ) );
@@ -242,7 +294,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 			'7' => 'Sunday',
 		);
 	}
-
 }
 
 new Give_Email_Cron();
