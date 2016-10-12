@@ -126,9 +126,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 * @param $field_type CMB2_Types
 	 */
 	public function add_email_report_weekly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
-		// User can reset cron.
-		$is_reset_cron = wp_next_scheduled( 'give_email_reports_weekly_email' ) ? true : false;
-		$readonly_field = $is_reset_cron ? ' disabled="disabled"' : '';
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( 'give_email_reports_weekly_email' ) ? ' disabled="disabled"' : '';
 
 		//Times.
 		$times = $this->get_email_report_times();
@@ -149,7 +148,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		<div class="give-email-reports-weekly">
 			<label class="hidden" for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>" id="<?php echo $field_type->_id( '_day' ); ?>"<?php echo $readonly_field; ?>>
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>" id="<?php echo $field_type->_id( '_day' ); ?>"<?php echo $disabled_field; ?>>
 				<?php
 				//Day select dropdown
 				foreach ( $days as $day_code => $day ) {
@@ -160,7 +159,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 			<label class="hidden" for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>" id="<?php echo $field_type->_id( '_time' ); ?>" <?php echo $readonly_field; ?>>
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>" id="<?php echo $field_type->_id( '_time' ); ?>" <?php echo $disabled_field; ?>>
 				<?php
 				//Time select options.
 				foreach ( $times as $military => $time ) {
@@ -169,10 +168,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				} ?>
 			</select>
 
-			<?php if ( $is_reset_cron ) : ?>
-				<button class="give-reset-button button-secondary" data-cron="give_email_reports_weekly_email" data-action="give_reset_email_report_cron"><?php echo esc_html__( 'Reset', 'give-email-reports' ); ?></button>
-				<span class="give-spinner spinner"></span>
-			<?php endif; ?>
+			<?php $this->print_reset_button( 'give_email_reports_weekly_email' ); ?>
 
 			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
 
@@ -238,6 +234,31 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	}
 
 
+	/**
+	 * Print cron reset button.
+	 *
+	 * @param string $cron_name Email report cron name.
+	 *
+	 * @return void.
+	 */
+	function print_reset_button( $cron_name ){
+		if ( wp_next_scheduled( $cron_name ) ) : ?>
+			<button class="give-reset-button button-secondary" data-cron="<?php echo $cron_name; ?>" data-action="give_reset_email_report_cron"><?php echo esc_html__( 'Reset', 'give-email-reports' ); ?></button>
+			<span class="give-spinner spinner"></span>
+		<?php
+		endif;
+	}
+
+	/**
+	 * Check if cron enabled or not.
+	 *
+	 * @param string $cron_name Email report cron name..
+	 *
+	 * @return bool
+	 */
+	function is_cron_enabled( $cron_name ){
+		return wp_next_scheduled( $cron_name ) ? true : false;
+	}
 }
 
 new Give_Email_Reports_Settings();
