@@ -167,7 +167,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$weekly_option = give_get_option( 'give_email_reports_weekly_email_delivery_time' );
+			$weekly_option = $value['give_email_reports_weekly_email_delivery_time'];
 			$days          = $this->get_week_days();
 
 			$local_time = strtotime( "this {$days[ $weekly_option['day'] ]} T{$weekly_option['time']}", current_time( 'timestamp' ) );
