@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Give_Email_Reports_Settings
+ * Class Give_Email_Cron
  */
 class Give_Email_Cron extends Give_Email_Reports {
 
@@ -15,7 +15,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function __construct() {
 
-
 		// Remove from cron if plugin is deactivated.
 		register_deactivation_hook( __FILE__, array( $this, 'unschedule_emails' ) );
 
@@ -27,6 +26,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Send emails
 		add_action( 'give_email_reports_daily_email', array( $this, 'send_daily_email' ) );
 		add_action( 'give_email_reports_weekly_email', array( $this, 'send_weekly_email' ) );
+		add_action( 'give_email_reports_monthly_email', array( $this, 'send_monthly_email' ) );
 
 	}
 
@@ -37,8 +37,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function send_daily_email() {
 
-		// $message will be rendered during give_email_message filter
-		$message = '';
+		echo 'heyo';
 
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
@@ -48,19 +47,21 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails() );
 
+		// $message will be rendered during give_email_message filter.
+		ob_start();
+		give_get_template_part( 'emails/body-report-daily', Give()->emails->get_template(), true );
+		$message = ob_get_clean();
+
 		Give()->emails->send( $recipients, sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
 
 	}
 
 	/**
-	 * Triggers the daily sales report email generation and sending.
+	 * Triggers the weekly sales report email generation and sending.
 	 *
 	 * Send the daily email when the cron event triggers the action.
 	 */
 	public function send_weekly_email() {
-
-		// $message will be rendered during give_email_message filter
-		$message = '';
 
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
@@ -70,7 +71,36 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails() );
 
+		// $message will be rendered during give_email_message filter.
+		ob_start();
+		give_get_template_part( 'emails/body-report-weekly', Give()->emails->get_template(), true );
+		$message = ob_get_clean();
+
 		Give()->emails->send( $recipients, sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+
+	}
+
+	/**
+	 * Triggers the monthly sales report email generation and sending.
+	 *
+	 * Send the daily email when the cron event triggers the action.
+	 */
+	public function send_monthly_email() {
+
+		//Clear out the email template before we send the email.
+		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
+
+		Give()->emails->html    = true;
+		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
+
+		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails() );
+
+		// $message will be rendered during give_email_message filter.
+		ob_start();
+		give_get_template_part( 'emails/body-report-monthly', Give()->emails->get_template(), true );
+		$message = ob_get_clean();
+
+		Give()->emails->send( $recipients, sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
 
 	}
 
@@ -170,7 +200,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	/**
 	 * Schedule the monthly email report email.
 	 *
-	 * @TODO: Figure out date scheduling properly
+	 * @TODO: Figure out date scheduling properly for monthly.
 	 *
 	 * @param $old_value
 	 * @param $value
