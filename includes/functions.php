@@ -81,6 +81,7 @@ function give_email_reports_currency() {
  */
 function give_email_reports_total( $report_period ) {
 
+	give_email_reports_delete_stats_transients();
 	$stats = new Give_Payment_Stats();
 
 	$start_date = 'today';
@@ -399,4 +400,16 @@ function give_email_reports_donation_difference( $report_period ) {
 
 	echo $output;
 
+}
+
+/**
+ * Delete stats transients.
+ *
+ * Used before sending emails so we can get all the latest stats without worrying about outdated transient data.
+ *
+ * @see: https://github.com/WordImpress/Give/issues/1117
+ */
+function give_email_reports_delete_stats_transients(){
+	global $wpdb;
+	$wpdb->query( "DELETE FROM `$wpdb->options` WHERE `option_name` LIKE ('%_give_stats_%')" );
 }
