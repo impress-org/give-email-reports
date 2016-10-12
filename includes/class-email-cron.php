@@ -36,7 +36,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		$give_settings = give_get_settings();
 		$monthly       = $give_settings['give_email_reports_monthly_email_delivery_time'];
 
-		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time('timestamp' ) );
+		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time( 'timestamp' ) );
 		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
 		wp_schedule_single_event(
@@ -47,11 +47,11 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 	/**
 	 * Get list of all scheduled cron.
-	 * 
+	 *
 	 * @return mixed|void
 	 */
 	private function _get_cron_array() {
-		return get_option('cron');
+		return get_option( 'cron' );
 	}
 
 	/**
@@ -65,9 +65,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 		$crons  = $this->_get_cron_array();
 		$status = false;
 
-		if( ! empty( $crons ) ) {
+		if ( ! empty( $crons ) ) {
 			foreach ( $crons as $timestamps ) {
-				if( in_array( $hook, $timestamps ) ) {
+				if ( in_array( $hook, $timestamps ) ) {
 					$status = true;
 					break;
 				}
@@ -179,7 +179,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 			$time = $value['give_email_reports_daily_email_delivery_time'] ? $value['give_email_reports_daily_email_delivery_time'] : 1800;
 
 			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
-			$gmt_time        = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
 			wp_schedule_event(
 				$gmt_time,
@@ -259,13 +259,13 @@ class Give_Email_Cron extends Give_Email_Reports {
 		if ( ! $this->is_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 			$monthly = $value['give_email_reports_monthly_email_delivery_time'];
 
-			$local_time = strtotime( "{$monthly['day']} day of this month T{$monthly['time']}", current_time('timestamp' ) );
+			$local_time = strtotime( "{$monthly['day']} day of this month T{$monthly['time']}", current_time( 'timestamp' ) );
 
-			if( current_time('timestamp') > $local_time ){
-				$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time('timestamp' ) );
+			if ( current_time( 'timestamp' ) > $local_time ) {
+				$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time( 'timestamp' ) );
 			}
 
-			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+			$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
 			wp_schedule_single_event(
 				$gmt_time,
