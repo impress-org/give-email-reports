@@ -16,107 +16,107 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-email-reports.php:172
+#: give-email-reports.php:177
 msgid "Email Report Template"
 msgstr ""
 
-#: give-email-reports.php:220
+#: give-email-reports.php:225
 msgid "%s Donations Report"
 msgstr ""
 
-#: give-email-reports.php:235
+#: give-email-reports.php:240
 msgid "1:00 AM"
 msgstr ""
 
-#: give-email-reports.php:236
+#: give-email-reports.php:241
 msgid "2:00 AM"
 msgstr ""
 
-#: give-email-reports.php:237
+#: give-email-reports.php:242
 msgid "3:00 AM"
 msgstr ""
 
-#: give-email-reports.php:238
+#: give-email-reports.php:243
 msgid "4:00 AM"
 msgstr ""
 
-#: give-email-reports.php:239
+#: give-email-reports.php:244
 msgid "5:00 AM"
 msgstr ""
 
-#: give-email-reports.php:240
+#: give-email-reports.php:245
 msgid "6:00 AM"
 msgstr ""
 
-#: give-email-reports.php:241
+#: give-email-reports.php:246
 msgid "7:00 AM"
 msgstr ""
 
-#: give-email-reports.php:242
+#: give-email-reports.php:247
 msgid "8:00 AM"
 msgstr ""
 
-#: give-email-reports.php:243
+#: give-email-reports.php:248
 msgid "9:00 AM"
 msgstr ""
 
-#: give-email-reports.php:244
+#: give-email-reports.php:249
 msgid "10:00 AM"
 msgstr ""
 
-#: give-email-reports.php:245
+#: give-email-reports.php:250
 msgid "11:00 AM"
 msgstr ""
 
-#: give-email-reports.php:246
+#: give-email-reports.php:251
 msgid "12:00 AM"
 msgstr ""
 
-#: give-email-reports.php:247
+#: give-email-reports.php:252
 msgid "1:00 PM"
 msgstr ""
 
-#: give-email-reports.php:248
+#: give-email-reports.php:253
 msgid "2:00 PM"
 msgstr ""
 
-#: give-email-reports.php:249
+#: give-email-reports.php:254
 msgid "3:00 PM"
 msgstr ""
 
-#: give-email-reports.php:250
+#: give-email-reports.php:255
 msgid "4:00 PM"
 msgstr ""
 
-#: give-email-reports.php:251
+#: give-email-reports.php:256
 msgid "5:00 PM"
 msgstr ""
 
-#: give-email-reports.php:252
+#: give-email-reports.php:257
 msgid "6:00 PM"
 msgstr ""
 
-#: give-email-reports.php:253
+#: give-email-reports.php:258
 msgid "7:00 PM"
 msgstr ""
 
-#: give-email-reports.php:254
+#: give-email-reports.php:259
 msgid "8:00 PM"
 msgstr ""
 
-#: give-email-reports.php:255
+#: give-email-reports.php:260
 msgid "9:00 PM"
 msgstr ""
 
-#: give-email-reports.php:256
+#: give-email-reports.php:261
 msgid "10:00 PM"
 msgstr ""
 
-#: give-email-reports.php:257
+#: give-email-reports.php:262
 msgid "11:00 PM"
 msgstr ""
 
-#: give-email-reports.php:258
+#: give-email-reports.php:263
 msgid "12:00 PM"
 msgstr ""
 
@@ -259,7 +259,19 @@ msgid "<strong>Activation Error:</strong> We noticed Give is not active. Please 
 msgstr ""
 
 #: includes/give-email-reports-activation.php:100
-msgid "<strong>Activation Error:</strong> We noticed Give is not up to date. Please update Give in order to use Manual Donations."
+msgid "<strong>Activation Error:</strong> We noticed Give is not up to date. Please update Give in order to use Email Reports Add-on."
+msgstr ""
+
+#: includes/give-email-reports-activation.php:119
+msgid "Settings"
+msgstr ""
+
+#: includes/give-email-reports-activation.php:153
+msgid "Documentation"
+msgstr ""
+
+#: includes/give-email-reports-activation.php:163
+msgid "Add-ons"
 msgstr ""
 
 #: templates/emails/body-report-daily.php:15, templates/emails/body-report-monthly.php:15, templates/emails/body-report-weekly.php:15
