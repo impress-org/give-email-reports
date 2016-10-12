@@ -1,1 +1,10 @@
 /* Nothing here yet...*/
+
+/* Reset Button */
+button.give-reset-button {
+	margin: 2px 0 0 30px !important;
+}
+
+span.give-spinner {
+	float: none !important;
+}
