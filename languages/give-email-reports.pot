@@ -1,0 +1,299 @@
+# Copyright (C) 2016 Give - Email Reports
+# This file is distributed under the same license as the Give - Email Reports package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Give - Email Reports\n"
+"Report-Msgid-Bugs-To: https://github.com/WordImpress/Give-Email-Reports/issues/new\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Language-Team: WordImpress <info@wordimpress.com>\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: give-email-reports.php:170
+msgid "Email Report Template"
+msgstr ""
+
+#: give-email-reports.php:218
+msgid "%s Donations Report"
+msgstr ""
+
+#: give-email-reports.php:233
+msgid "1:00 AM"
+msgstr ""
+
+#: give-email-reports.php:234
+msgid "2:00 AM"
+msgstr ""
+
+#: give-email-reports.php:235
+msgid "3:00 AM"
+msgstr ""
+
+#: give-email-reports.php:236
+msgid "4:00 AM"
+msgstr ""
+
+#: give-email-reports.php:237
+msgid "5:00 AM"
+msgstr ""
+
+#: give-email-reports.php:238
+msgid "6:00 AM"
+msgstr ""
+
+#: give-email-reports.php:239
+msgid "7:00 AM"
+msgstr ""
+
+#: give-email-reports.php:240
+msgid "8:00 AM"
+msgstr ""
+
+#: give-email-reports.php:241
+msgid "9:00 AM"
+msgstr ""
+
+#: give-email-reports.php:242
+msgid "10:00 AM"
+msgstr ""
+
+#: give-email-reports.php:243
+msgid "11:00 AM"
+msgstr ""
+
+#: give-email-reports.php:244
+msgid "12:00 AM"
+msgstr ""
+
+#: give-email-reports.php:245
+msgid "1:00 PM"
+msgstr ""
+
+#: give-email-reports.php:246
+msgid "2:00 PM"
+msgstr ""
+
+#: give-email-reports.php:247
+msgid "3:00 PM"
+msgstr ""
+
+#: give-email-reports.php:248
+msgid "4:00 PM"
+msgstr ""
+
+#: give-email-reports.php:249
+msgid "5:00 PM"
+msgstr ""
+
+#: give-email-reports.php:250
+msgid "6:00 PM"
+msgstr ""
+
+#: give-email-reports.php:251
+msgid "7:00 PM"
+msgstr ""
+
+#: give-email-reports.php:252
+msgid "8:00 PM"
+msgstr ""
+
+#: give-email-reports.php:253
+msgid "9:00 PM"
+msgstr ""
+
+#: give-email-reports.php:254
+msgid "10:00 PM"
+msgstr ""
+
+#: give-email-reports.php:255
+msgid "11:00 PM"
+msgstr ""
+
+#: give-email-reports.php:256
+msgid "12:00 PM"
+msgstr ""
+
+#: includes/class-email-cron.php:44
+msgid "Daily Donation Report"
+msgstr ""
+
+#: includes/class-email-cron.php:53
+msgid "Daily Donation Report for %1$s"
+msgstr ""
+
+#: includes/class-email-cron.php:68
+msgid "Weekly Donation Report"
+msgstr ""
+
+#: includes/class-email-cron.php:77
+msgid "Weekly Donation Report for %1$s"
+msgstr ""
+
+#: includes/class-email-cron.php:92
+msgid "Monthly Donation Report"
+msgstr ""
+
+#: includes/class-email-cron.php:101
+msgid "Monthly Donation Report for %1$s"
+msgstr ""
+
+#: includes/class-settings.php:41
+msgid "Email Reports Settings"
+msgstr ""
+
+#: includes/class-settings.php:48
+msgid "Preview Reports"
+msgstr ""
+
+#: includes/class-settings.php:53
+msgid "Report Frequency"
+msgstr ""
+
+#: includes/class-settings.php:54
+msgid "Select the time frames that you would like to receive email reports."
+msgstr ""
+
+#: includes/class-settings.php:66
+msgid "Daily Email Delivery Time"
+msgstr ""
+
+#: includes/class-settings.php:67
+msgid "Select when you would like to receive your daily email report."
+msgstr ""
+
+#: includes/class-settings.php:75
+msgid "Weekly Email Delivery Time"
+msgstr ""
+
+#: includes/class-settings.php:76
+msgid "Select when you would like to receive your weekly email report."
+msgstr ""
+
+#: includes/class-settings.php:81
+msgid "Monthly Email Delivery Time"
+msgstr ""
+
+#: includes/class-settings.php:82
+msgid "Select when you would like to receive your monthly email report."
+msgstr ""
+
+#: includes/class-settings.php:103, includes/class-settings.php:103
+msgid "Preview Daily Report"
+msgstr ""
+
+#: includes/class-settings.php:109, includes/class-settings.php:109
+msgid "Preview Weekly Report"
+msgstr ""
+
+#: includes/class-settings.php:115, includes/class-settings.php:115
+msgid "Preview Monthly Report"
+msgstr ""
+
+#: includes/class-settings.php:148
+msgid "Day of Week"
+msgstr ""
+
+#: includes/class-settings.php:161, includes/class-settings.php:217
+msgid "Time of Day"
+msgstr ""
+
+#: includes/class-settings.php:173
+msgid "Select the day of the week and time that you would like to receive the weekly report."
+msgstr ""
+
+#: includes/class-settings.php:204
+msgid "Day of Month"
+msgstr ""
+
+#: includes/class-settings.php:229
+msgid "Select the day of the month and time that would like to receive the monthly report."
+msgstr ""
+
+#: includes/functions.php:275
+msgid "donation"
+msgid_plural "donations"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/functions.php:286, includes/functions.php:351, includes/functions.php:355
+msgid "No donations found."
+msgstr ""
+
+#: includes/functions.php:373
+msgid "Yesterday"
+msgstr ""
+
+#: includes/functions.php:379
+msgid "last week"
+msgstr ""
+
+#: includes/functions.php:384
+msgid "last month"
+msgstr ""
+
+#: includes/functions.php:393
+msgid "Same number donations as %s"
+msgstr ""
+
+#: includes/functions.php:395, includes/functions.php:397
+msgid "%1$s donations compared to %2$s"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:15, templates/emails/body-report-monthly.php:15, templates/emails/body-report-weekly.php:15
+msgid "Happy %1$s!"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:28
+msgid "donations today"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:29
+msgid "past seven days"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:37
+msgid "this week"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:42, templates/emails/body-report-monthly.php:40, templates/emails/body-report-weekly.php:40
+msgid "this month"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:47, templates/emails/body-report-monthly.php:45, templates/emails/body-report-weekly.php:45
+msgid "past 30 days"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:52, templates/emails/body-report-weekly.php:55
+msgid "The best performing donation forms this week:"
+msgstr ""
+
+#: templates/emails/body-report-daily.php:59, templates/emails/body-report-monthly.php:62, templates/emails/body-report-weekly.php:62
+msgid "These forms have not received a donation in awhile:"
+msgstr ""
+
+#: templates/emails/body-report-monthly.php:28
+msgid "donations this month"
+msgstr ""
+
+#: templates/emails/body-report-monthly.php:50, templates/emails/body-report-weekly.php:50
+msgid "this year"
+msgstr ""
+
+#: templates/emails/body-report-monthly.php:55
+msgid "The best performing donation forms this month:"
+msgstr ""
+
+#: templates/emails/body-report-weekly.php:28
+msgid "donations this week"
+msgstr ""
+
+#: uninstall.php:8
+msgid "Plugin uninstallation can not be executed in this fashion."
+msgstr ""
