@@ -42,9 +42,9 @@ jQuery(document).ready(function ($) {
 				cron  : $(this).data('cron')
 			},
 			reset_button = $(this),
-			parent       = reset_button.parents('.cmb-td'),
+			parent       = reset_button.closest('div'),
 			spinner      = $(this).next();
-
+		
 		$.ajax({
 			method    : 'POST',
 			url       : ajaxurl,
