@@ -170,7 +170,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			</select>
 
 			<?php if ( $is_reset_cron ) : ?>
-				<button class="give-reset-button button-secondary" data-cron=""><?php echo esc_html__( 'Reset', 'give-email-reports' ); ?></button>
+				<button class="give-reset-button button-secondary" data-cron="give_email_reports_weekly_email" data-action="give_reset_email_report_cron"><?php echo esc_html__( 'Reset', 'give-email-reports' ); ?></button>
 				<span class="give-spinner spinner"></span>
 			<?php endif; ?>
 
