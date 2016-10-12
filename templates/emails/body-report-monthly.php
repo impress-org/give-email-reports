@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<tbody>
 	<tr>
 		<td colspan="3" style="padding: 0 0 25px;">
-			<h3 style="margin: 0;"><?php echo date( 'M. jS ', strtotime( '-1 month' ) ); ?><?php echo date( '- M. jS, Y' ); ?></h3>
+			<h3 style="margin: 0;"><?php echo date( 'M. jS ', strtotime( '-1 month', current_time( 'timestamp' ) ) ); ?><?php echo date( '- M. jS, Y', current_time( 'timestamp' ) ); ?></h3>
 			<p style="margin: 0;"><?php printf( __( 'Happy %1$s!', 'give-email-reports' ), date( 'l', current_time( 'timestamp' ) ) ); ?></p>
 		</td>
 	</tr>
