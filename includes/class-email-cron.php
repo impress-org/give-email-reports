@@ -100,7 +100,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 	}
 
 
-
 	/**
 	 * Schedule the daily email report
 	 *
@@ -125,16 +124,13 @@ class Give_Email_Cron extends Give_Email_Reports {
 		}
 
 		if ( ! wp_next_scheduled( 'give_email_reports_daily_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+			$time = $value['give_email_reports_daily_email_delivery_time'] ? $value['give_email_reports_daily_email_delivery_time'] : 1800;
 
-			$timezone         = get_option( 'timezone_string' );
-			$timezone_string  = ! empty( $timezone ) ? $timezone : 'UTC';
-			$target_time_zone = new DateTimeZone( $timezone_string );
-			$date_time        = new DateTime( 'now', $target_time_zone );
-
-			$cron_time = strtotime( give_get_option( 'give_email_reports_daily_email_delivery_time', 1800 ) . 'GMT' . $date_time->format( 'P' ), current_time( 'timestamp' ) );
+			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
+			$gmt_time        = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
 			wp_schedule_event(
-				$cron_time,
+				$gmt_time,
 				'daily',
 				'give_email_reports_daily_email'
 			);
