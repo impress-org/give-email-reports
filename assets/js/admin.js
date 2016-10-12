@@ -31,4 +31,35 @@ jQuery(document).ready(function ($) {
 
 	}).change();
 
+	/**
+	 * Reset button click
+	 */
+	$('.give-reset-button').on('click', function (e) {
+		e.preventDefault();
+
+		var data         = {
+				action: $(this).data('action'),
+				cron  : $(this).data('cron')
+			},
+			reset_button = $(this),
+			parent       = reset_button.parents('.cmb-td'),
+			spinner      = $(this).next();
+
+		$.ajax({
+			method    : 'POST',
+			url       : ajaxurl,
+			data      : data,
+			beforeSend: function () {
+				spinner.addClass('is-active');
+			},
+			success   : function (res) {
+				if (true == res.success) {
+					parent.find('select').removeAttr('disabled');
+					reset_button.hide();
+					spinner.removeClass('is-active');
+				}
+			}
+		});
+	});
+
 });
