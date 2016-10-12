@@ -205,35 +205,18 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		//Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+			$monthly = $value['give_email_reports_monthly_email_delivery_time'];
 
-			$monthly_time = give_get_option( 'give_email_reports_monthly_email_delivery_time', 1800 );
-			$today        = get_gmt_from_date( date( 'Y-m-d h:i:s', current_time( 'timestamp' ) ), 'j' );
+			$local_time = strtotime( "{$monthly['day']} day of this month T{$monthly['time']}", current_time('timestamp' ) );
 
-			//First day of month option
-			if ( $monthly_time['day'] == 'first' ) {
-
-				//Is it past the first?
-				if ( $today !== '1' ) {
-					$local_time = strtotime( "first day of next month", current_time( 'timestamp' ) );
-				} else {
-					//Today is the first of the month.
-					$local_time = strtotime( "first day of this month", current_time( 'timestamp' ) );
-				}
-
-			} elseif ( $monthly_time['day'] == 'last' ) {
-				//Last day of the month option.
-				$local_time = strtotime( "last day of this month", current_time( 'timestamp' ) );
+			if( current_time('timestamp') > $local_time ){
+				$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time('timestamp' ) );
 			}
 
-			$cron_time   = Date( 'Y-m-d', $local_time );
-			$local_time  = strtotime( "{$cron_time} T{$monthly_time['time']}", current_time( 'timestamp' ) );
-			$local_time2 = Date( "F j, Y, g:i a", $local_time );
+			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
-			$gmt_time = get_gmt_from_date( date( 'Y-m-d h:i:s', $local_time ), 'U' );
-
-			wp_schedule_event(
+			wp_schedule_single_event(
 				$gmt_time,
-				'monthly',
 				'give_email_reports_monthly_email'
 			);
 		}
