@@ -84,6 +84,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * @return      void
 		 */
 		private function includes() {
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/actions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-settings.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
