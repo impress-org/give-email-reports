@@ -62,13 +62,13 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				),
 			),
 			array(
-				'id'      => 'give_email_reports_daily_email_delivery_time',
-				'name'    => __( 'Daily Email Delivery Time', 'give-email-reports' ),
-				'desc'    => __( 'Select when you would like to receive your daily email report.', 'give-email-reports' ),
-				'type'    => 'select',
-				'row_classes'    => 'cmb-type-email-report-daily-schedule',
-				'default' => '1900',
-				'options' => $this->get_email_report_times()
+				'id'          => 'give_email_reports_daily_email_delivery_time',
+				'name'        => __( 'Daily Email Delivery Time', 'give-email-reports' ),
+				'desc'        => __( 'Select when you would like to receive your daily email report.', 'give-email-reports' ),
+				'type'        => 'select',
+				'row_classes' => 'cmb-type-email-report-daily-schedule',
+				'default'     => '1900',
+				'options'     => $this->get_email_report_times()
 			),
 			array(
 				'id'   => 'give_email_reports_weekly_email_delivery_time',
@@ -95,17 +95,25 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	public function add_email_report_preview() {
 		ob_start();
 		?>
-		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report', 'report' => 'daily' ), home_url() ) ); ?>"
+		<a href="<?php echo esc_url( add_query_arg( array(
+			'give_action' => 'preview_email_report',
+			'report'      => 'daily'
+		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Daily Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Daily Report', 'give-email-reports' ); ?></a>
-		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report', 'report' => 'weekly' ), home_url() ) ); ?>"
+		<a href="<?php echo esc_url( add_query_arg( array(
+			'give_action' => 'preview_email_report',
+			'report'      => 'weekly'
+		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Weekly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Weekly Report', 'give-email-reports' ); ?></a>
-		<a href="<?php echo esc_url( add_query_arg( array( 'give_action' => 'preview_email_report', 'report' => 'monthly' ), home_url() ) ); ?>"
+		<a href="<?php echo esc_url( add_query_arg( array(
+			'give_action' => 'preview_email_report',
+			'report'      => 'monthly'
+		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?></a>
-		<?php
-		echo ob_get_clean();
+		<?php echo ob_get_clean();
 	}
 
 	/**
@@ -187,7 +195,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		//Days.
 		$days = array(
 			'first' => 'First Day',
-			'last' => 'Last Day',
+			'last'  => 'Last Day',
 		);
 
 		ob_start(); ?>
