@@ -15,11 +15,11 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		add_action( 'cmb2_render_email_report_preview', array( $this, 'add_email_report_preview' ), 10, 5 );
 		add_action( 'cmb2_render_email_report_weekly_schedule', array(
 			$this,
-			'add_email_report_weekly_schedule'
+			'add_email_report_weekly_schedule',
 		), 10, 5 );
 		add_action( 'cmb2_render_email_report_monthly_schedule', array(
 			$this,
-			'add_email_report_monthly_schedule'
+			'add_email_report_monthly_schedule',
 		), 10, 5 );
 
 	}
@@ -41,13 +41,13 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'name' => __( 'Email Reports Settings', 'give-email-reports' ),
 				'desc' => '<hr>',
 				'id'   => 'give_title',
-				'type' => 'give_title'
+				'type' => 'give_title',
 			),
 			array(
 				'id'   => 'email_reports_settings',
 				'name' => __( 'Preview Reports', 'give-email-reports' ),
 				'desc' => '',
-				'type' => 'email_report_preview'
+				'type' => 'email_report_preview',
 			),
 			array(
 				'name'              => __( 'Report Frequency', 'give-email-reports' ),
@@ -68,7 +68,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'type'        => 'select',
 				'row_classes' => 'cmb-type-email-report-daily-schedule',
 				'default'     => '1900',
-				'options'     => $this->get_email_report_times()
+				'options'     => $this->get_email_report_times(),
 			),
 			array(
 				'id'   => 'give_email_reports_weekly_email_delivery_time',
@@ -97,19 +97,19 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		?>
 		<a href="<?php echo esc_url( add_query_arg( array(
 			'give_action' => 'preview_email_report',
-			'report'      => 'daily'
+			'report'      => 'daily',
 		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Daily Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Daily Report', 'give-email-reports' ); ?></a>
 		<a href="<?php echo esc_url( add_query_arg( array(
 			'give_action' => 'preview_email_report',
-			'report'      => 'weekly'
+			'report'      => 'weekly',
 		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Weekly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Weekly Report', 'give-email-reports' ); ?></a>
 		<a href="<?php echo esc_url( add_query_arg( array(
 			'give_action' => 'preview_email_report',
-			'report'      => 'monthly'
+			'report'      => 'monthly',
 		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?></a>
@@ -141,7 +141,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			'4' => 'Thursday',
 			'5' => 'Friday',
 			'6' => 'Saturday',
-			'7' => 'Sunday'
+			'7' => 'Sunday',
 		);
 
 		ob_start(); ?>
@@ -159,7 +159,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 			<label class="hidden" for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>" id="<?php echo $field_type->_id( '_time' ); ?>" <?php echo $disabled_field; ?>>
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>" id="<?php echo $field_type->_id( '_time' ); ?>"<?php echo $disabled_field; ?>>
 				<?php
 				//Time select options.
 				foreach ( $times as $military => $time ) {
@@ -241,11 +241,11 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 *
 	 * @return void.
 	 */
-	function print_reset_button( $cron_name ){
+	function print_reset_button( $cron_name ) {
 		if ( wp_next_scheduled( $cron_name ) ) : ?>
 			<button class="give-reset-button button-secondary" data-cron="<?php echo $cron_name; ?>" data-action="give_reset_email_report_cron"><?php echo esc_html__( 'Reset', 'give-email-reports' ); ?></button>
 			<span class="give-spinner spinner"></span>
-		<?php
+			<?php
 		endif;
 	}
 
@@ -256,7 +256,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 *
 	 * @return bool
 	 */
-	function is_cron_enabled( $cron_name ){
+	function is_cron_enabled( $cron_name ) {
 		return wp_next_scheduled( $cron_name ) ? true : false;
 	}
 }
