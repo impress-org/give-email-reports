@@ -88,6 +88,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/scripts.php';
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/give-email-reports-activation.php';
 		}
 
 		/**
@@ -107,7 +108,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			// Handle licensing.
 			if ( class_exists( 'Give_License' ) ) {
-				new Give_License( __FILE__, 'Give Email Reports', GIVE_EMAIL_REPORTS_VERSION, 'WordImpress' );
+				new Give_License( __FILE__, 'Email Reports', GIVE_EMAIL_REPORTS_VERSION, 'WordImpress' );
 			}
 		}
 
