@@ -13,10 +13,17 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		// Register settings.
 		add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
 		add_action( 'cmb2_render_email_report_preview', array( $this, 'add_email_report_preview' ), 10, 5 );
+
+		add_action( 'cmb2_render_email_report_daily_schedule', array(
+			$this,
+			'add_email_report_daily_schedule',
+		), 10, 5 );
+
 		add_action( 'cmb2_render_email_report_weekly_schedule', array(
 			$this,
 			'add_email_report_weekly_schedule',
 		), 10, 5 );
+
 		add_action( 'cmb2_render_email_report_monthly_schedule', array(
 			$this,
 			'add_email_report_monthly_schedule',
@@ -65,10 +72,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'id'          => 'give_email_reports_daily_email_delivery_time',
 				'name'        => __( 'Daily Email Delivery Time', 'give-email-reports' ),
 				'desc'        => __( 'Select when you would like to receive your daily email report.', 'give-email-reports' ),
-				'type'        => 'select',
+				'type'        => 'email_report_daily_schedule',
 				'row_classes' => 'cmb-type-email-report-daily-schedule',
 				'default'     => '1900',
-				'options'     => $this->get_email_report_times(),
 			),
 			array(
 				'id'   => 'give_email_reports_weekly_email_delivery_time',
@@ -113,6 +119,43 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		), home_url() ) ); ?>"
 		   class="button-secondary" target="_blank"
 		   title="<?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?> "><?php _e( 'Preview Monthly Report', 'give-email-reports' ); ?></a>
+		<?php echo ob_get_clean();
+	}
+
+	/**
+	 * Give add daily email reports preview.
+	 *
+	 * @param $field
+	 * @param $value
+	 * @param $object_id
+	 * @param $object_type
+	 * @param $field_type CMB2_Types
+	 */
+	public function add_email_report_daily_schedule( $field, $value, $object_id, $object_type, $field_type ) {
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( 'give_email_reports_daily_email' ) ? ' disabled="disabled"' : '';
+
+		//Times.
+		$times = $this->get_email_report_times();
+
+		ob_start(); ?>
+		<div class="give-email-reports-weekly">
+			<label class="hidden" for="<?php echo $field->args['id']; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+
+			<select class="cmb2_select" name="<?php echo $field->args['id']; ?>" id="<?php echo $field->args['id']; ?>"<?php echo $disabled_field; ?>>
+				<?php
+				//Time select options.
+				foreach ( $times as $military => $time ) {
+					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
+				} ?>
+			</select>
+
+			<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
+
+			<p class="cmb2-metabox-description"><?php _e( 'Select when you would like to receive your daily email report.', 'give-email-reports' ); ?></p>
+
+		</div>
+
 		<?php echo ob_get_clean();
 	}
 
