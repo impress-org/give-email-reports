@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Includes and initializes Give activation banner class.
  *
- * @since 1.0.2
+ * @since 1.0
  */
 function give_email_reports_activation_banner() {
 
