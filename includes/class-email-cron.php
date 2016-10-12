@@ -37,8 +37,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function send_daily_email() {
 
-		echo 'heyo';
-
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
