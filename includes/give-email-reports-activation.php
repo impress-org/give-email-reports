@@ -67,7 +67,7 @@ function give_email_reports_activation_banner() {
 	$args = array(
 		'file'              => __FILE__,
 		'name'              => esc_html__( 'Email Reports', 'give-email-reports' ),
-		'version'           => GIVE_MD_VERSION,
+		'version'           => GIVE_EMAIL_REPORTS_VERSION,
 		'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ),
 		'documentation_url' => 'https://givewp.com/documentation/add-ons/email-reports/',
 		'support_url'       => 'https://givewp.com/support/',
