@@ -2,7 +2,7 @@
 Contributors: wordimpress
 Tags: donation reports, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.0
-Tested up to: 4.6
+Tested up to: 4.6.1
 Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
