@@ -10,6 +10,9 @@ function give_reset_email_report_cron(){
 
 	$cron_name = sanitize_text_field( $_POST['cron'] );
 
+	// Prevent cron to setup again.
+	define( 'GIVE_DISABLE_EMAIL_REPORTS', true );
+
 	// Unset cron related time settings.
 	$give_settings = give_get_settings();
 	if( ! empty( $give_settings[ "{$cron_name}_delivery_time" ] ) ) {
