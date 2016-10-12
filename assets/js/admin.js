@@ -11,25 +11,24 @@
 jQuery.noConflict();
 jQuery(document).ready(function ($) {
 
-    /**
-     * Email Report Checkboxes Toggle Show/Hide
-     */
-    var $reports = jQuery('input[name="email_report_emails[]"]');
+	/**
+	 * Email Report Checkboxes Toggle Show/Hide
+	 */
+	var $reports = jQuery('input[name="email_report_emails[]"]');
 
-    $reports.on('change', function () {
+	$reports.on('change', function () {
 
-        var val = $(this).val();
-        var checked = $(this).prop('checked');
+		var val = $(this).val();
+		var checked = $(this).prop('checked');
 
-        //Show fields
-        if (checked) {
-            $('.cmb-type-email-report-' + val + '-schedule').show();
-        } else {
-            //Hide fields
-            $('.cmb-type-email-report-' + val + '-schedule').hide();
-        }
+		//Show fields
+		if (checked) {
+			$('.cmb-type-email-report-' + val + '-schedule').show();
+		} else {
+			//Hide fields
+			$('.cmb-type-email-report-' + val + '-schedule').hide();
+		}
 
-    }).change();
-
+	}).change();
 
 });
