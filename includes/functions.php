@@ -386,7 +386,7 @@ function give_email_reports_donation_difference( $report_period ) {
 	}
 
 	$past_donations = $stats->get_sales( false, $start_date, $end_date );
-	$difference = $current_donations - $past_donations;
+	$difference     = $current_donations - $past_donations;
 
 	if ( $difference == 0 ) {
 		//No change

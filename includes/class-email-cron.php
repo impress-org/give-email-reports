@@ -15,9 +15,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function __construct() {
 
-		// Remove from cron if plugin is deactivated.
-		register_deactivation_hook( __FILE__, array( $this, 'unschedule_emails' ) );
-
 		// Schedule cron event for various emails.
 		add_action( 'update_option_give_settings', array( $this, 'schedule_daily_email' ), 10, 3 );
 		add_action( 'update_option_give_settings', array( $this, 'schedule_weekly_email' ), 10, 3 );
@@ -103,14 +100,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 	}
 
 
-	/**
-	 * Unschedule the cron job for the daily email if the plugin is deactivated.
-	 */
-	public function unschedule_emails() {
-		wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
-		wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
-		wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
-	}
 
 	/**
 	 * Schedule the daily email report

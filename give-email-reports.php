@@ -272,3 +272,18 @@ function Give_Email_Reports_load() {
 }
 
 add_action( 'plugins_loaded', 'Give_Email_Reports_load' );
+
+
+/**
+ * Unschedule the cron job for the daily email if the plugin is deactivated.
+ *
+ * @since 1.0
+ */
+function give_email_reports_unschedule_emails() {
+	wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
+	wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
+	wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
+}
+
+// Remove from cron if plugin is deactivated.
+register_deactivation_hook( __FILE__, 'give_email_reports_unschedule_emails' );
