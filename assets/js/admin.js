@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
 
 	$reports.on('change', function () {
 
-		var val = $(this).val();
+		var val     = $(this).val();
 		var checked = $(this).prop('checked');
 
 		//Show fields
