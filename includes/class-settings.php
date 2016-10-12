@@ -126,6 +126,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 * @param $field_type CMB2_Types
 	 */
 	public function add_email_report_weekly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
+		// User can reset cron.
+		$is_reset_cron = wp_next_scheduled( 'give_email_reports_weekly_email' ) ? true : false;
+		$readonly_field = $is_reset_cron ? ' disabled="disabled"' : '';
 
 		//Times.
 		$times = $this->get_email_report_times();
@@ -144,11 +147,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 		ob_start(); ?>
 		<div class="give-email-reports-weekly">
-			<label class="hidden"
-			       for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
+			<label class="hidden" for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>"
-			        id="<?php echo $field_type->_id( '_day' ); ?>">
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>" id="<?php echo $field_type->_id( '_day' ); ?>"<?php echo $readonly_field; ?>>
 				<?php
 				//Day select dropdown
 				foreach ( $days as $day_code => $day ) {
@@ -157,11 +158,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				} ?>
 			</select>
 
-			<label class="hidden"
-			       for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+			<label class="hidden" for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>"
-			        id="<?php echo $field_type->_id( '_time' ); ?>">
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>" id="<?php echo $field_type->_id( '_time' ); ?>" <?php echo $readonly_field; ?>>
 				<?php
 				//Time select options.
 				foreach ( $times as $military => $time ) {
@@ -169,6 +168,11 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 					echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
 				} ?>
 			</select>
+
+			<?php if ( $is_reset_cron ) : ?>
+				<button class="give-reset-button button-secondary" data-cron=""><?php echo esc_html__( 'Reset', 'give-email-reports' ); ?></button>
+				<span class="give-spinner spinner"></span>
+			<?php endif; ?>
 
 			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
 
