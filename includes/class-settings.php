@@ -188,6 +188,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 * @param $field_type CMB2_Types
 	 */
 	public function add_email_report_monthly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( 'give_email_reports_monthly_email' ) ? ' disabled="disabled"' : '';
 
 		//Times.
 		$times = $this->get_email_report_times();
@@ -200,11 +202,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 		ob_start(); ?>
 		<div class="give-email-reports-monthly">
-			<label class="hidden"
-			       for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Month', 'give-email-reports' ); ?></label>
+			<label class="hidden" for="<?php echo $field_type->_id( '_day' ); ?>"><?php _e( 'Day of Month', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>"
-			        id="<?php echo $field_type->_id( '_day' ); ?>">
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[day]' ); ?>" id="<?php echo $field_type->_id( '_day' ); ?>"<?php echo $disabled_field; ?>>
 				<?php
 				//Day select dropdown
 				foreach ( $days as $day_code => $day ) {
@@ -213,11 +213,9 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				} ?>
 			</select>
 
-			<label class="hidden"
-			       for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+			<label class="hidden" for="<?php echo $field_type->_id( '_time' ); ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>"
-			        id="<?php echo $field_type->_id( '_time' ); ?>">
+			<select class="cmb2_select" name="<?php echo $field_type->_name( '[time]' ); ?>" id="<?php echo $field_type->_id( '_time' ); ?>"<?php echo $disabled_field; ?>>
 				<?php
 				//Time select options.
 				foreach ( $times as $military => $time ) {
@@ -225,6 +223,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 					echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
 				} ?>
 			</select>
+
+			<?php $this->print_reset_button( 'give_email_reports_monthly_email' ); ?>
 
 			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the month and time that would like to receive the monthly report.', 'give-email-reports' ); ?></p>
 
