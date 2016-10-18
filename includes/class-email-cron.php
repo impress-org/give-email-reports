@@ -67,7 +67,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		if ( ! empty( $crons ) ) {
 			foreach ( $crons as $timestamps ) {
-				if ( in_array( $hook, $timestamps ) ) {
+				if ( is_array( $timestamps ) && in_array( $hook, $timestamps ) ) {
 					$status = true;
 					break;
 				}
