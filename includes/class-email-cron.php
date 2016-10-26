@@ -235,8 +235,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 	/**
 	 * Schedule the monthly email report email.
 	 *
-	 * @TODO: Figure out date scheduling properly for monthly.
-	 *
 	 * @param $old_value
 	 * @param $value
 	 * @param $option
@@ -257,6 +255,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		//Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! $this->is_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+
 			$monthly = $value['give_email_reports_monthly_email_delivery_time'];
 
 			$local_time = strtotime( "{$monthly['day']} day of this month T{$monthly['time']}", current_time( 'timestamp' ) );
