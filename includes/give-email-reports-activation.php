@@ -31,7 +31,7 @@ function give_email_reports_activation_banner() {
 		add_action( 'admin_notices', 'give_email_reports_activation_notice' );
 
 		//Don't let this plugin activate
-		deactivate_plugins( plugin_basename( __FILE__ ) );
+		deactivate_plugins( plugin_basename( GIVE_EMAIL_REPORTS_BASENAME ) );
 
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
