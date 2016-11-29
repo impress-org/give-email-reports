@@ -40,6 +40,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = 1.0.1 =
 * Fix: PHP Warning - Missing argument 1 for give_email_reports_total() - https://github.com/WordImpress/Give-Email-Reports/issues/15
+* Fix: Incorrectly passing weekly total in the monthly report.
 
 = 1.0 =
 * Initial plugin release. Yippee!
