@@ -176,7 +176,8 @@ class Give_Email_Cron extends Give_Email_Reports {
 		}
 
 		if ( ! wp_next_scheduled( 'give_email_reports_daily_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
-			$time = $value['give_email_reports_daily_email_delivery_time'] ? $value['give_email_reports_daily_email_delivery_time'] : 1800;
+
+			$time = isset( $value['give_email_reports_daily_email_delivery_time'] ) ? $value['give_email_reports_daily_email_delivery_time'] : 1800;
 
 			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
@@ -215,12 +216,18 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$weekly_option = $value['give_email_reports_weekly_email_delivery_time'];
+			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : '';
 			$days          = $this->get_week_days();
+
+			//Need $weekly option set to continue.
+			if ( empty( $weekly_option ) ) {
+				return false;
+			}
 
 			$local_time = strtotime( "this {$days[ $weekly_option['day'] ]} T{$weekly_option['time']}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
+			//Schedule the cron!
 			wp_schedule_event(
 				$gmt_time,
 				'weekly',
@@ -258,6 +265,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : '';
 
+			//Must have $monthly to continue.
+			if ( empty( $monthly ) ) {
+				return false;
+			}
 
 			$local_time = strtotime( "{$monthly['day']} day of this month T{$monthly['time']}", current_time( 'timestamp' ) );
 
@@ -267,6 +278,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 			$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
+			//Schedule cron.
 			wp_schedule_single_event(
 				$gmt_time,
 				'give_email_reports_monthly_email'
