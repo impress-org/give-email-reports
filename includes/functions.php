@@ -73,19 +73,16 @@ function give_email_reports_currency() {
 }
 
 /**
- * Returns the total earnings for today.
+ * Returns the total earnings for a specific period.
  *
  * @param $report_period string
  *
  * @return string
  */
-function give_email_reports_total( $report_period ) {
+function give_email_reports_total( $report_period = 'today' ) {
 
 	give_email_reports_delete_stats_transients();
 	$stats = new Give_Payment_Stats();
-
-	$start_date = 'today';
-	$end_date   = false;
 
 	switch ( $report_period ) {
 		case 'weekly':
@@ -95,6 +92,10 @@ function give_email_reports_total( $report_period ) {
 		case 'monthly':
 			$start_date = '30 days ago 00:00';
 			$end_date   = 'now';
+			break;
+		default:
+			$start_date = 'today';
+			$end_date   = false;
 			break;
 	}
 
@@ -409,7 +410,7 @@ function give_email_reports_donation_difference( $report_period ) {
  *
  * @see: https://github.com/WordImpress/Give/issues/1117
  */
-function give_email_reports_delete_stats_transients(){
+function give_email_reports_delete_stats_transients() {
 	global $wpdb;
 	$wpdb->query( "DELETE FROM `$wpdb->options` WHERE `option_name` LIKE ('%_give_stats_%')" );
 }
