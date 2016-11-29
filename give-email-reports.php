@@ -64,6 +64,10 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0' );
 			}
 
+			if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
+				define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.6' );
+			}
+
 			// Plugin path.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_DIR' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_DIR', plugin_dir_path( __FILE__ ) );
@@ -89,12 +93,18 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * @return      void
 		 */
 		private function includes() {
+
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/give-email-reports-activation.php';
+
+			if ( ! class_exists( 'Give' ) ) {
+				return false;
+			}
+
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/actions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-settings.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/scripts.php';
-			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/give-email-reports-activation.php';
 		}
 
 		/**

@@ -42,7 +42,7 @@ function give_email_reports_activation_banner() {
 	}
 
 	//Check minimum Give version
-	if ( defined( 'GIVE_VERSION' ) && version_compare( GIVE_VERSION, '1.6', '<' ) ) {
+	if ( defined( 'GIVE_VERSION' ) && version_compare( GIVE_VERSION, GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION, '<' ) ) {
 
 		add_action( 'admin_notices', 'give_email_reports_min_version_notice' );
 
@@ -89,7 +89,7 @@ add_action( 'admin_init', 'give_email_reports_activation_banner' );
  * @since 1.0
  */
 function give_email_reports_activation_notice() {
-	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> We noticed Give is not active. Please activate Give in order to use the Email Reports Add-on.', 'give-email-reports' ) . '</p></div>';
+	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> You must have the <a href="https://givewp.com/" target="_blank">Give</a> plugin installed and activated for the Email Reports add-on to activate.', 'give-email-reports' ) . '</p></div>';
 }
 
 /**
@@ -98,7 +98,7 @@ function give_email_reports_activation_notice() {
  * @since 1.0
  */
 function give_email_reports_min_version_notice() {
-	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> We noticed Give is not up to date. Please update Give in order to use Email Reports Add-on.', 'give-email-reports' ) . '</p></div>';
+	echo '<div class="error"><p>' . sprintf( __( '<strong>Activation Error:</strong> You must have <a href="%s" target="_blank">Give</a> version %s+ for the Email Reports add-on to activate.', 'give-email-reports' ), 'https://givewp.com', GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION ) . '</p></div>';
 }
 
 
