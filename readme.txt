@@ -3,7 +3,7 @@ Contributors: wordimpress
 Tags: donation reports, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.2
 Tested up to: 4.7
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -39,6 +39,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 == Changelog ==
 
 = 1.0.1 =
+* New: The plugin now checks to see if Give is active and up to the minimum version required to run the plugin
 * Fix: PHP Warning - Missing argument 1 for give_email_reports_total() - https://github.com/WordImpress/Give-Email-Reports/issues/15
 * Fix: Incorrectly passing weekly total in the monthly report.
 

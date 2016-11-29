@@ -16,107 +16,107 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-email-reports.php:177
+#: give-email-reports.php:187
 msgid "Email Report Template"
 msgstr ""
 
-#: give-email-reports.php:225
+#: give-email-reports.php:235
 msgid "%s Donations Report"
 msgstr ""
 
-#: give-email-reports.php:240
+#: give-email-reports.php:250
 msgid "1:00 AM"
 msgstr ""
 
-#: give-email-reports.php:241
+#: give-email-reports.php:251
 msgid "2:00 AM"
 msgstr ""
 
-#: give-email-reports.php:242
+#: give-email-reports.php:252
 msgid "3:00 AM"
 msgstr ""
 
-#: give-email-reports.php:243
+#: give-email-reports.php:253
 msgid "4:00 AM"
 msgstr ""
 
-#: give-email-reports.php:244
+#: give-email-reports.php:254
 msgid "5:00 AM"
 msgstr ""
 
-#: give-email-reports.php:245
+#: give-email-reports.php:255
 msgid "6:00 AM"
 msgstr ""
 
-#: give-email-reports.php:246
+#: give-email-reports.php:256
 msgid "7:00 AM"
 msgstr ""
 
-#: give-email-reports.php:247
+#: give-email-reports.php:257
 msgid "8:00 AM"
 msgstr ""
 
-#: give-email-reports.php:248
+#: give-email-reports.php:258
 msgid "9:00 AM"
 msgstr ""
 
-#: give-email-reports.php:249
+#: give-email-reports.php:259
 msgid "10:00 AM"
 msgstr ""
 
-#: give-email-reports.php:250
+#: give-email-reports.php:260
 msgid "11:00 AM"
 msgstr ""
 
-#: give-email-reports.php:251
+#: give-email-reports.php:261
 msgid "12:00 AM"
 msgstr ""
 
-#: give-email-reports.php:252
+#: give-email-reports.php:262
 msgid "1:00 PM"
 msgstr ""
 
-#: give-email-reports.php:253
+#: give-email-reports.php:263
 msgid "2:00 PM"
 msgstr ""
 
-#: give-email-reports.php:254
+#: give-email-reports.php:264
 msgid "3:00 PM"
 msgstr ""
 
-#: give-email-reports.php:255
+#: give-email-reports.php:265
 msgid "4:00 PM"
 msgstr ""
 
-#: give-email-reports.php:256
+#: give-email-reports.php:266
 msgid "5:00 PM"
 msgstr ""
 
-#: give-email-reports.php:257
+#: give-email-reports.php:267
 msgid "6:00 PM"
 msgstr ""
 
-#: give-email-reports.php:258
+#: give-email-reports.php:268
 msgid "7:00 PM"
 msgstr ""
 
-#: give-email-reports.php:259
+#: give-email-reports.php:269
 msgid "8:00 PM"
 msgstr ""
 
-#: give-email-reports.php:260
+#: give-email-reports.php:270
 msgid "9:00 PM"
 msgstr ""
 
-#: give-email-reports.php:261
+#: give-email-reports.php:271
 msgid "10:00 PM"
 msgstr ""
 
-#: give-email-reports.php:262
+#: give-email-reports.php:272
 msgid "11:00 PM"
 msgstr ""
 
-#: give-email-reports.php:263
+#: give-email-reports.php:273
 msgid "12:00 PM"
 msgstr ""
 
@@ -220,33 +220,33 @@ msgstr ""
 msgid "Reschedule"
 msgstr ""
 
-#: includes/functions.php:276
+#: includes/functions.php:277
 msgid "donation"
 msgid_plural "donations"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/functions.php:287, includes/functions.php:352, includes/functions.php:356
+#: includes/functions.php:288, includes/functions.php:353, includes/functions.php:357
 msgid "No donations found."
 msgstr ""
 
-#: includes/functions.php:374
+#: includes/functions.php:375
 msgid "Yesterday"
 msgstr ""
 
-#: includes/functions.php:380
+#: includes/functions.php:381
 msgid "last week"
 msgstr ""
 
-#: includes/functions.php:385
+#: includes/functions.php:386
 msgid "last month"
 msgstr ""
 
-#: includes/functions.php:394
+#: includes/functions.php:395
 msgid "Same number donations as %s"
 msgstr ""
 
-#: includes/functions.php:396, includes/functions.php:398
+#: includes/functions.php:397, includes/functions.php:399
 msgid "%1$s donations compared to %2$s"
 msgstr ""
 
@@ -254,12 +254,12 @@ msgstr ""
 msgid "Email Reports"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:91
-msgid "<strong>Activation Error:</strong> We noticed Give is not active. Please activate Give in order to use the Email Reports Add-on."
+#: includes/give-email-reports-activation.php:92
+msgid "<strong>Activation Error:</strong> You must have the <a href=\"https://givewp.com/\" target=\"_blank\">Give</a> plugin installed and activated for the Email Reports add-on to activate."
 msgstr ""
 
-#: includes/give-email-reports-activation.php:100
-msgid "<strong>Activation Error:</strong> We noticed Give is not up to date. Please update Give in order to use Email Reports Add-on."
+#: includes/give-email-reports-activation.php:101
+msgid "<strong>Activation Error:</strong> You must have <a href=\"%s\" target=\"_blank\">Give</a> version %s+ for the Email Reports add-on to activate."
 msgstr ""
 
 #: includes/give-email-reports-activation.php:119
@@ -274,35 +274,35 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:15, templates/emails/body-report-monthly.php:15, templates/emails/body-report-weekly.php:15
+#: templates/emails/body-report-daily.php:16, templates/emails/body-report-monthly.php:15, templates/emails/body-report-weekly.php:15
 msgid "Happy %1$s!"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:28
+#: templates/emails/body-report-daily.php:29
 msgid "donations today"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:29
+#: templates/emails/body-report-daily.php:30
 msgid "past seven days"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:37
+#: templates/emails/body-report-daily.php:38
 msgid "this week"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:42, templates/emails/body-report-monthly.php:40, templates/emails/body-report-weekly.php:40
+#: templates/emails/body-report-daily.php:43, templates/emails/body-report-monthly.php:40, templates/emails/body-report-weekly.php:40
 msgid "this month"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:47, templates/emails/body-report-monthly.php:45, templates/emails/body-report-weekly.php:45
+#: templates/emails/body-report-daily.php:48, templates/emails/body-report-monthly.php:45, templates/emails/body-report-weekly.php:45
 msgid "past 30 days"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:52, templates/emails/body-report-weekly.php:55
+#: templates/emails/body-report-daily.php:53, templates/emails/body-report-weekly.php:55
 msgid "The best performing donation forms this week:"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:59, templates/emails/body-report-monthly.php:62, templates/emails/body-report-weekly.php:62
+#: templates/emails/body-report-daily.php:60, templates/emails/body-report-monthly.php:62, templates/emails/body-report-weekly.php:62
 msgid "These forms have not received a donation in awhile:"
 msgstr ""
 
