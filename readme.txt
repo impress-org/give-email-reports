@@ -42,6 +42,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 * New: The plugin now checks to see if Give is active and up to the minimum version required to run the plugin
 * Fix: PHP Warning - Missing argument 1 for give_email_reports_total() - https://github.com/WordImpress/Give-Email-Reports/issues/15
 * Fix: Incorrectly passing weekly total in the monthly report.
+* Fix: PHP notices displayed if give email reports option have yet to be set.
 
 = 1.0 =
 * Initial plugin release. Yippee!
