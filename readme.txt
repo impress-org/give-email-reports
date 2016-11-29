@@ -1,8 +1,8 @@
 === Give - Email Reports ===
 Contributors: wordimpress
 Tags: donation reports, donation, ecommerce, e-commerce, fundraising, fundraiser
-Requires at least: 4.0
-Tested up to: 4.6.1
+Requires at least: 4.2
+Tested up to: 4.7
 Stable tag: 1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -17,7 +17,7 @@ This plugin requires the Give plugin activated to function properly. When activa
 
 = Minimum Requirements =
 
-* WordPress 4.0 or greater
+* WordPress 4.2 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * Some payment gateways require fsockopen support (for IPN access)
@@ -38,6 +38,8 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
+* Fix: PHP Warning - Missing argument 1 for give_email_reports_total() - https://github.com/WordImpress/Give-Email-Reports/issues/15
 
+= 1.0 =
 * Initial plugin release. Yippee!
