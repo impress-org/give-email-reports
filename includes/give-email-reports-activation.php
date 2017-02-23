@@ -26,7 +26,7 @@ function give_email_reports_activation_banner() {
 	$is_give_active = defined( 'GIVE_PLUGIN_BASENAME' ) ? is_plugin_active( GIVE_PLUGIN_BASENAME ) : false;
 
 	//Check to see if Give is activated, if it isn't deactivate and show a banner
-	if ( is_admin() && current_user_can( 'activate_plugins' ) && ! $is_give_active ) {
+	if ( current_user_can( 'activate_plugins' ) && ! $is_give_active ) {
 
 		add_action( 'admin_notices', 'give_email_reports_activation_notice' );
 
@@ -57,24 +57,29 @@ function give_email_reports_activation_banner() {
 
 	}
 
-	//Check for activation banner inclusion.
-	if ( ! class_exists( 'Give_Addon_Activation_Banner' )
-	     && file_exists( GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php' )
+	// Check for activation banner inclusion.
+	if (
+		! class_exists( 'Give_Addon_Activation_Banner' )
+		&& file_exists( GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php' )
 	) {
 		include GIVE_PLUGIN_DIR . 'includes/admin/class-addon-activation-banner.php';
+	}
 
-		//Only runs on admin.
+	// Initialize activation welcome banner.
+	if ( class_exists( 'Give_Addon_Activation_Banner' ) ) {
+
 		$args = array(
 			'file'              => __FILE__,
 			'name'              => esc_html__( 'Email Reports', 'give-email-reports' ),
 			'version'           => GIVE_EMAIL_REPORTS_VERSION,
-			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ),
-			'documentation_url' => 'https://givewp.com/documentation/add-ons/email-reports/',
+			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=email-reports-settings' ),
+			'documentation_url' => 'http://docs.givewp.com/addon-email-reports',
 			'support_url'       => 'https://givewp.com/support/',
 			'testing'           => false //Never leave as TRUE!
 		);
 
 		new Give_Addon_Activation_Banner( $args );
+
 	}
 
 	return false;
@@ -89,7 +94,7 @@ add_action( 'admin_init', 'give_email_reports_activation_banner' );
  * @since 1.0
  */
 function give_email_reports_activation_notice() {
-	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> You must have the <a href="https://givewp.com/" target="_blank">Give</a> plugin installed and activated for the Email Reports add-on to activate.', 'give-email-reports' ) . '</p></div>';
+	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> We noticed Give is not active. Please activate Give in order to use the Email Reports Add-on.', 'give-email-reports' ) . '</p></div>';
 }
 
 /**
@@ -98,8 +103,9 @@ function give_email_reports_activation_notice() {
  * @since 1.0
  */
 function give_email_reports_min_version_notice() {
-	echo '<div class="error"><p>' . sprintf( __( '<strong>Activation Error:</strong> You must have <a href="%s" target="_blank">Give</a> version %s+ for the Email Reports add-on to activate.', 'give-email-reports' ), 'https://givewp.com', GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION ) . '</p></div>';
+	echo '<div class="error"><p>' . sprintf( __( '<strong>Activation Error:</strong> You must have <a href="%1$s" target="_blank">Give</a> minimum version %2$s for the Email Reports add-on to activate.', 'give-email-reports' ), 'https://givewp.com', GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION ) . '</p></div>';
 }
+
 
 
 /**
@@ -115,7 +121,7 @@ function give_email_reports_plugin_action_links( $actions ) {
 	$new_actions = array(
 		'settings' => sprintf(
 			'<a href="%1$s">%2$s</a>',
-			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ),
+			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=email-reports-settings' ),
 			esc_html__( 'Settings', 'give-email-reports' )
 		),
 	);
@@ -137,6 +143,7 @@ add_filter( 'plugin_action_links_' . GIVE_EMAIL_REPORTS_BASENAME, 'give_email_re
  * @return array
  */
 function give_email_reports_plugin_row_meta( $plugin_meta, $plugin_file ) {
+
 	if ( $plugin_file != GIVE_EMAIL_REPORTS_BASENAME ) {
 		return $plugin_meta;
 	}
@@ -148,7 +155,7 @@ function give_email_reports_plugin_row_meta( $plugin_meta, $plugin_file ) {
 					'utm_source'   => 'plugins-page',
 					'utm_medium'   => 'plugin-row',
 					'utm_campaign' => 'admin',
-				), 'https://givewp.com/documentation/add-ons/email-reports/' )
+				), 'http://docs.givewp.com/addon-email-reports' )
 			),
 			esc_html__( 'Documentation', 'give-email-reports' )
 		),
