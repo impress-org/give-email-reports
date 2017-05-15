@@ -10,6 +10,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 */
 	public function __construct() {
 		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
+		add_action( 'init', array( $this, 'register_email_tags' ) );
 
 		// Register settings.
 		add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
@@ -39,6 +40,67 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		$emails[] = include GIVE_EMAIL_REPORTS_DIR . 'includes/emails/class-weekly-report-email.php';
 
 		return $emails;
+	}
+
+
+	/**
+	 * Register email tags.
+	 */
+	function register_email_tags() {
+		$email_tags = array(
+			array(
+				'tag'         => 'day_of_week_name',
+				'description' => 'This tag can be used to output name of day of week',
+				'func'        => array( $this, 'day_of_week_name' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'donation_count_today',
+				'description' => 'This tag can be used to output total donation count for today',
+				'func'        => array( $this, 'donation_count_today' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'donation_total_past_week',
+				'description' => 'This tag can be used to output total donation count for past week',
+				'func'        => array( $this, 'donation_total_past_week' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'donation_total_this_week',
+				'description' => 'This tag can be used to output total donation count for this week',
+				'func'        => array( $this, 'donation_total_this_week' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'donation_total_this_month',
+				'description' => 'This tag can be used to output total donation count for this month',
+				'func'        => array( $this, 'donation_total_this_month' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'donation_total_past_month',
+				'description' => 'This tag can be used to output total donation count for past month',
+				'func'        => array( $this, 'donation_total_past_month' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'best_performing_forms_this_week',
+				'description' => 'This tag can be used to output best performing donation forms for this week',
+				'func'        => array( $this, 'best_performing_forms_this_week' ),
+				'context'     => 'donation',
+			),
+			array(
+				'tag'         => 'not_getting_donation_forms_list',
+				'description' => 'This tag can be used to output best performing donation forms for this week',
+				'func'        => array( $this, 'not_getting_donation_forms_list' ),
+				'context'     => 'donation',
+			)
+		);
+
+		foreach ( $email_tags as $email_tag ) {
+			give_add_email_tag( $email_tag['tag'], $email_tag['description'], $email_tag['func'], $email_tag['context'] );
+		}
 	}
 
 	/**
