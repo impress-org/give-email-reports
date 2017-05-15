@@ -244,7 +244,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		/**
 		 * Email report time schedule. Populates the admin field dropdown.
 		 *
-		 * @return mixed|void
+		 * @return array
 		 */
 		public function get_email_report_times() {
 			return apply_filters( 'give_email_report_times', array(
