@@ -15,10 +15,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
 		add_action( 'cmb2_render_email_report_preview', array( $this, 'add_email_report_preview' ), 10, 5 );
 
-		add_action( 'cmb2_render_email_report_daily_schedule', array(
-			$this,
-			'add_email_report_daily_schedule',
-		), 10, 5 );
+		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 5 );
 
 		add_action( 'cmb2_render_email_report_weekly_schedule', array(
 			$this,
@@ -141,40 +138,54 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param $field
-	 * @param $value
-	 * @param $object_id
-	 * @param $object_type
-	 * @param $field_type CMB2_Types
+	 * @param array  $field
+	 * @param string $value
 	 */
-	public function add_email_report_daily_schedule( $field, $value, $object_id, $object_type, $field_type ) {
+	public function add_email_report_daily_schedule( $field, $value ) {
 		// Setting attribute.
 		$disabled_field = $this->is_cron_enabled( 'give_email_reports_daily_email' ) ? ' disabled="disabled"' : '';
 
 		//Times.
 		$times = $this->get_email_report_times();
 
-		ob_start(); ?>
-		<div class="give-email-reports-weekly">
-			<label class="hidden"
-			       for="<?php echo $field->args['id']; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+		ob_start();
+		?>
+		<tr valign="top">
+			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
+				<th scope="row" class="titledesc">
+					<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+				</th>
+			<?php endif; ?>
+			<td class="give-forminp">
+				<div class="give-email-reports-weekly">
+					<label class="hidden" for="<?php echo $field['id']; ?>'">
+						<?php _e( 'Time of Day', 'give-email-reports' ); ?>
+					</label>
 
-			<select class="cmb2_select" name="<?php echo $field->args['id']; ?>"
-			        id="<?php echo $field->args['id']; ?>"<?php echo $disabled_field; ?>>
-				<?php
-				//Time select options.
-				foreach ( $times as $military => $time ) {
-					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
-				} ?>
-			</select>
+					<select
+							class="cmb2_select"
+							name="<?php echo $field['id']; ?>"
+							id="<?php echo $field['id']; ?>"
+						<?php echo $disabled_field; ?>
+					>
+						<?php
+						//Time select options.
+						foreach ( $times as $military => $time ) {
+							echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
+						} ?>
+					</select>
 
-			<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
+					<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
 
-			<p class="cmb2-metabox-description"><?php _e( 'Select when you would like to receive your daily email report.', 'give-email-reports' ); ?></p>
+					<p class="give-field-description">
+						<?php _e( 'Select when you would like to receive your daily email report.', 'give-email-reports' ); ?>
+					</p>
 
-		</div>
-
-		<?php echo ob_get_clean();
+				</div>
+			</td>
+		</tr>
+		<?php
+		echo ob_get_clean();
 	}
 
 	/**
