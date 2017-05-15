@@ -9,6 +9,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 * Give_Email_Reports_Settings constructor.
 	 */
 	public function __construct() {
+		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
 
 		// Register settings.
 		add_filter( 'give_settings_emails', array( $this, 'settings' ), 1 );
@@ -29,6 +30,21 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			'add_email_report_monthly_schedule',
 		), 10, 5 );
 
+	}
+
+	/**
+	 * Register email notifications.
+	 *
+	 * @access public
+	 *
+	 * @param $emails
+	 *
+	 * @return array
+	 */
+	public function register_emails( $emails ) {
+		$emails[] = include GIVE_EMAIL_REPORTS_DIR . 'includes/emails/class-daily-report-email.php';
+
+		return $emails;
 	}
 
 	/**
