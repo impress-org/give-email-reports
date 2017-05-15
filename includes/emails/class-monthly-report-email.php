@@ -12,6 +12,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 			'notification_status'   => 'disabled',
 			'content_type_editable' => false,
 			'content_type'          => 'text/html',
+			'email_template'        => 'default',
 			// 'form_metabox_setting' => true,
 			'has_recipient_field'   => true,
 			'default_email_subject' => sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
@@ -36,7 +37,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 				'name' => __( 'Monthly Email Delivery Time', 'give-email-reports' ),
 				'desc' => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
 				'type' => 'email_report_monthly_schedule',
-			)
+			),
 		);
 	}
 
