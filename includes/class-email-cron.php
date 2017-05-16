@@ -67,10 +67,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function schedule_daily_email( $old_value, $value, $option ) {
 
-		$report_choices = isset( $value['email_report_emails'] ) ? $value['email_report_emails'] : '';
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('daily-report')->get_notification_status() );
 
 		//Only proceed if daily email is enabled.
-		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'daily', $report_choices ) ) {
+		if ( ! $is_active ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 
@@ -105,10 +105,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function schedule_weekly_email( $old_value, $value, $option ) {
 
-		$report_choices = isset( $value['email_report_emails'] ) ? $value['email_report_emails'] : '';
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('daily-report')->get_notification_status() );
 
 		//Only proceed if daily email is enabled.
-		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'weekly', $report_choices ) ) {
+		if ( ! $is_active ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 
@@ -152,10 +152,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function schedule_monthly_email( $old_value, $value, $option ) {
 
-		$report_choices = isset( $value['email_report_emails'] ) ? $value['email_report_emails'] : '';
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('daily-report')->get_notification_status() );
 
 		//Only proceed if monthly email is enabled.
-		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'monthly', $report_choices ) ) {
+		if ( ! $is_active ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
 
