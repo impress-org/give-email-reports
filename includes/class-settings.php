@@ -237,8 +237,13 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 */
 	function print_reset_button( $cron_name ) {
 		if ( wp_next_scheduled( $cron_name ) ) : ?>
-			<button class="give-reset-button button-secondary" data-cron="<?php echo $cron_name; ?>"
-			        data-action="give_reset_email_report_cron"><?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?></button>
+			<button
+				class="give-reset-button button-secondary"
+				data-cron="<?php echo $cron_name; ?>"
+				data-action="give_reset_email_report_cron"
+			>
+				<?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?>
+			</button>
 			<span class="give-spinner spinner"></span>
 			<?php
 		endif;
