@@ -350,11 +350,11 @@ function give_email_reports_cold_donation_forms() {
 
 			return ob_get_clean();
 		} else {
-			return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+			return '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 		}
 
 	} else {
-		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+		return '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 	}
 }
 
