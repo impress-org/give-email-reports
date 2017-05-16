@@ -27,7 +27,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
-		add_action( 'give_email_reports_daily_email', array( $this, 'send_email_notification' ) );
+		add_action( 'give_email_reports_daily_email', array( $this, 'setup_email_notification' ) );
 	}
 
 	/**
@@ -153,6 +153,17 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 */
 	public function setup_email_data() {
 		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
+	}
+
+
+	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 */
+	public function setup_email_notification() {
+		$this->setup_email_data();
+		$this->send_email_notification();
 	}
 }
 
