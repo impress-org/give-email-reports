@@ -4,7 +4,13 @@
  * This file has code to handle daily email reports notification.
  */
 class Give_Daily_Email_Notification extends Give_Email_Notification {
-	function init() {
+
+	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 */
+	public function init() {
 		$this->load( array(
 			'id'                    => 'daily-report',
 			'label'                 => __( 'Daily Email Report', 'give' ),
@@ -20,6 +26,50 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
+		add_action( 'give_email_reports_daily_email', array( $this, 'send_email_notification' ) );
+	}
+
+	/**
+	 * Get recipient(s).
+	 *
+	 * Note: in case of admin notification this fx will return array of emails otherwise empty string or email of donor.
+	 *
+	 * @access public
+	 *
+	 * @param int $form_id
+	 *
+	 * @return string|array
+	 */
+	public function get_recipient( $form_id = null ) {
+		if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
+			$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
+		}
+
+		/**
+		 *  Filter the emails
+		 *
+		 * @since 1.0
+		 * @deprecated
+		 */
+		$this->recipient_email = apply_filters(
+			'give_email_reports_recipients',
+			$this->recipient_email,
+			'daily'
+		);
+
+		/**
+		 * Filter the recipients
+		 */
+		return apply_filters(
+			"give_{$this->config['id']}_get_recipients",
+			give_check_variable(
+				$this->recipient_email,
+				'empty',
+				Give()->emails->get_from_address()
+			),
+			$this,
+			$form_id
+		);
 	}
 
 
