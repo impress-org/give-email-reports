@@ -20,7 +20,6 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 			'has_preview_header'    => false,
 			'content_type'          => 'text/html',
 			'email_template'        => 'default',
-			// 'form_metabox_setting' => true,
 			'has_recipient_field'   => true,
 			'default_email_subject' => sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
 			'default_email_message' => $this->get_default_email_message(),
