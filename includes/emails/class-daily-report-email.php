@@ -92,6 +92,16 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 
 		return ob_get_clean();
 	}
+
+
+	/**
+	 *  Setup email data.
+	 *
+	 * @access public
+	 */
+	public function setup_email_data() {
+		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
+	}
 }
 
 return Give_Daily_Email_Notification::get_instance();
