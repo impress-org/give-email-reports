@@ -48,7 +48,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	/**
 	 * Get list of all scheduled cron.
 	 *
-	 * @return mixed|void
+	 * @return mixed
 	 */
 	private function _get_cron_array() {
 		return get_option( 'cron' );
