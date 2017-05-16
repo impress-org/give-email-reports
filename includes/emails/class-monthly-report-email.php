@@ -11,6 +11,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 			'description'           => __( '', 'give' ),
 			'notification_status'   => 'disabled',
 			'content_type_editable' => false,
+			'has_preview_header'    => false,
 			'content_type'          => 'text/html',
 			'email_template'        => 'default',
 			// 'form_metabox_setting' => true,
@@ -79,10 +80,10 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	public function get_extra_setting_fields( $form_id = null ) {
 		return array(
 			array(
-				'id'   => 'give_email_reports_monthly_email_template',
-				'name' => __( 'Email template', 'give-email-reports' ),
-				'desc' => __( 'Choose your template from the available registered template types.', 'give-email-reports' ),
-				'type' => 'select',
+				'id'      => 'give_email_reports_monthly_email_template',
+				'name'    => __( 'Email template', 'give-email-reports' ),
+				'desc'    => __( 'Choose your template from the available registered template types.', 'give-email-reports' ),
+				'type'    => 'select',
 				'default' => 'report-monthly',
 				'options' => array(
 					'report-monthly' => __( 'Monthly Report', 'give-email-reports' ),
@@ -102,6 +103,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	 * unset email message setting field.
 	 *
 	 * @access public
+	 *
 	 * @param array                   $settings
 	 * @param Give_Email_Notification $email
 	 *
