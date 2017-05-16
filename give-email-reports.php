@@ -66,7 +66,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			// Min. Give Core version.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.8.2' );
+				define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '2.0.0' );
 			}
 
 			// Plugin path.
