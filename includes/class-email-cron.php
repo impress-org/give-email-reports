@@ -87,7 +87,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
-		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'daily' );
@@ -111,7 +110,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
-		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'weekly' );
@@ -135,7 +133,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
-		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'monthly' );
