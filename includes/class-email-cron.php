@@ -1,4 +1,18 @@
 <?php
+/**
+ * Email Cron Management.
+ *
+ * @package    Give-Email-Reports
+ * @subpackage Classes/Give_Email_Cron
+ * @copyright  Copyright (c) 2016, WordImpress
+ * @license    https://opensource.org/licenses/gpl-license GNU Public License
+ * @since      1.0
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Class Give_Email_Cron
@@ -20,7 +34,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		add_action( 'update_option_give_settings', array( $this, 'schedule_weekly_email' ), 10, 3 );
 		add_action( 'update_option_give_settings', array( $this, 'schedule_monthly_email' ), 10, 3 );
 
-		//Send emails
+		// Send emails.
 		add_action( 'give_email_reports_daily_email', array( $this, 'send_daily_email' ) );
 		add_action( 'give_email_reports_weekly_email', array( $this, 'send_weekly_email' ) );
 		add_action( 'give_email_reports_monthly_email', array( $this, 'send_monthly_email' ) );
@@ -48,7 +62,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	/**
 	 * Get list of all scheduled cron.
 	 *
-	 * @return mixed|void
+	 * @return mixed
 	 */
 	private function _get_cron_array() {
 		return get_option( 'cron' );
@@ -84,10 +98,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function send_daily_email() {
 
-		//Clear out the email template before we send the email.
+		// Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
-		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'daily' );
@@ -111,7 +124,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		//Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
-		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'weekly' );
@@ -132,10 +144,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function send_monthly_email() {
 
-		//Clear out the email template before we send the email.
+		// Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
-		Give()->emails->html    = true;
 		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
 		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'monthly' );
@@ -167,9 +178,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$report_choices = isset( $value['email_report_emails'] ) ? $value['email_report_emails'] : '';
 
-		//Only proceed if daily email is enabled.
+		// Only proceed if daily email is enabled.
 		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'daily', $report_choices ) ) {
-			//Remove any schedule cron jobs if option is disabled.
+			// Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 
 			return false;
@@ -205,7 +216,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$report_choices = isset( $value['email_report_emails'] ) ? $value['email_report_emails'] : '';
 
-		//Only proceed if daily email is enabled.
+		// Only proceed if daily email is enabled.
 		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'weekly', $report_choices ) ) {
 			//Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
@@ -213,13 +224,13 @@ class Give_Email_Cron extends Give_Email_Reports {
 			return false;
 		}
 
-		//Ensure the cron isn't already scheduled and constant isn't set.
+		// Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
 			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : '';
 			$days          = $this->get_week_days();
 
-			//Need $weekly option set to continue.
+			// Need $weekly option set to continue.
 			if ( empty( $weekly_option ) ) {
 				return false;
 			}
@@ -227,7 +238,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 			$local_time = strtotime( "this {$days[ $weekly_option['day'] ]} T{$weekly_option['time']}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
-			//Schedule the cron!
+			// Schedule the cron!
 			wp_schedule_event(
 				$gmt_time,
 				'weekly',
@@ -252,15 +263,15 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$report_choices = isset( $value['email_report_emails'] ) ? $value['email_report_emails'] : '';
 
-		//Only proceed if monthly email is enabled.
+		// Only proceed if monthly email is enabled.
 		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'monthly', $report_choices ) ) {
-			//Remove any schedule cron jobs if option is disabled.
+			// Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
 
 			return false;
 		}
 
-		//Ensure the cron isn't already scheduled and constant isn't set.
+		// Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! $this->is_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
 			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : '';
@@ -294,7 +305,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @return array
 	 */
 	public function get_week_days() {
-		//Days.
+		// Days.
 		return array(
 			'0' => 'Sunday',
 			'1' => 'Monday',
