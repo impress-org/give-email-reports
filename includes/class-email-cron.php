@@ -110,7 +110,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 		give_get_template_part( 'emails/body-report-daily', Give()->emails->get_template(), true );
 		$message = ob_get_clean();
 
-		Give()->emails->send( $recipients, sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+		/**
+		 * Filters attachments for the Give Email daily Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
+		 *
+		 * @since 1.2.0
+		 */
+		$attachments = apply_filters( 'give_email_daily_attachments', array() );
+
+		Give()->emails->send( $recipients, sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message, $attachments );
 
 	}
 
@@ -133,7 +140,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 		give_get_template_part( 'emails/body-report-weekly', Give()->emails->get_template(), true );
 		$message = ob_get_clean();
 
-		Give()->emails->send( $recipients, sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+		/**
+		 * Filters attachments for the Give Email weekly Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
+		 *
+		 * @since 1.2.0
+		 */
+		$attachments = apply_filters( 'give_email_weekly_attachments', array() );
+
+		Give()->emails->send( $recipients, sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message, $attachments );
 
 	}
 
@@ -156,7 +170,14 @@ class Give_Email_Cron extends Give_Email_Reports {
 		give_get_template_part( 'emails/body-report-monthly', Give()->emails->get_template(), true );
 		$message = ob_get_clean();
 
-		Give()->emails->send( $recipients, sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message );
+		/**
+		 * Filters attachments for the Give Email monthly sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
+		 *
+		 * @since 1.2.0
+		 */
+		$attachments = apply_filters( 'give_email_monthly_attachments', array() );
+
+		Give()->emails->send( $recipients, sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message, $attachments );
 
 		// Reschedule monthly email.
 		$this->reschedule_monthly_email();
