@@ -29,6 +29,29 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			'add_email_report_monthly_schedule',
 		), 10, 5 );
 
+		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array(
+			$this,
+			'give_admin_settings_sanitize_option_email_report_emails'
+		), 10, 1 );
+
+	}
+
+	/*
+	 * Check if email_report_emails is empty or not
+	 *
+	 * @since 1.0.2
+	 *
+	 * @param array $value From $_POST['email_report_emails] value
+	 *
+	 * @return array The modified $value From $_POST['email_report_emails] value.
+	 */
+	function give_admin_settings_sanitize_option_email_report_emails( $value = array() ) {
+		// Check if value is not null.
+		if ( is_null( $value ) ) {
+			$value = array();
+		}
+
+		return $value;
 	}
 
 	/**
