@@ -113,7 +113,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		/**
 		 * Filters attachments for the Give Email daily Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
 		 *
-		 * @since 1.2.0
+		 * @since 1.1.0
 		 */
 		$attachments = apply_filters( 'give_email_daily_attachments', array() );
 
@@ -143,7 +143,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		/**
 		 * Filters attachments for the Give Email weekly Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
 		 *
-		 * @since 1.2.0
+		 * @since 1.1.0
 		 */
 		$attachments = apply_filters( 'give_email_weekly_attachments', array() );
 
@@ -173,7 +173,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		/**
 		 * Filters attachments for the Give Email monthly sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
 		 *
-		 * @since 1.2.0
+		 * @since 1.1.0
 		 */
 		$attachments = apply_filters( 'give_email_monthly_attachments', array() );
 

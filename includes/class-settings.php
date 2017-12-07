@@ -36,8 +36,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 	}
 
-	/*
-	 * Check if email_report_emails is empty or not
+	/**
+	 * Check if email_report_emails is empty or not.
 	 *
 	 * @since 1.0.2
 	 *

@@ -133,8 +133,6 @@ function give_email_reports_donations( $report_period ) {
 /**
  * Gets the total earnings for the current week.
  *
- * @param $report_period string
- *
  * @return string
  */
 function give_email_reports_weekly_total() {
