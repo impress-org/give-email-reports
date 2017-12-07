@@ -111,6 +111,13 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'desc' => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
 				'type' => 'email_report_monthly_schedule',
 			),
+			array(
+				'id'      => 'give_email_reports_recipients',
+				'name'    => __( 'Email Report Recipient', 'give-email-reports' ),
+				'desc'    => __( 'Enter the email address(es) that should receive a notification anytime an Email Report is sent, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give-email-reports' ),
+				'type'    => 'textarea',
+				'default' => get_bloginfo( 'admin_email' ),
+			),
 		);
 
 		return array_merge( $settings, $email_reports_settings );
