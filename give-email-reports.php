@@ -84,7 +84,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 *
 		 * @access      private
 		 * @since       1.0
-		 * @return      void|bool
+		 * @return      bool
 		 */
 		private function includes() {
 
