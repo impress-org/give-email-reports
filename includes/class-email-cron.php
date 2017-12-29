@@ -103,7 +103,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
-		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'daily' );
+		$recipients = apply_filters( 'give_email_reports_recipients', give_get_email_report_recipients(), 'daily' );
 
 		// $message will be rendered during give_email_message filter.
 		ob_start();
@@ -113,7 +113,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		/**
 		 * Filters attachments for the Give Email daily Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
 		 *
-		 * @since 1.2.0
+		 * @since 1.1.0
 		 */
 		$attachments = apply_filters( 'give_email_daily_attachments', array() );
 
@@ -133,7 +133,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
-		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'weekly' );
+		$recipients = apply_filters( 'give_email_reports_recipients', give_get_email_report_recipients(), 'weekly' );
 
 		// $message will be rendered during give_email_message filter.
 		ob_start();
@@ -143,7 +143,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		/**
 		 * Filters attachments for the Give Email weekly Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
 		 *
-		 * @since 1.2.0
+		 * @since 1.1.0
 		 */
 		$attachments = apply_filters( 'give_email_weekly_attachments', array() );
 
@@ -163,7 +163,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 
-		$recipients = apply_filters( 'give_email_reports_recipients', give_get_admin_notice_emails(), 'monthly' );
+		$recipients = apply_filters( 'give_email_reports_recipients', give_get_email_report_recipients(), 'monthly' );
 
 		// $message will be rendered during give_email_message filter.
 		ob_start();
@@ -173,7 +173,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		/**
 		 * Filters attachments for the Give Email monthly sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
 		 *
-		 * @since 1.2.0
+		 * @since 1.1.0
 		 */
 		$attachments = apply_filters( 'give_email_monthly_attachments', array() );
 

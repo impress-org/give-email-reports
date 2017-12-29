@@ -36,8 +36,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 	}
 
-	/*
-	 * Check if email_report_emails is empty or not
+	/**
+	 * Check if email_report_emails is empty or not.
 	 *
 	 * @since 1.0.2
 	 *
@@ -110,6 +110,13 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'name' => __( 'Monthly Email Delivery Time', 'give-email-reports' ),
 				'desc' => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
 				'type' => 'email_report_monthly_schedule',
+			),
+			array(
+				'id'      => 'give_email_reports_recipients',
+				'name'    => __( 'Email Report Recipient', 'give-email-reports' ),
+				'desc'    => __( 'Enter the email address(es) that should receive a notification anytime an Email Report is sent, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give-email-reports' ),
+				'type'    => 'textarea',
+				'default' => get_bloginfo( 'admin_email' ),
 			),
 		);
 
