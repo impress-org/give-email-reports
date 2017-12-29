@@ -116,7 +116,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 				'name'    => __( 'Email Report Recipient', 'give-email-reports' ),
 				'desc'    => __( 'Enter the email address(es) that should receive a notification anytime an Email Report is sent, please only enter <span class="give-underline">one email address per line</span> and <strong>not separated by commas</strong>.', 'give-email-reports' ),
 				'type'    => 'textarea',
-				'default' => get_bloginfo( 'admin_email' ),
+				'default' => give_get_admin_notice_emails(),
 			),
 		);
 
