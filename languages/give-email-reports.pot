@@ -16,107 +16,107 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-email-reports.php:188
+#: give-email-reports.php:181
 msgid "Email Report Template"
 msgstr ""
 
-#: give-email-reports.php:236
+#: give-email-reports.php:229
 msgid "%s Donations Report"
 msgstr ""
 
-#: give-email-reports.php:251
+#: give-email-reports.php:244
 msgid "1:00 AM"
 msgstr ""
 
-#: give-email-reports.php:252
+#: give-email-reports.php:245
 msgid "2:00 AM"
 msgstr ""
 
-#: give-email-reports.php:253
+#: give-email-reports.php:246
 msgid "3:00 AM"
 msgstr ""
 
-#: give-email-reports.php:254
+#: give-email-reports.php:247
 msgid "4:00 AM"
 msgstr ""
 
-#: give-email-reports.php:255
+#: give-email-reports.php:248
 msgid "5:00 AM"
 msgstr ""
 
-#: give-email-reports.php:256
+#: give-email-reports.php:249
 msgid "6:00 AM"
 msgstr ""
 
-#: give-email-reports.php:257
+#: give-email-reports.php:250
 msgid "7:00 AM"
 msgstr ""
 
-#: give-email-reports.php:258
+#: give-email-reports.php:251
 msgid "8:00 AM"
 msgstr ""
 
-#: give-email-reports.php:259
+#: give-email-reports.php:252
 msgid "9:00 AM"
 msgstr ""
 
-#: give-email-reports.php:260
+#: give-email-reports.php:253
 msgid "10:00 AM"
 msgstr ""
 
-#: give-email-reports.php:261
+#: give-email-reports.php:254
 msgid "11:00 AM"
 msgstr ""
 
-#: give-email-reports.php:262
+#: give-email-reports.php:255
 msgid "12:00 AM"
 msgstr ""
 
-#: give-email-reports.php:263
+#: give-email-reports.php:256
 msgid "1:00 PM"
 msgstr ""
 
-#: give-email-reports.php:264
+#: give-email-reports.php:257
 msgid "2:00 PM"
 msgstr ""
 
-#: give-email-reports.php:265
+#: give-email-reports.php:258
 msgid "3:00 PM"
 msgstr ""
 
-#: give-email-reports.php:266
+#: give-email-reports.php:259
 msgid "4:00 PM"
 msgstr ""
 
-#: give-email-reports.php:267
+#: give-email-reports.php:260
 msgid "5:00 PM"
 msgstr ""
 
-#: give-email-reports.php:268
+#: give-email-reports.php:261
 msgid "6:00 PM"
 msgstr ""
 
-#: give-email-reports.php:269
+#: give-email-reports.php:262
 msgid "7:00 PM"
 msgstr ""
 
-#: give-email-reports.php:270
+#: give-email-reports.php:263
 msgid "8:00 PM"
 msgstr ""
 
-#: give-email-reports.php:271
+#: give-email-reports.php:264
 msgid "9:00 PM"
 msgstr ""
 
-#: give-email-reports.php:272
+#: give-email-reports.php:265
 msgid "10:00 PM"
 msgstr ""
 
-#: give-email-reports.php:273
+#: give-email-reports.php:266
 msgid "11:00 PM"
 msgstr ""
 
-#: give-email-reports.php:274
+#: give-email-reports.php:267
 msgid "12:00 PM"
 msgstr ""
 
