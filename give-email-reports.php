@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Email Reports
  * Plugin URI:      https://givewp.com/addons/email-reports/
  * Description:     Receive comprehensive donations reports via email.
- * Version:         1.0.1
+ * Version:         1.0.2
  * Author:          WordImpress
  * Author URI:      https://wordimpress.com
  * Text Domain:     give-email-reports
@@ -61,12 +61,12 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			// Plugin version.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0.1' );
+				define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0.2' );
 			}
 
 			// Min. Give Core version.
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.8.2' );
+				define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.8.19' );
 			}
 
 			// Plugin path.
@@ -79,7 +79,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( __FILE__ ) );
 			}
 
-			//Basename
+			// Basename
 			if ( ! defined( 'GIVE_EMAIL_REPORTS_BASENAME' ) ) {
 				define( 'GIVE_EMAIL_REPORTS_BASENAME', plugin_basename( __FILE__ ) );
 			}
@@ -211,7 +211,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 */
 		public function report_preview() {
 
-			//Sanity check: need the following vars to get started.
+			// Sanity check: need the following vars to get started.
 			if ( empty( $_GET['give_action'] ) || empty( $_GET['report'] ) ) {
 				return;
 			}
@@ -244,7 +244,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		/**
 		 * Email report time schedule. Populates the admin field dropdown.
 		 *
-		 * @return mixed|void
+		 * @return array
 		 */
 		public function get_email_report_times() {
 			return apply_filters( 'give_email_report_times', array(
@@ -276,7 +276,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 	}
-}
+}// End if().
 
 /**
  * The main function responsible for returning the one true Give_Email_Reports instance to functions everywhere.

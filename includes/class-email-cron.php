@@ -47,8 +47,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @return false|string
 	 */
 	private function reschedule_monthly_email() {
-		$give_settings = give_get_settings();
-		$monthly       = $give_settings['give_email_reports_monthly_email_delivery_time'];
+		$monthly = give_get_option( 'give_email_reports_monthly_email_delivery_time' );
 
 		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time( 'timestamp' ) );
 		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
@@ -128,7 +127,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function send_weekly_email() {
 
-		//Clear out the email template before we send the email.
+		// Clear out the email template before we send the email.
 		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
 
 		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
@@ -239,7 +238,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		// Only proceed if daily email is enabled.
 		if ( empty( $report_choices ) || is_array( $report_choices ) && ! in_array( 'weekly', $report_choices ) ) {
-			//Remove any schedule cron jobs if option is disabled.
+			// Remove any schedule cron jobs if option is disabled.
 			wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 
 			return false;
@@ -275,7 +274,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * Schedule the monthly email report email.
 	 *
 	 * @param $old_value
-	 * @param $value
+	 * @param array     $value
 	 * @param $option
 	 *
 	 * @return bool
@@ -297,7 +296,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : '';
 
-			//Must have $monthly to continue.
+			// Must have $monthly to continue.
 			if ( empty( $monthly ) ) {
 				return false;
 			}
@@ -310,7 +309,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 			$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
-			//Schedule cron.
+			// Schedule cron.
 			wp_schedule_single_event(
 				$gmt_time,
 				'give_email_reports_monthly_email'
