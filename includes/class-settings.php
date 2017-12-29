@@ -31,7 +31,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 
 		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array(
 			$this,
-			'give_admin_settings_sanitize_option_email_report_emails'
+			'give_admin_settings_sanitize_option_email_report_emails',
 		), 10, 1 );
 
 	}
@@ -165,7 +165,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		// Setting attribute.
 		$disabled_field = $this->is_cron_enabled( 'give_email_reports_daily_email' ) ? ' disabled="disabled"' : '';
 
-		//Times.
+		// Times.
 		$times = $this->get_email_report_times();
 
 		ob_start(); ?>
@@ -173,10 +173,10 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			<label class="hidden"
 			       for="<?php echo $field->args['id']; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo $field->args['id']; ?>"
+			<select name="<?php echo $field->args['id']; ?>"
 			        id="<?php echo $field->args['id']; ?>"<?php echo $disabled_field; ?>>
 				<?php
-				//Time select options.
+				// Time select options.
 				foreach ( $times as $military => $time ) {
 					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
 				} ?>
@@ -223,34 +223,32 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 		<div class="give-email-reports-weekly">
 			<label class="hidden"
 			       for="<?php echo "{$field->args['id']}_day"; ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
-
-			<select class="cmb2_select"
-			        name="<?php echo "{$field->args['id']}[day]"; ?> id="<?php echo "{$field->args['id']}_day"; ?>
-			"<?php echo $disabled_field; ?>>
+			<select class="give_select"
+			        name="<?php echo "{$field->args['id']}[day]"; ?> id="<?php echo "{$field->args['id']}_day"; ?>" <?php echo $disabled_field; ?>>
 			<?php
 			// Day select dropdown.
 			foreach ( $days as $day_code => $day ) {
-				$value['day'] = isset( $value['day'] ) ? $value['day'] : 'sunday';
-				echo '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, true ) . '>' . $day . '</option>';
+				$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+				echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 			} ?>
 			</select>
 
 			<label class="hidden"
 			       for="<?php echo "{$field->args['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo "{$field->args['id']}[time]"; ?>"
+			<select name="<?php echo "{$field->args['id']}[time]"; ?>"
 			        id="<?php echo "{$field->args['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Time select options.
 				foreach ( $times as $military => $time ) {
-					$value['time'] = isset( $value['time'] ) ? $value['time'] : '1900';
-					echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
+					$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+					echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
 				} ?>
 			</select>
 
 			<?php $this->print_reset_button( 'give_email_reports_weekly_email' ); ?>
 
-			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
+			<p class="give-field-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
 
 		</div>
 
@@ -265,7 +263,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	 * @param $value
 	 * @param $object_id
 	 * @param $object_type
-	 * @param $field_type CMB2_Types
+	 * @param $field_type
 	 */
 	public function add_email_report_monthly_schedule( $field, $value, $object_id, $object_type, $field_type ) {
 		// Setting attribute.
@@ -285,32 +283,32 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			<label class="hidden"
 			       for="<?php echo "{$field->args['id']}_day"; ?>"><?php _e( 'Day of Month', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo "{$field->args['id']}[day]"; ?>"
+			<select name="<?php echo "{$field->args['id']}[day]"; ?>"
 			        id="<?php echo "{$field->args['id']}_day"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Day select dropdown.
 				foreach ( $days as $day_code => $day ) {
-					$value['day'] = isset( $value['day'] ) ? $value['day'] : '0';
-					echo '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, true ) . '>' . $day . '</option>';
+					$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
+					echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 				} ?>
 			</select>
 
 			<label class="hidden"
 			       for="<?php echo "{$field->args['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-			<select class="cmb2_select" name="<?php echo "{$field->args['id']}[time]"; ?>"
+			<select name="<?php echo "{$field->args['id']}[time]"; ?>"
 			        id="<?php echo "{$field->args['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Time select options.
 				foreach ( $times as $military => $time ) {
-					$value['time'] = isset( $value['time'] ) ? $value['time'] : '1900';
-					echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
+					$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+					echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
 				} ?>
 			</select>
 
 			<?php $this->print_reset_button( 'give_email_reports_monthly_email' ); ?>
 
-			<p class="cmb2-metabox-description"><?php _e( 'Select the day of the month and time that would like to receive the monthly report.', 'give-email-reports' ); ?></p>
+			<p class="give-field-description"><?php _e( 'Select the day of the month and time that would like to receive the monthly report.', 'give-email-reports' ); ?></p>
 
 		</div>
 
@@ -330,7 +328,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 			<button class="give-reset-button button-secondary" data-cron="<?php echo $cron_name; ?>"
 			        data-action="give_reset_email_report_cron"><?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?></button>
 			<span class="give-spinner spinner"></span>
-			<?php
+		<?php
 		endif;
 	}
 
