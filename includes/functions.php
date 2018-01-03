@@ -423,7 +423,7 @@ function give_get_email_report_recipients() {
 
 	$email_option = give_get_option( 'give_email_reports_recipients' );
 
-	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? explode( "\n", $email_option ) : give_get_admin_notice_emails();
+	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? explode( "\n", $email_option ) : get_bloginfo( 'admin_email' );
 
 	return apply_filters( 'give_get_email_report_recipients', $emails );
 }
