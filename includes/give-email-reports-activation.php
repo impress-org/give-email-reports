@@ -69,7 +69,7 @@ function give_email_reports_activation_banner() {
 	if ( class_exists( 'Give_Addon_Activation_Banner' ) ) {
 
 		$args = array(
-			'file'              => __FILE__,
+			'file'              => GIVE_EMAIL_REPORTS_FILE,
 			'name'              => esc_html__( 'Email Reports', 'give-email-reports' ),
 			'version'           => GIVE_EMAIL_REPORTS_VERSION,
 			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=email-reports-settings' ),

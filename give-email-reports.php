@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Email Reports
  * Plugin URI:      https://givewp.com/addons/email-reports/
  * Description:     Receive comprehensive donations reports via email.
- * Version:         1.1.0
+ * Version:         1.0.2
  * Author:          WordImpress
  * Author URI:      https://wordimpress.com
  * Text Domain:     give-email-reports
@@ -13,6 +13,36 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+// Plugin version.
+if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
+	define( 'GIVE_EMAIL_REPORTS_VERSION', '1.0.2' );
+}
+
+// Min. Give Core version.
+if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
+	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.8.19' );
+}
+
+// Plugin path.
+if ( ! defined( 'GIVE_EMAIL_REPORTS_FILE' ) ) {
+	define( 'GIVE_EMAIL_REPORTS_FILE',  __FILE__ );
+}
+
+// Plugin path.
+if ( ! defined( 'GIVE_EMAIL_REPORTS_DIR' ) ) {
+	define( 'GIVE_EMAIL_REPORTS_DIR', plugin_dir_path( GIVE_EMAIL_REPORTS_FILE ) );
+}
+
+// Plugin URL.
+if ( ! defined( 'GIVE_EMAIL_REPORTS_URL' ) ) {
+	define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( GIVE_EMAIL_REPORTS_FILE ) );
+}
+
+// Basename
+if ( ! defined( 'GIVE_EMAIL_REPORTS_BASENAME' ) ) {
+	define( 'GIVE_EMAIL_REPORTS_BASENAME', plugin_basename( GIVE_EMAIL_REPORTS_FILE ) );
 }
 
 if ( ! class_exists( 'Give_Email_Reports' ) ) {
@@ -41,7 +71,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		public static function instance() {
 			if ( ! self::$instance ) {
 				self::$instance = new Give_Email_Reports();
-				self::$instance->setup_constants();
 				self::$instance->load_textdomain();
 				self::$instance->includes();
 				self::$instance->hooks();
@@ -51,47 +80,11 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 		/**
-		 * Setup plugin constants.
-		 *
-		 * @access      private
-		 * @since       1.0
-		 * @return      void
-		 */
-		private function setup_constants() {
-
-			// Plugin version.
-			if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_VERSION', '1.1.0' );
-			}
-
-			// Min. Give Core version.
-			if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '2.0.0' );
-			}
-
-			// Plugin path.
-			if ( ! defined( 'GIVE_EMAIL_REPORTS_DIR' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_DIR', plugin_dir_path( __FILE__ ) );
-			}
-
-			// Plugin URL.
-			if ( ! defined( 'GIVE_EMAIL_REPORTS_URL' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_URL', plugin_dir_url( __FILE__ ) );
-			}
-
-			//Basename
-			if ( ! defined( 'GIVE_EMAIL_REPORTS_BASENAME' ) ) {
-				define( 'GIVE_EMAIL_REPORTS_BASENAME', plugin_basename( __FILE__ ) );
-			}
-
-		}
-
-		/**
 		 * Include necessary files.
 		 *
 		 * @access      private
 		 * @since       1.0
-		 * @return      void|bool
+		 * @return      bool
 		 */
 		private function includes() {
 
@@ -126,7 +119,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 
 			// Handle licensing.
 			if ( class_exists( 'Give_License' ) ) {
-				new Give_License( __FILE__, 'Email Reports', GIVE_EMAIL_REPORTS_VERSION, 'WordImpress' );
+				new Give_License( GIVE_EMAIL_REPORTS_FILE, 'Email Reports', GIVE_EMAIL_REPORTS_VERSION, 'WordImpress' );
 			}
 		}
 
@@ -172,7 +165,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 * @return mixed
 		 */
 		public function add_template_paths( $file_paths ) {
-			$file_paths[20] = trailingslashit( plugin_dir_path( __FILE__ ) ) . 'templates/';
+			$file_paths[20] = trailingslashit( GIVE_EMAIL_REPORTS_DIR ) . 'templates/';
 
 			return $file_paths;
 		}
@@ -212,7 +205,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		 */
 		public function report_preview() {
 
-			//Sanity check: need the following vars to get started.
+			// Sanity check: need the following vars to get started.
 			if ( empty( $_GET['give_action'] ) || empty( $_GET['report'] ) ) {
 				return;
 			}
@@ -277,7 +270,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 	}
-}
+}// End if().
 
 /**
  * The main function responsible for returning the one true Give_Email_Reports instance to functions everywhere.
@@ -305,4 +298,4 @@ function give_email_reports_unschedule_emails() {
 }
 
 // Remove from cron if plugin is deactivated.
-register_deactivation_hook( __FILE__, 'give_email_reports_unschedule_emails' );
+register_deactivation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_unschedule_emails' );

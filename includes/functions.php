@@ -57,7 +57,7 @@ function give_email_reports_letters_of_days_in_week() {
 
 	for ( $i = 0; $i < 7; $i ++ ) {
 		$letters_of_days_in_week[] = substr( date( 'D', $timestamp ), 0, 1 );
-		$timestamp -= 24 * 3600;
+		$timestamp                 -= 24 * 3600;
 	}
 
 	return $letters_of_days_in_week;
@@ -132,8 +132,6 @@ function give_email_reports_donations( $report_period ) {
 
 /**
  * Gets the total earnings for the current week.
- *
- * @param $report_period string
  *
  * @return string
  */
@@ -240,7 +238,7 @@ function give_email_reports_best_performing_forms( $report_period ) {
 		'number'     => - 1,
 		'start_date' => $start_date,
 		'end_date'   => $end_date,
-		'status'     => 'publish'
+		'status'     => 'publish',
 	);
 	$query    = new Give_Payments_Query( $args );
 	$payments = $query->get_payments();
@@ -267,7 +265,7 @@ function give_email_reports_best_performing_forms( $report_period ) {
 
 		ob_start();
 		echo '<ul style="padding-left: 55px;padding-right: 30px;">';
-		foreach ( $stats as $list_item ):
+		foreach ( $stats as $list_item ) :
 
 			printf( '<li style="color: #00%1$s00; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
 				$color_prefix,
@@ -286,7 +284,7 @@ function give_email_reports_best_performing_forms( $report_period ) {
 		return ob_get_clean();
 	} else {
 		return '<p style="padding-left:40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
-	}
+	}// End if().
 }
 
 
@@ -316,7 +314,7 @@ function give_email_reports_cold_donation_forms() {
 			$result = $give_logs->get_connected_logs( array(
 				'post_parent'    => $form->ID,
 				'log_type'       => 'sale',
-				'posts_per_page' => 1
+				'posts_per_page' => 1,
 			) );
 
 			if ( ! empty( $result ) ) {
@@ -333,7 +331,7 @@ function give_email_reports_cold_donation_forms() {
 
 			ob_start();
 			echo '<ul style="padding-left: 55px;padding-right: 30px;">';
-			foreach ( $last_donation_dates as $form => $date ):
+			foreach ( $last_donation_dates as $form => $date ) :
 
 				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last donation <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
 					$color_prefix,
@@ -352,10 +350,9 @@ function give_email_reports_cold_donation_forms() {
 		} else {
 			return '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
 		}
-
 	} else {
-		return '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
-	}
+		return '<p>' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+	}// End if().
 }
 
 
@@ -391,7 +388,7 @@ function give_email_reports_donation_difference( $report_period ) {
 	$difference     = $current_donations - $past_donations;
 
 	if ( $difference == 0 ) {
-		//No change
+		// No change
 		$output = '&#9670; ' . sprintf( __( 'Same number donations as %s', 'give-email-reports' ), $text );
 	} elseif ( $difference < 0 ) {
 		$output = '<span style="color:#990000;">&#9662;</span> ' . sprintf( __( '%1$s donations compared to %2$s', 'give-email-reports' ), $difference, $text );
@@ -413,4 +410,20 @@ function give_email_reports_donation_difference( $report_period ) {
 function give_email_reports_delete_stats_transients() {
 	global $wpdb;
 	$wpdb->query( "DELETE FROM `$wpdb->options` WHERE `option_name` LIKE ('%_give_stats_%')" );
+}
+
+
+/**
+ * Retrieves the emails for which email report recipients notifications are sent to (these can be changed in the Email Report Settings).
+ *
+ * @since 1.1
+ * @return mixed
+ */
+function give_get_email_report_recipients() {
+
+	$email_option = give_get_option( 'give_email_reports_recipients' );
+
+	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? explode( "\n", $email_option ) : get_bloginfo( 'admin_email' );
+
+	return apply_filters( 'give_get_email_report_recipients', $emails );
 }

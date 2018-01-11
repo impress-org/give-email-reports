@@ -11,10 +11,42 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	public function __construct() {
 		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
 
-		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 5 );
-		add_action( 'give_admin_field_email_report_weekly_schedule', array( $this, 'add_email_report_weekly_schedule' ), 10, 5 );
-		add_action( 'give_admin_field_email_report_monthly_schedule', array( $this, 'add_email_report_monthly_schedule' ), 10, 5 );
+		add_action( 'give_admin_field_email_report_daily_schedule', array(
+			$this,
+			'add_email_report_daily_schedule',
+		), 10, 5 );
+		add_action( 'give_admin_field_email_report_weekly_schedule', array(
+			$this,
+			'add_email_report_weekly_schedule',
+		), 10, 5 );
+		add_action( 'give_admin_field_email_report_monthly_schedule', array(
+			$this,
+			'add_email_report_monthly_schedule',
+		), 10, 5 );
 
+		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array(
+			$this,
+			'give_admin_settings_sanitize_option_email_report_emails',
+		), 10, 1 );
+
+	}
+
+	/**
+	 * Check if email_report_emails is empty or not.
+	 *
+	 * @since 1.0.2
+	 *
+	 * @param array $value From $_POST['email_report_emails] value
+	 *
+	 * @return array The modified $value From $_POST['email_report_emails] value.
+	 */
+	function give_admin_settings_sanitize_option_email_report_emails( $value = array() ) {
+		// Check if value is not null.
+		if ( is_null( $value ) ) {
+			$value = array();
+		}
+
+		return $value;
 	}
 
 	/**
@@ -37,14 +69,14 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param array  $field
+	 * @param object $field
 	 * @param string $value
 	 */
 	public function add_email_report_daily_schedule( $field, $value ) {
 		// Setting attribute.
 		$disabled_field = $this->is_cron_enabled( 'give_email_reports_daily_email' ) ? ' disabled="disabled"' : '';
 
-		//Times.
+		// Times.
 		$times = $this->get_email_report_times();
 
 		ob_start();
@@ -90,7 +122,7 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	/**
 	 * Give add Weekly email reports preview.
 	 *
-	 * @param array $field
+	 * @param object $field
 	 * @param string $value
 	 */
 	public function add_email_report_weekly_schedule( $field, $value ) {
@@ -164,8 +196,8 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	/**
 	 * Give add Monthly email reports preview.
 	 *
-	 * @param array $field
-	 * @param array $value
+	 * @param object $field
+	 * @param array  $value
 	 */
 	public function add_email_report_monthly_schedule( $field, $value ) {
 		// Setting attribute.
@@ -238,14 +270,14 @@ class Give_Email_Reports_Settings extends Give_Email_Reports {
 	function print_reset_button( $cron_name ) {
 		if ( wp_next_scheduled( $cron_name ) ) : ?>
 			<button
-				class="give-reset-button button-secondary"
-				data-cron="<?php echo $cron_name; ?>"
-				data-action="give_reset_email_report_cron"
+					class="give-reset-button button-secondary"
+					data-cron="<?php echo $cron_name; ?>"
+					data-action="give_reset_email_report_cron"
 			>
 				<?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?>
 			</button>
 			<span class="give-spinner spinner"></span>
-			<?php
+		<?php
 		endif;
 	}
 

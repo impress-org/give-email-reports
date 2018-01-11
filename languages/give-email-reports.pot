@@ -1,4 +1,4 @@
-# Copyright (C) 2016 Give - Email Reports
+# Copyright (C) 2017 Give - Email Reports
 # This file is distributed under the same license as the Give - Email Reports package.
 msgid ""
 msgstr ""
@@ -7,7 +7,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Language-Team: WordImpress <info@wordimpress.com>\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -16,261 +16,269 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-email-reports.php:187
+#: give-email-reports.php:181
 msgid "Email Report Template"
 msgstr ""
 
-#: give-email-reports.php:235
+#: give-email-reports.php:229
 msgid "%s Donations Report"
 msgstr ""
 
-#: give-email-reports.php:250
+#: give-email-reports.php:244
 msgid "1:00 AM"
 msgstr ""
 
-#: give-email-reports.php:251
+#: give-email-reports.php:245
 msgid "2:00 AM"
 msgstr ""
 
-#: give-email-reports.php:252
+#: give-email-reports.php:246
 msgid "3:00 AM"
 msgstr ""
 
-#: give-email-reports.php:253
+#: give-email-reports.php:247
 msgid "4:00 AM"
 msgstr ""
 
-#: give-email-reports.php:254
+#: give-email-reports.php:248
 msgid "5:00 AM"
 msgstr ""
 
-#: give-email-reports.php:255
+#: give-email-reports.php:249
 msgid "6:00 AM"
 msgstr ""
 
-#: give-email-reports.php:256
+#: give-email-reports.php:250
 msgid "7:00 AM"
 msgstr ""
 
-#: give-email-reports.php:257
+#: give-email-reports.php:251
 msgid "8:00 AM"
 msgstr ""
 
-#: give-email-reports.php:258
+#: give-email-reports.php:252
 msgid "9:00 AM"
 msgstr ""
 
-#: give-email-reports.php:259
+#: give-email-reports.php:253
 msgid "10:00 AM"
 msgstr ""
 
-#: give-email-reports.php:260
+#: give-email-reports.php:254
 msgid "11:00 AM"
 msgstr ""
 
-#: give-email-reports.php:261
+#: give-email-reports.php:255
 msgid "12:00 AM"
 msgstr ""
 
-#: give-email-reports.php:262
+#: give-email-reports.php:256
 msgid "1:00 PM"
 msgstr ""
 
-#: give-email-reports.php:263
+#: give-email-reports.php:257
 msgid "2:00 PM"
 msgstr ""
 
-#: give-email-reports.php:264
+#: give-email-reports.php:258
 msgid "3:00 PM"
 msgstr ""
 
-#: give-email-reports.php:265
+#: give-email-reports.php:259
 msgid "4:00 PM"
 msgstr ""
 
-#: give-email-reports.php:266
+#: give-email-reports.php:260
 msgid "5:00 PM"
 msgstr ""
 
-#: give-email-reports.php:267
+#: give-email-reports.php:261
 msgid "6:00 PM"
 msgstr ""
 
-#: give-email-reports.php:268
+#: give-email-reports.php:262
 msgid "7:00 PM"
 msgstr ""
 
-#: give-email-reports.php:269
+#: give-email-reports.php:263
 msgid "8:00 PM"
 msgstr ""
 
-#: give-email-reports.php:270
+#: give-email-reports.php:264
 msgid "9:00 PM"
 msgstr ""
 
-#: give-email-reports.php:271
+#: give-email-reports.php:265
 msgid "10:00 PM"
 msgstr ""
 
-#: give-email-reports.php:272
+#: give-email-reports.php:266
 msgid "11:00 PM"
 msgstr ""
 
-#: give-email-reports.php:273
+#: give-email-reports.php:267
 msgid "12:00 PM"
 msgstr ""
 
-#: includes/class-email-cron.php:91
+#: includes/class-email-cron.php:103
 msgid "Daily Donation Report"
 msgstr ""
 
-#: includes/class-email-cron.php:100
+#: includes/class-email-cron.php:119
 msgid "Daily Donation Report for %1$s"
 msgstr ""
 
-#: includes/class-email-cron.php:115
+#: includes/class-email-cron.php:133
 msgid "Weekly Donation Report"
 msgstr ""
 
-#: includes/class-email-cron.php:124
+#: includes/class-email-cron.php:149
 msgid "Weekly Donation Report for %1$s"
 msgstr ""
 
-#: includes/class-email-cron.php:139
+#: includes/class-email-cron.php:163
 msgid "Monthly Donation Report"
 msgstr ""
 
-#: includes/class-email-cron.php:148
+#: includes/class-email-cron.php:179
 msgid "Monthly Donation Report for %1$s"
 msgstr ""
 
-#: includes/class-settings.php:48
+#: includes/class-settings.php:71
 msgid "Email Reports Settings"
 msgstr ""
 
-#: includes/class-settings.php:55
+#: includes/class-settings.php:78
 msgid "Preview Reports"
 msgstr ""
 
-#: includes/class-settings.php:60
+#: includes/class-settings.php:83
 msgid "Report Frequency"
 msgstr ""
 
-#: includes/class-settings.php:61
+#: includes/class-settings.php:84
 msgid "Select the time frames that you would like to receive email reports."
 msgstr ""
 
-#: includes/class-settings.php:73
+#: includes/class-settings.php:96
 msgid "Daily Email Delivery Time"
 msgstr ""
 
-#: includes/class-settings.php:74, includes/class-settings.php:157
+#: includes/class-settings.php:97, includes/class-settings.php:187
 msgid "Select when you would like to receive your daily email report."
 msgstr ""
 
-#: includes/class-settings.php:81
+#: includes/class-settings.php:104
 msgid "Weekly Email Delivery Time"
 msgstr ""
 
-#: includes/class-settings.php:82
+#: includes/class-settings.php:105
 msgid "Select when you would like to receive your weekly email report."
 msgstr ""
 
-#: includes/class-settings.php:87
+#: includes/class-settings.php:110
 msgid "Monthly Email Delivery Time"
 msgstr ""
 
-#: includes/class-settings.php:88
+#: includes/class-settings.php:111
 msgid "Select when you would like to receive your monthly email report."
 msgstr ""
 
-#: includes/class-settings.php:109, includes/class-settings.php:109
+#: includes/class-settings.php:116
+msgid "Email Report Recipient"
+msgstr ""
+
+#: includes/class-settings.php:117
+msgid "Enter the email address(es) that should receive a notification anytime an Email Report is sent, please only enter <span class=\"give-underline\">one email address per line</span> and <strong>not separated by commas</strong>."
+msgstr ""
+
+#: includes/class-settings.php:139, includes/class-settings.php:139
 msgid "Preview Daily Report"
 msgstr ""
 
-#: includes/class-settings.php:115, includes/class-settings.php:115
+#: includes/class-settings.php:145, includes/class-settings.php:145
 msgid "Preview Weekly Report"
 msgstr ""
 
-#: includes/class-settings.php:121, includes/class-settings.php:121
+#: includes/class-settings.php:151, includes/class-settings.php:151
 msgid "Preview Monthly Report"
 msgstr ""
 
-#: includes/class-settings.php:144, includes/class-settings.php:209, includes/class-settings.php:269
+#: includes/class-settings.php:174, includes/class-settings.php:237, includes/class-settings.php:297
 msgid "Time of Day"
 msgstr ""
 
-#: includes/class-settings.php:195
+#: includes/class-settings.php:225
 msgid "Day of Week"
 msgstr ""
 
-#: includes/class-settings.php:223
+#: includes/class-settings.php:251
 msgid "Select the day of the week and time that you would like to receive the weekly report."
 msgstr ""
 
-#: includes/class-settings.php:256
+#: includes/class-settings.php:284
 msgid "Day of Month"
 msgstr ""
 
-#: includes/class-settings.php:283
+#: includes/class-settings.php:311
 msgid "Select the day of the month and time that would like to receive the monthly report."
 msgstr ""
 
-#: includes/class-settings.php:301
+#: includes/class-settings.php:329
 msgid "Reschedule"
 msgstr ""
 
-#: includes/functions.php:277
+#: includes/functions.php:275
 msgid "donation"
 msgid_plural "donations"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/functions.php:288, includes/functions.php:353, includes/functions.php:357
+#: includes/functions.php:286, includes/functions.php:351, includes/functions.php:354
 msgid "No donations found."
 msgstr ""
 
-#: includes/functions.php:375
+#: includes/functions.php:372
 msgid "Yesterday"
 msgstr ""
 
-#: includes/functions.php:381
+#: includes/functions.php:378
 msgid "last week"
 msgstr ""
 
-#: includes/functions.php:386
+#: includes/functions.php:383
 msgid "last month"
 msgstr ""
 
-#: includes/functions.php:395
+#: includes/functions.php:392
 msgid "Same number donations as %s"
 msgstr ""
 
-#: includes/functions.php:397, includes/functions.php:399
+#: includes/functions.php:394, includes/functions.php:396
 msgid "%1$s donations compared to %2$s"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:69
+#: includes/give-email-reports-activation.php:73
 msgid "Email Reports"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:92
-msgid "<strong>Activation Error:</strong> You must have the <a href=\"https://givewp.com/\" target=\"_blank\">Give</a> plugin installed and activated for the Email Reports add-on to activate."
+#: includes/give-email-reports-activation.php:97
+msgid "<strong>Activation Error:</strong> We noticed Give is not active. Please activate Give in order to use the Email Reports Add-on."
 msgstr ""
 
-#: includes/give-email-reports-activation.php:101
-msgid "<strong>Activation Error:</strong> You must have <a href=\"%s\" target=\"_blank\">Give</a> version %s+ for the Email Reports add-on to activate."
+#: includes/give-email-reports-activation.php:106
+msgid "<strong>Activation Error:</strong> You must have <a href=\"%1$s\" target=\"_blank\">Give</a> minimum version %2$s for the Email Reports add-on to activate."
 msgstr ""
 
-#: includes/give-email-reports-activation.php:119
+#: includes/give-email-reports-activation.php:125
 msgid "Settings"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:153
+#: includes/give-email-reports-activation.php:160
 msgid "Documentation"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:163
+#: includes/give-email-reports-activation.php:170
 msgid "Add-ons"
 msgstr ""
 
