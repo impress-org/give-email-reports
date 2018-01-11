@@ -10,6 +10,9 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 			'label'                 => __( 'Weekly Email Report', 'give' ),
 			'description'           => __( '', 'give' ),
 			'notification_status'   => 'disabled',
+			'notification_status_editable' => array(
+				'list_mode' => false,
+			),
 			'content_type_editable' => false,
 			'has_preview_header'    => false,
 			'content_type'          => 'text/html',

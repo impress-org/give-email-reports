@@ -12,16 +12,19 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 */
 	public function init() {
 		$this->load( array(
-			'id'                    => 'daily-report',
-			'label'                 => __( 'Daily Email Report', 'give' ),
-			'description'           => __( '', 'give' ),
-			'notification_status'   => 'disabled',
-			'content_type_editable' => false,
-			'has_preview_header'    => false,
-			'content_type'          => 'text/html',
-			'email_template'        => 'default',
-			'has_recipient_field'   => true,
-			'default_email_subject' => sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
+			'id'                           => 'daily-report',
+			'label'                        => __( 'Daily Email Report', 'give' ),
+			'description'                  => __( '', 'give' ),
+			'notification_status'          => 'disabled',
+			'notification_status_editable' => array(
+				'list_mode' => false,
+			),
+			'content_type_editable'        => false,
+			'has_preview_header'           => false,
+			'content_type'                 => 'text/html',
+			'email_template'               => 'default',
+			'has_recipient_field'          => true,
+			'default_email_subject'        => sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
