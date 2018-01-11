@@ -305,17 +305,16 @@ function give_email_reports_cold_donation_forms() {
 
 	$last_donation_dates = array();
 
-	$give_logs = new Give_Logging();
-
 	if ( ! empty( $result ) ) {
 
 		foreach ( $result as $form ) {
 
-			$result = $give_logs->get_connected_logs( array(
-				'post_parent'    => $form->ID,
-				'log_type'       => 'sale',
+			$result = new Give_Payments_Query(array(
+				'give_forms'     => $form->ID,
 				'posts_per_page' => 1,
 			) );
+
+			$result = $result->get_payments();
 
 			if ( ! empty( $result ) ) {
 				$last_donation_dates[ $form->post_title ] = $result[0]->post_date;
