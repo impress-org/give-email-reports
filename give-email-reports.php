@@ -22,7 +22,7 @@ if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
 
 // Min. Give Core version.
 if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.8.19' );
+	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '2.0.0' );
 }
 
 // Plugin path.
