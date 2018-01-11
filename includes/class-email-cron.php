@@ -194,6 +194,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @return bool
 	 */
 	public function schedule_daily_email( $old_value, $value, $option ) {
+		// Bailout.
+		if( ! Give_Admin_Settings::is_setting_page( 'emails', 'daily-report' ) ){
+			return false;
+		}
 
 		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('daily-report')->get_notification_status() );
 
@@ -232,8 +236,12 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @return bool
 	 */
 	public function schedule_weekly_email( $old_value, $value, $option ) {
+		// Bailout.
+		if( ! Give_Admin_Settings::is_setting_page( 'emails', 'weekly-report' ) ){
+			return false;
+		}
 
-		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('daily-report')->get_notification_status() );
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('weekly-report')->get_notification_status() );
 
 		//Only proceed if daily email is enabled.
 		if ( ! $is_active ) {
@@ -279,8 +287,12 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @return bool
 	 */
 	public function schedule_monthly_email( $old_value, $value, $option ) {
+		// Bailout.
+		if( ! Give_Admin_Settings::is_setting_page( 'emails', 'monthly-report' ) ){
+			return false;
+		}
 
-		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('daily-report')->get_notification_status() );
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance('monthly-report')->get_notification_status() );
 
 		//Only proceed if monthly email is enabled.
 		if ( ! $is_active ) {
