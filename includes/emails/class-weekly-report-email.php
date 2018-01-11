@@ -131,7 +131,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	public function get_default_email_message() {
 		// $message will be rendered during give_email_message filter.
 		ob_start();
-		give_get_template_part( 'emails/body', give_get_option( 'give_email_reports_daily_email_template', 'report-weekly' ), true );
+		give_get_template_part( 'emails/body', give_get_option( 'give_email_reports_weekly_email_template', 'report-weekly' ), true );
 
 		return ob_get_clean();
 	}
