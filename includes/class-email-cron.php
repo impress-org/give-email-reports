@@ -33,29 +33,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		add_action( 'update_option_give_settings', array( $this, 'schedule_daily_email' ), 10, 3 );
 		add_action( 'update_option_give_settings', array( $this, 'schedule_weekly_email' ), 10, 3 );
 		add_action( 'update_option_give_settings', array( $this, 'schedule_monthly_email' ), 10, 3 );
-
-		// Send emails.
-		add_action( 'give_email_reports_daily_email', array( $this, 'send_daily_email' ) );
-		add_action( 'give_email_reports_weekly_email', array( $this, 'send_weekly_email' ) );
-		add_action( 'give_email_reports_monthly_email', array( $this, 'send_monthly_email' ) );
-
-	}
-
-	/**
-	 * Reschedule monthly email.
-	 *
-	 * @return false|string
-	 */
-	private function reschedule_monthly_email() {
-		$monthly = give_get_option( 'give_email_reports_monthly_email_delivery_time' );
-
-		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time( 'timestamp' ) );
-		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
-
-		wp_schedule_single_event(
-			$gmt_time,
-			'give_email_reports_monthly_email'
-		);
 	}
 
 	/**
@@ -88,98 +65,6 @@ class Give_Email_Cron extends Give_Email_Reports {
 		}
 
 		return $status;
-	}
-
-	/**
-	 * Triggers the daily sales report email generation and sending.
-	 *
-	 * Send the daily email when the cron event triggers the action.
-	 */
-	public function send_daily_email() {
-
-		// Clear out the email template before we send the email.
-		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
-
-		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-
-		$recipients = apply_filters( 'give_email_reports_recipients', give_get_email_report_recipients(), 'daily' );
-
-		// $message will be rendered during give_email_message filter.
-		ob_start();
-		give_get_template_part( 'emails/body-report-daily', Give()->emails->get_template(), true );
-		$message = ob_get_clean();
-
-		/**
-		 * Filters attachments for the Give Email daily Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
-		 *
-		 * @since 1.1.0
-		 */
-		$attachments = apply_filters( 'give_email_daily_attachments', array() );
-
-		Give()->emails->send( $recipients, sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message, $attachments );
-
-	}
-
-	/**
-	 * Triggers the weekly sales report email generation and sending.
-	 *
-	 * Send the daily email when the cron event triggers the action.
-	 */
-	public function send_weekly_email() {
-
-		// Clear out the email template before we send the email.
-		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
-
-		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-
-		$recipients = apply_filters( 'give_email_reports_recipients', give_get_email_report_recipients(), 'weekly' );
-
-		// $message will be rendered during give_email_message filter.
-		ob_start();
-		give_get_template_part( 'emails/body-report-weekly', Give()->emails->get_template(), true );
-		$message = ob_get_clean();
-
-		/**
-		 * Filters attachments for the Give Email weekly Sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
-		 *
-		 * @since 1.1.0
-		 */
-		$attachments = apply_filters( 'give_email_weekly_attachments', array() );
-
-		Give()->emails->send( $recipients, sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message, $attachments );
-
-	}
-
-	/**
-	 * Triggers the monthly sales report email generation and sending.
-	 *
-	 * Send the daily email when the cron event triggers the action.
-	 */
-	public function send_monthly_email() {
-
-		// Clear out the email template before we send the email.
-		add_action( 'give_email_send_before', 'give_email_reports_change_email_template' );
-
-		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-
-		$recipients = apply_filters( 'give_email_reports_recipients', give_get_email_report_recipients(), 'monthly' );
-
-		// $message will be rendered during give_email_message filter.
-		ob_start();
-		give_get_template_part( 'emails/body-report-monthly', Give()->emails->get_template(), true );
-		$message = ob_get_clean();
-
-		/**
-		 * Filters attachments for the Give Email monthly sent receipt. By default, there is no attachment but plugins can hook in to provide one more multiple for the donor.
-		 *
-		 * @since 1.1.0
-		 */
-		$attachments = apply_filters( 'give_email_monthly_attachments', array() );
-
-		Give()->emails->send( $recipients, sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ), $message, $attachments );
-
-		// Reschedule monthly email.
-		$this->reschedule_monthly_email();
 	}
 
 	/**

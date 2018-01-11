@@ -154,6 +154,24 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	public function setup_email_notification() {
 		$this->setup_email_data();
 		$this->send_email_notification();
+		$this->reschedule_monthly_email();
+	}
+
+	/**
+	 * Reschedule monthly email.
+	 *
+	 * @return false|string
+	 */
+	private function reschedule_monthly_email() {
+		$monthly = give_get_option( 'give_email_reports_monthly_email_delivery_time' );
+
+		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time( 'timestamp' ) );
+		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+		wp_schedule_single_event(
+			$gmt_time,
+			'give_email_reports_monthly_email'
+		);
 	}
 }
 
