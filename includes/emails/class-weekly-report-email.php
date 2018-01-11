@@ -16,7 +16,6 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 			'email_template'        => 'default',
 			'has_recipient_field'   => true,
 			'default_email_subject' => sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
-			'default_email_message' => $this->get_default_email_message(),
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
@@ -126,14 +125,27 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	 * Get default email message
 	 *
 	 * @access public
+	 *
+	 * @param  int $form_id
+	 *
 	 * @return string
 	 */
-	public function get_default_email_message() {
+	public function get_email_message( $form_id = null ) {
 		// $message will be rendered during give_email_message filter.
 		ob_start();
 		give_get_template_part( 'emails/body', give_get_option( 'give_email_reports_weekly_email_template', 'report-weekly' ), true );
 
-		return ob_get_clean();
+		/**
+		 * Filter the message.
+		 *
+		 * @since 2.0
+		 */
+		return apply_filters(
+			"give_{$this->config['id']}_get_email_message",
+			ob_get_clean(),
+			$this,
+			$form_id
+		);
 	}
 
 	/**
