@@ -22,7 +22,7 @@ if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
 
 // Min. Give Core version.
 if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '1.8.19' );
+	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '2.0.0' );
 }
 
 // Plugin path.
@@ -94,6 +94,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 				return false;
 			}
 
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/upgrades.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/actions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-settings.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
@@ -233,41 +234,6 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			exit;
 
 		}
-
-		/**
-		 * Email report time schedule. Populates the admin field dropdown.
-		 *
-		 * @return array
-		 */
-		public function get_email_report_times() {
-			return apply_filters( 'give_email_report_times', array(
-				'0100' => __( '1:00 AM', 'give-email-reports' ),
-				'0200' => __( '2:00 AM', 'give-email-reports' ),
-				'0300' => __( '3:00 AM', 'give-email-reports' ),
-				'0400' => __( '4:00 AM', 'give-email-reports' ),
-				'0500' => __( '5:00 AM', 'give-email-reports' ),
-				'0600' => __( '6:00 AM', 'give-email-reports' ),
-				'0700' => __( '7:00 AM', 'give-email-reports' ),
-				'0800' => __( '8:00 AM', 'give-email-reports' ),
-				'0900' => __( '9:00 AM', 'give-email-reports' ),
-				'1000' => __( '10:00 AM', 'give-email-reports' ),
-				'1100' => __( '11:00 AM', 'give-email-reports' ),
-				'1200' => __( '12:00 AM', 'give-email-reports' ),
-				'1300' => __( '1:00 PM', 'give-email-reports' ),
-				'1400' => __( '2:00 PM', 'give-email-reports' ),
-				'1500' => __( '3:00 PM', 'give-email-reports' ),
-				'1600' => __( '4:00 PM', 'give-email-reports' ),
-				'1700' => __( '5:00 PM', 'give-email-reports' ),
-				'1800' => __( '6:00 PM', 'give-email-reports' ),
-				'1900' => __( '7:00 PM', 'give-email-reports' ),
-				'2000' => __( '8:00 PM', 'give-email-reports' ),
-				'2100' => __( '9:00 PM', 'give-email-reports' ),
-				'2200' => __( '10:00 PM', 'give-email-reports' ),
-				'2300' => __( '11:00 PM', 'give-email-reports' ),
-				'2400' => __( '12:00 PM', 'give-email-reports' ),
-			) );
-		}
-
 	}
 }// End if().
 
