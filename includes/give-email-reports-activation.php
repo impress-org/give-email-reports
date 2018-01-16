@@ -72,7 +72,7 @@ function give_email_reports_activation_banner() {
 			'file'              => GIVE_EMAIL_REPORTS_FILE,
 			'name'              => esc_html__( 'Email Reports', 'give-email-reports' ),
 			'version'           => GIVE_EMAIL_REPORTS_VERSION,
-			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=email-reports-settings' ),
+			'settings_url'      => admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ),
 			'documentation_url' => 'http://docs.givewp.com/addon-email-reports',
 			'support_url'       => 'https://givewp.com/support/',
 			'testing'           => false //Never leave as TRUE!
@@ -121,7 +121,7 @@ function give_email_reports_plugin_action_links( $actions ) {
 	$new_actions = array(
 		'settings' => sprintf(
 			'<a href="%1$s">%2$s</a>',
-			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=email-reports-settings' ),
+			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ),
 			esc_html__( 'Settings', 'give-email-reports' )
 		),
 	);
