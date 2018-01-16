@@ -158,26 +158,26 @@ class Give_Email_Reports_Settings {
 						   for="<?php echo "{$field['id']}_day"; ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
 
 					<select class="cmb2_select"
-							name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
+					        name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
 					"<?php echo $disabled_field; ?>>
 					<?php
 					// Day select dropdown.
 					foreach ( $days as $day_code => $day ) {
-						$value['day'] = isset( $value['day'] ) ? $value['day'] : 'sunday';
-						echo '<option value="' . $day_code . '" ' . selected( $value['day'], $day_code, true ) . '>' . $day . '</option>';
+						$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+						echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 					} ?>
 					</select>
 
 					<label class="hidden"
-						   for="<?php echo "{$field['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+					       for="<?php echo "{$field['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
 					<select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
-							id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+					        id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 						<?php
 						// Time select options.
 						foreach ( $times as $military => $time ) {
-							$value['time'] = isset( $value['time'] ) ? $value['time'] : '1900';
-							echo '<option value="' . $military . '" ' . selected( $value['time'], $military, false ) . '>' . $time . '</option>';
+							$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+							echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
 						} ?>
 					</select>
 
