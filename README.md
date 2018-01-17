@@ -10,7 +10,7 @@ This plugin requires the Give plugin activated to function properly. When activa
 
 ### Minimum Requirements ###
 
-* WordPress 4.5 or greater
+* WordPress 4.8 or greater
 * PHP version 5.3 or greater
 * MySQL version 5.0 or greater
 * Some payment gateways require fsockopen support (for IPN access)
@@ -30,6 +30,13 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 ## Changelog ##
+
+### 1.1: December 29th, 2018 ###
+* New: Compatibility with the new Give 2.0+ email system. You'll now see all Email Reports emails under Donations > Settings > Emails.
+* Tweak: Removed old CMB2 code for settings.
+* Fix: Alignment issue when there are no recent donations within the report.
+* Fix: Added useful filters for attaching files to reports.
+* Fix: PHP warning "Illegal string offset" when settings have not been saved.
 
 ### 1.0.2: December 29th, 2018 ###
 * New: Admins now have the ability to set specific emails to receive reports rather than the ones used for notifications in Give core.

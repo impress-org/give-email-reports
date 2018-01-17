@@ -7,8 +7,8 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	function init() {
 		$this->load( array(
 			'id'                    => 'monthly-report',
-			'label'                 => __( 'Monthly Email Report', 'give' ),
-			'description'           => __( '', 'give' ),
+			'label'                 => __( 'Monthly Email Report', 'give-email-reports' ),
+			'description'           => __( '', 'give-email-reports' ),
 			'notification_status'   => 'disabled',
 			'notification_status_editable' => array(
 				'list_mode' => false,

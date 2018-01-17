@@ -13,8 +13,8 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	public function init() {
 		$this->load( array(
 			'id'                           => 'daily-report',
-			'label'                        => __( 'Daily Email Report', 'give' ),
-			'description'                  => __( '', 'give' ),
+			'label'                        => __( 'Daily Email Report', 'give-email-reports' ),
+			'description'                  => __( '', 'give-email-reports' ),
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => array(
 				'list_mode' => false,
