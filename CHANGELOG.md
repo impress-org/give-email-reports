@@ -2,17 +2,33 @@
 
 ## [Unreleased](https://github.com/WordImpress/Give-Email-Reports/tree/HEAD)
 
-[Full Changelog](https://github.com/WordImpress/Give-Email-Reports/compare/1.0.1...HEAD)
-
-**Implemented enhancements:**
-
-- Odd UX for users who want to disable Donation Notifications, but use reports. [\#29](https://github.com/WordImpress/Give-Email-Reports/issues/29)
-- Feature request: add CSVs to the report [\#13](https://github.com/WordImpress/Give-Email-Reports/issues/13)
+[Full Changelog](https://github.com/WordImpress/Give-Email-Reports/compare/1.0.2...HEAD)
 
 **Fixed bugs:**
 
-- Issue in unselecting all the reports frequency options once selected. [\#30](https://github.com/WordImpress/Give-Email-Reports/issues/30)
+- Php warning:  Illegal string offset 'day' and 'time' in Weelky/Monthly Email report setting. [\#41](https://github.com/WordImpress/Give-Email-Reports/issues/41)
+- \[Give 2.0\] Update Email Report Settings link [\#40](https://github.com/WordImpress/Give-Email-Reports/issues/40)
+- Alignment issue when there is no recent donation in all the email reports [\#38](https://github.com/WordImpress/Give-Email-Reports/issues/38)
+- Error getting printed in textarea of Email Report Recipient [\#37](https://github.com/WordImpress/Give-Email-Reports/issues/37)
+
+**Merged pull requests:**
+
+- Issue/40 Fix: \[Give 2.0\] Update Email Report Settings link \#40 [\#43](https://github.com/WordImpress/Give-Email-Reports/pull/43) ([jaydeeprami](https://github.com/jaydeeprami))
+- Issue/41 Fix Php warning: Illegal string offset 'day' and 'time' in Weelky/Monthly Email report setting. \#41 [\#42](https://github.com/WordImpress/Give-Email-Reports/pull/42) ([jaydeeprami](https://github.com/jaydeeprami))
+- Give20/email api [\#25](https://github.com/WordImpress/Give-Email-Reports/pull/25) ([ravinderk](https://github.com/ravinderk))
+
+## [1.0.2](https://github.com/WordImpress/Give-Email-Reports/tree/1.0.2) (2017-12-29)
+[Full Changelog](https://github.com/WordImpress/Give-Email-Reports/compare/1.0.1...1.0.2)
+
+**Implemented enhancements:**
+
+- Feature request: add CSVs to the report [\#13](https://github.com/WordImpress/Give-Email-Reports/issues/13)
+- Odd UX for users who want to disable Donation Notifications, but use reports. [\#29](https://github.com/WordImpress/Give-Email-Reports/issues/29)
+
+**Fixed bugs:**
+
 - Give 1.8 Compatibility Issues  [\#23](https://github.com/WordImpress/Give-Email-Reports/issues/23)
+- Issue in unselecting all the reports frequency options once selected. [\#30](https://github.com/WordImpress/Give-Email-Reports/issues/30)
 
 **Closed issues:**
 
