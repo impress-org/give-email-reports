@@ -2,7 +2,18 @@
 
 ## [Unreleased](https://github.com/WordImpress/Give-Email-Reports/tree/HEAD)
 
-[Full Changelog](https://github.com/WordImpress/Give-Email-Reports/compare/1.0.2...HEAD)
+[Full Changelog](https://github.com/WordImpress/Give-Email-Reports/compare/1.1...HEAD)
+
+**Fixed bugs:**
+
+- Email Recipients don't update correctly [\#46](https://github.com/WordImpress/Give-Email-Reports/issues/46)
+
+## [1.1](https://github.com/WordImpress/Give-Email-Reports/tree/1.1) (2018-01-17)
+[Full Changelog](https://github.com/WordImpress/Give-Email-Reports/compare/1.0.2...1.1)
+
+**Implemented enhancements:**
+
+- Feature request: add CSVs to the report [\#13](https://github.com/WordImpress/Give-Email-Reports/issues/13)
 
 **Fixed bugs:**
 
@@ -22,7 +33,6 @@
 
 **Implemented enhancements:**
 
-- Feature request: add CSVs to the report [\#13](https://github.com/WordImpress/Give-Email-Reports/issues/13)
 - Odd UX for users who want to disable Donation Notifications, but use reports. [\#29](https://github.com/WordImpress/Give-Email-Reports/issues/29)
 
 **Fixed bugs:**
