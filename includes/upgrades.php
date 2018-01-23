@@ -15,7 +15,7 @@ function give_email_reports_do_automatic_upgrades() {
 	}
 
 	switch ( true ) {
-		case version_compare( $plugin_version, '1.1.0', '<' ) :
+		case version_compare( $plugin_version, '1.1', '<' ) :
 			give_email_reports_v110_upgrades();
 			$did_upgrade = true;
 	}
