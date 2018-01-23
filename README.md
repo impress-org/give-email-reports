@@ -31,7 +31,10 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ## Changelog ##
 
-### 1.1: December 29th, 2018 ###
+### 1.1.1: January 23rd, 2018 ###
+* Fix: There was an issue with saving multiple or modifying the report email's recipients. Saving would appear to have to effect modifying the field and only the admin email could be used. Now you can enter any one or additional recipients and save as expected.
+
+### 1.1: January 17th, 2018 ###
 * New: Compatibility with the new Give 2.0+ email system. You'll now see all Email Reports emails under Donations > Settings > Emails.
 * Tweak: Removed old CMB2 code for settings.
 * Fix: Alignment issue when there are no recent donations within the report.
