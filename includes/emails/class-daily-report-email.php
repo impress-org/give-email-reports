@@ -14,7 +14,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		$this->load( array(
 			'id'                           => 'daily-report',
 			'label'                        => __( 'Daily Email Report', 'give-email-reports' ),
-			'description'                  => __( '', 'give-email-reports' ),
+			'description'                  => '',
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => array(
 				'list_mode' => false,
@@ -117,7 +117,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 * @param array                   $settings Email setting for donation form.
 	 * @param Give_Email_Notification $email Email Notification instances.
 	 *
-	 * @return array
+	 * @return array $settings Email setting for donation form.
 	 */
 	public function unset_email_setting_field( $settings, $email ) {
 		if ( $this->config['id'] === $email->config['id'] ) {
