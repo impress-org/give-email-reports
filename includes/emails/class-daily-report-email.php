@@ -109,14 +109,13 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		);
 	}
 
-
 	/**
-	 * unset email message setting field.
+	 * Unset email message setting field.
 	 *
 	 * @access public
 	 *
-	 * @param array                   $settings
-	 * @param Give_Email_Notification $email
+	 * @param array                   $settings Email setting for donation form.
+	 * @param Give_Email_Notification $email Email Notification instances.
 	 *
 	 * @return array
 	 */
@@ -125,7 +124,10 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 			foreach ( $settings as $index => $setting ) {
 				if ( "{$this->config['id']}_email_message" === $setting['id'] ) {
 					unset( $settings[ $index ] );
-					break;
+				}
+
+				if ( "_give_{$this->config['id']}_notification" === $setting['id'] ) {
+					unset( $settings[ $index ] );
 				}
 			}
 		}
