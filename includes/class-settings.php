@@ -29,6 +29,53 @@ class Give_Email_Reports_Settings {
 			'give_admin_settings_sanitize_option_email_report_emails',
 		), 10, 1 );
 
+		// Register schedule email reports on per form basis.
+		add_action( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
+	}
+
+	/**
+	 * Add Per Form Email report setting.
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param array $settings Donation Form edit setting.
+	 * @param array $form_id Donation Form ID.
+	 *
+	 * @return array $settings Donation Form edit setting
+	 */
+	public function per_form_settings( $settings, $form_id ) {
+		// Email notification setting.
+		$settings['email_report_options'] = array(
+			'id'         => 'email_report_options',
+			'title'      => __( 'Email Reports', 'give-email-reports' ),
+			'icon-html'  => '<span class="dashicons dashicons-email-alt"></span>',
+			'fields'     => array(
+				array(
+					'name'    => __( 'Email Report Options', 'give-email-reports' ),
+					'id'      => '_give_email_report_options',
+					'type'    => 'radio_inline',
+					'default' => 'disabled',
+					'options' => array(
+						'enabled'  => __( 'Enabled', 'give-email-reports' ),
+						'disabled' => __( 'Disabled', 'give-email-reports' ),
+					),
+				),
+			),
+
+			/**
+			 * Filter the email notification settings.
+			 *
+			 * @since 1.2.1
+			 *
+			 * @param array $sub_menu Sub menu option for email report setting
+			 * @param array $form_id Donation Form ID.
+			 *
+			 * @return array $sub_menu Sub menu option for email report setting
+			 */
+			'sub-fields' => apply_filters( 'give_email_report_options_metabox_fields', array(), $form_id ),
+		);
+
+		return $settings;
 	}
 
 	/**
