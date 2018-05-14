@@ -30,7 +30,7 @@ class Give_Email_Reports_Settings {
 		), 10, 1 );
 
 		// Register schedule email reports on per form basis.
-		add_action( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
+		add_filter( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
 	}
 
 	/**
