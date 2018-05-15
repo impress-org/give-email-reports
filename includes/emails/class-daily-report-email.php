@@ -34,6 +34,27 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	}
 
 	/**
+	 * Register email settings to form metabox.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param array $settings
+	 * @param int   $form_id Donation Form ID
+	 *
+	 * @return array
+	 */
+	public function add_metabox_setting_field( $settings, $form_id ) {
+		$settings[] = array(
+			'id'     => $this->config['id'],
+			'title'  => $this->config['label'],
+			'fields' => $this->get_setting_fields( $form_id ),
+		);
+
+		return $settings;
+	}
+
+	/**
 	 * Get recipient(s).
 	 *
 	 * Note: in case of admin notification this fx will return array of emails otherwise empty string or email of donor.
