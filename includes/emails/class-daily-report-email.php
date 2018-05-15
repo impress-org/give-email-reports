@@ -114,20 +114,28 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param array                   $settings Email setting for donation form.
+	 * @param array $settings Email setting for donation form.
 	 * @param Give_Email_Notification $email Email Notification instances.
 	 *
 	 * @return array $settings Email setting for donation form.
 	 */
 	public function unset_email_setting_field( $settings, $email ) {
 		if ( $this->config['id'] === $email->config['id'] ) {
+			$option = array(
+				'enabled'  => __( 'Enabled', 'give' ),
+				'disabled' => __( 'Disabled', 'give' ),
+			);
+
 			foreach ( $settings as $index => $setting ) {
-				if ( "{$this->config['id']}_email_message" === $setting['id'] ) {
+
+				if ( in_array( $setting['id'], array( "{$this->config['id']}_email_message", "_give_{$this->config['id']}_email_message" ), true ) ) {
 					unset( $settings[ $index ] );
+
 				}
 
 				if ( "_give_{$this->config['id']}_notification" === $setting['id'] ) {
-					unset( $settings[ $index ] );
+					$settings[ $index ]['options'] = $option;
+					$settings[ $index ]['default'] = 'disabled';
 				}
 			}
 		}
