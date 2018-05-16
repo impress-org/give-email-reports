@@ -30,6 +30,23 @@ class Give_Email_Reports_Settings {
 
 		// Register schedule email reports on per form basis.
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
+
+		add_action( 'give_post_process_give_forms_meta', array( $this, 'save' ), 10, 1 );
+	}
+
+	/**
+	 * Save Donation form meta value in Email report
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param int $form_id Donation Form id.
+	 *
+	 * @return void
+	 */
+	public function save( $form_id ) {
+		give_update_meta( $form_id, '_give_email_reports_daily_email_template', give_clean( $_POST['give_email_reports_daily_email_template'] ) );
+
+		give_update_meta( $form_id, '_give_email_reports_daily_email_delivery_time', give_clean( $_POST['give_email_reports_daily_email_delivery_time'] ) );
 	}
 
 	/**
@@ -168,13 +185,17 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param object $field Custom fields for daily schedule on per form basis.
-	 * @param int $form_id Donation form ID.
+	 * @param object   $field Custom fields for daily schedule on per form basis.
+	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
-		$value = '';
+		$value     = '';
+		$cron_name = 'give_email_reports_daily_email';
 
-		$cron_name = empty( $form_id ) ? 'give_email_reports_daily_email' : 'give_email_reports_daily_email_for_' . $form_id;
+		if ( ! empty( $form_id ) ) {
+			$cron_name = '_for_' . $form_id;
+			$value     = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true );
+		}
 
 		// Setting attribute.
 		$disabled_field = $this->is_cron_enabled( $cron_name ) ? ' disabled="disabled"' : '';
