@@ -139,12 +139,17 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 * @param array $field custom field.
 	 */
 	public function email_report_daily_schedule( $field ) {
+
+		global $post;
+
+		$form_id = empty( $post->ID ) ? null : absint( $post->ID );
+
 		/**
 		 * Fire action after before email send.
 		 *
 		 * @since 1.2.1
 		 */
-		do_action( 'give_form_field_email_report_daily_schedule', $field );
+		do_action( 'give_form_field_email_report_daily_schedule', $field, $form_id );
 	}
 
 	/**

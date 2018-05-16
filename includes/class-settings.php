@@ -12,7 +12,7 @@ class Give_Email_Reports_Settings {
 		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
 
 		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 2 );
-		add_action( 'give_form_field_email_report_daily_schedule', array( $this, 'form_add_email_report_daily_schedule' ), 10, 1 );
+		add_action( 'give_form_field_email_report_daily_schedule', array( $this, 'form_add_email_report_daily_schedule' ), 10, 2 );
 
 		add_action( 'give_admin_field_email_report_weekly_schedule', array(
 			$this,
@@ -169,17 +169,20 @@ class Give_Email_Reports_Settings {
 	 * Give add daily email reports preview.
 	 *
 	 * @param object $field Custom fields for daily schedule on per form basis.
-	 * @param string $value.
+	 * @param int $form_id Donation form ID.
 	 */
-	public function form_add_email_report_daily_schedule( $field, $value = '' ) {
+	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
+
+		$cron_name = empty( $form_id ) ? 'give_email_reports_daily_email' : 'give_email_reports_daily_email_for_' . $form_id;
+
 		// Setting attribute.
-		$disabled_field = $this->is_cron_enabled( 'give_email_reports_daily_email' ) ? ' disabled="disabled"' : '';
+		$disabled_field = $this->is_cron_enabled( $cron_name ) ? ' disabled="disabled"' : '';
 
 		// Times.
 		$times = $this->get_email_report_times();
 		?>
         <fieldset
-                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+                class="give-field-wrap <?php esc_attr_e( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
             <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
             <select
                     class="cmb2_select"
@@ -194,10 +197,10 @@ class Give_Email_Reports_Settings {
 				} ?>
             </select>
 
-			<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
+			<?php $this->print_reset_button( $cron_name ); ?>
 
             <p class="give-field-description">
-	            <?php echo $field['desc']; ?>
+				<?php echo $field['desc']; ?>
             </p>
         </fieldset>
 		<?php
