@@ -11,18 +11,17 @@ class Give_Email_Reports_Settings {
 	public function __construct() {
 		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
 
-		add_action( 'give_admin_field_email_report_daily_schedule', array(
-			$this,
-			'add_email_report_daily_schedule',
-		), 10, 5 );
+		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 2 );
+		add_action( 'give_form_field_email_report_daily_schedule', array( $this, 'form_add_email_report_daily_schedule' ), 10, 1 );
+
 		add_action( 'give_admin_field_email_report_weekly_schedule', array(
 			$this,
 			'add_email_report_weekly_schedule',
-		), 10, 5 );
+		), 10, 2 );
 		add_action( 'give_admin_field_email_report_monthly_schedule', array(
 			$this,
 			'add_email_report_monthly_schedule',
-		), 10, 5 );
+		), 10, 2 );
 
 		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array(
 			$this,
@@ -164,6 +163,21 @@ class Give_Email_Reports_Settings {
 		</tr>
 		<?php
 		echo ob_get_clean();
+	}
+
+	/**
+	 * Give add daily email reports preview.
+	 *
+	 * @param object $field
+	 * @param string $value
+	 */
+	public function form_add_email_report_daily_schedule( $field, $value = '' ) {
+		sprintf(
+			'<p class="give-field-wrap %s_field"><label for="%s">%s</label>',
+			esc_attr( $field['id'] ),
+			give_get_field_name( $field ),
+			wp_kses_post( $field['name'] )
+		);
 	}
 
 	/**

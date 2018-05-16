@@ -97,13 +97,12 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		);
 	}
 
-
 	/**
 	 * Get extra setting field.
 	 *
 	 * @access public
 	 *
-	 * @param null $form_id
+	 * @param null $form_id Donation Form ID
 	 *
 	 * @return array
 	 */
@@ -124,10 +123,27 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 				'name'        => __( 'Daily Email Delivery Time', 'give-email-reports' ),
 				'desc'        => __( 'Select when you would like to receive your daily email report.', 'give-email-reports' ),
 				'type'        => 'email_report_daily_schedule',
+				'callback'    => array( $this, 'email_report_daily_schedule' ),
 				'row_classes' => 'cmb-type-email-report-daily-schedule',
 				'default'     => '1900',
 			),
 		);
+	}
+
+	/**
+	 * Fire action to add report daily schedule
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param array $field custom field.
+	 */
+	public function email_report_daily_schedule( $field ) {
+		/**
+		 * Fire action after before email send.
+		 *
+		 * @since 1.2.1
+		 */
+		do_action( 'give_form_field_email_report_daily_schedule', $field );
 	}
 
 	/**
