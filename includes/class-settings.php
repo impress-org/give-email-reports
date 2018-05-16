@@ -172,6 +172,7 @@ class Give_Email_Reports_Settings {
 	 * @param int $form_id Donation form ID.
 	 */
 	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
+		$value = '';
 
 		$cron_name = empty( $form_id ) ? 'give_email_reports_daily_email' : 'give_email_reports_daily_email_for_' . $form_id;
 
