@@ -183,7 +183,7 @@ class Give_Email_Reports_Settings {
 		$times = $this->get_email_report_times();
 		?>
         <fieldset
-                class="give-field-wrap <?php esc_attr_e( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
             <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
             <select
                     class="cmb2_select"
