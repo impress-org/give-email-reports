@@ -11,15 +11,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Load admin scripts
  *
- * @param $hook
+ * @param string $hook Page hook id.
  *
  * @since       1.0
+ *
  * @return      void
  */
 function give_email_reports_admin_scripts( $hook ) {
 
+	$load_script = false;
+
+	if ( 'give_forms_page_give-settings' === $hook ) {
+		$load_script = true;
+	}
+
+	if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+		$screen = get_current_screen();
+		if ( is_object( $screen ) && 'give_forms' === $screen->post_type ) {
+			$load_script = true;
+		}
+	}
+
 	// Use minified libraries if SCRIPT_DEBUG is turned off.
-	if ( $hook == 'give_forms_page_give-settings' ) {
+	if ( $load_script ) {
 
 		/**
 		 * Scripts.
