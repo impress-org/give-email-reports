@@ -426,16 +426,3 @@ function give_get_email_report_recipients() {
 
 	return apply_filters( 'give_get_email_report_recipients', $emails );
 }
-
-/**
- * Add Time for daily Donation form
- *
- * @since 1.2.1
- *
- * @param array $field report daily schedule.
- *
- * @return void
- */
-function give_email_report_daily_schedule( $field ) {
-	//do_action( 'give_admin_field_email_report_daily_schedule', $field, '' );
-}

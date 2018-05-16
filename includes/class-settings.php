@@ -155,7 +155,7 @@ class Give_Email_Reports_Settings {
 					<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
 
 					<p class="give-field-description">
-						<?php _e( 'Select when you would like to receive your daily email report.', 'give-email-reports' ); ?>
+						<?php echo $field['desc']; ?>
 					</p>
 
 				</div>
@@ -168,16 +168,39 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param object $field
-	 * @param string $value
+	 * @param object $field Custom fields for daily schedule on per form basis.
+	 * @param string $value.
 	 */
 	public function form_add_email_report_daily_schedule( $field, $value = '' ) {
-		sprintf(
-			'<p class="give-field-wrap %s_field"><label for="%s">%s</label>',
-			esc_attr( $field['id'] ),
-			give_get_field_name( $field ),
-			wp_kses_post( $field['name'] )
-		);
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( 'give_email_reports_daily_email' ) ? ' disabled="disabled"' : '';
+
+		// Times.
+		$times = $this->get_email_report_times();
+		?>
+        <fieldset
+                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+            <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
+            <select
+                    class="cmb2_select"
+                    name="<?php echo $field['id']; ?>"
+                    id="<?php echo $field['id']; ?>"
+				<?php echo $disabled_field; ?>
+            >
+				<?php
+				//Time select options.
+				foreach ( $times as $military => $time ) {
+					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
+				} ?>
+            </select>
+
+			<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
+
+            <p class="give-field-description">
+	            <?php echo $field['desc']; ?>
+            </p>
+        </fieldset>
+		<?php
 	}
 
 	/**
