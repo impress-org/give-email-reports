@@ -164,6 +164,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 */
 	public function unset_email_setting_field( $settings, $email ) {
 		if ( $this->config['id'] === $email->config['id'] ) {
+
 			$option = array(
 				'enabled'  => __( 'Enabled', 'give-email-reports' ),
 				'disabled' => __( 'Disabled', 'give-email-reports' ),
@@ -173,7 +174,6 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 
 				if ( in_array( $setting['id'], array( "{$this->config['id']}_email_message", "_give_{$this->config['id']}_email_message" ), true ) ) {
 					unset( $settings[ $index ] );
-
 				}
 
 				if ( "_give_{$this->config['id']}_notification" === $setting['id'] ) {

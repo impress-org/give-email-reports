@@ -62,4 +62,23 @@ jQuery(document).ready(function ($) {
 		});
 	});
 
+	// show or hide sub menu on page load
+    var $selector = 'body.post-type-give_forms #give-metabox-form-data li.email_report_options_tab';
+    setTimeout(function () {
+        if ('enabled' === $('body.post-type-give_forms input[name="_give_email_report_options"]:checked').val()) {
+            $($selector + ' ul').removeClass('give-hidden');
+        } else {
+            $($selector + ' ul').addClass('give-hidden');
+        }
+    }, 100);
+
+
+    // show or hide sub menu on donation form page.
+    $('body.post-type-give_forms').on('change', 'input[name="_give_email_report_options"]', function () {
+        $($selector + ' ul').addClass('give-hidden');
+        if ('enabled' === $(this).val()) {
+            $($selector + ' ul').removeClass('give-hidden');
+        }
+    });
+
 });

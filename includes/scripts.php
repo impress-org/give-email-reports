@@ -25,7 +25,7 @@ function give_email_reports_admin_scripts( $hook ) {
 		$load_script = true;
 	}
 
-	if ( in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
+	if ( empty( $load_script ) && in_array( $hook, array( 'post.php', 'post-new.php' ), true ) ) {
 		$screen = get_current_screen();
 		if ( is_object( $screen ) && 'give_forms' === $screen->post_type ) {
 			$load_script = true;
