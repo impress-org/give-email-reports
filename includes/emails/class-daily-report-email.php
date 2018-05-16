@@ -40,7 +40,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 * @access public
 	 *
 	 * @param array $settings
-	 * @param int   $form_id Donation Form ID
+	 * @param int   $form_id Donation Form ID.
 	 *
 	 * @return array
 	 */
@@ -61,7 +61,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param int $form_id
+	 * @param int $form_id Donation form id.
 	 *
 	 * @return string|array
 	 */
@@ -74,6 +74,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		 *  Filter the emails
 		 *
 		 * @since 1.0
+		 *
 		 * @deprecated
 		 */
 		$this->recipient_email = apply_filters(
@@ -102,7 +103,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param null $form_id Donation Form ID
+	 * @param null $form_id Donation Form ID.
 	 *
 	 * @return array
 	 */
@@ -151,7 +152,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param array $settings Email setting for donation form.
+	 * @param array                   $settings Email setting for donation form.
 	 * @param Give_Email_Notification $email Email Notification instances.
 	 *
 	 * @return array $settings Email setting for donation form.
@@ -180,13 +181,12 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		return array_values( $settings );
 	}
 
-
 	/**
 	 * Get default email message
 	 *
 	 * @access public
 	 *
-	 * @param  int $form_id
+	 * @param  int $form_id Donation form id.
 	 *
 	 * @return string
 	 */
@@ -208,7 +208,6 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		);
 	}
 
-
 	/**
 	 *  Setup email data.
 	 *
@@ -217,7 +216,6 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	public function setup_email_data() {
 		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 	}
-
 
 	/**
 	 * Setup email notification.
