@@ -4,11 +4,17 @@
  * This file has code to handle monthly email reports notification.
  */
 class Give_Monthly_Email_Notification extends Give_Email_Notification {
-	function init() {
+
+	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 */
+	public function init() {
 		$this->load( array(
 			'id'                           => 'monthly-report',
 			'label'                        => __( 'Monthly Email Report', 'give-email-reports' ),
-			'description'                  => __( '', 'give-email-reports' ),
+			'description'                  => '',
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => array(
 				'list_mode' => false,
@@ -18,12 +24,34 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 			'content_type'                 => 'text/html',
 			'email_template'               => 'default',
 			'has_recipient_field'          => true,
-			'form_metabox_setting'         => false,
+			'form_metabox_setting'         => true,
+			'form_metabox_id'              => 'give_email_report_options_metabox_fields',
 			'default_email_subject'        => sprintf( __( 'Monthly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
 		add_action( 'give_email_reports_monthly_email', array( $this, 'setup_email_notification' ) );
+	}
+
+	/**
+	 * Register email settings to form metabox.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param array $settings meta box setting.
+	 * @param int   $form_id Donation Form ID.
+	 *
+	 * @return array
+	 */
+	public function add_metabox_setting_field( $settings, $form_id ) {
+		$settings[] = array(
+			'id'     => $this->config['id'],
+			'title'  => $this->config['label'],
+			'fields' => $this->get_setting_fields( $form_id ),
+		);
+
+		return $settings;
 	}
 
 	/**
@@ -69,7 +97,6 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 		);
 	}
 
-
 	/**
 	 * Get extra setting field.
 	 *
@@ -92,31 +119,63 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 				),
 			),
 			array(
-				'id'   => 'give_email_reports_monthly_email_delivery_time',
-				'name' => __( 'Monthly Email Delivery Time', 'give-email-reports' ),
-				'desc' => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
-				'type' => 'email_report_monthly_schedule',
+				'id'          => 'give_email_reports_monthly_email_delivery_time',
+				'name'        => __( 'Monthly Email Delivery Time', 'give-email-reports' ),
+				'desc'        => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
+				'type'        => 'email_report_monthly_schedule',
+				'callback'    => array( $this, 'email_report_monthly_schedule' ),
+				'row_classes' => 'cmb-type-email-report-monthly-schedule',
 			),
 		);
 	}
 
+	/**
+	 * Fire action to add report monthly schedule
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param array $field custom field.
+	 */
+	public function email_report_monthly_schedule( $field ) {
+
+		global $post;
+
+		$form_id = empty( $post->ID ) ? null : absint( $post->ID );
+
+		/**
+		 * Fire action after before email send.
+		 *
+		 * @since 1.2.1
+		 */
+		do_action( 'give_form_field_email_report_monthly_schedule', $field, $form_id );
+	}
 
 	/**
-	 * unset email message setting field.
+	 * Unset email message setting field.
 	 *
 	 * @access public
 	 *
-	 * @param array                   $settings
-	 * @param Give_Email_Notification $email
+	 * @param array                   $settings Email setting.
+	 * @param Give_Email_Notification $email Class instances.
 	 *
 	 * @return array
 	 */
 	public function unset_email_setting_field( $settings, $email ) {
 		if ( $this->config['id'] === $email->config['id'] ) {
+
+			$option = array(
+				'enabled'  => __( 'Enabled', 'give-email-reports' ),
+				'disabled' => __( 'Disabled', 'give-email-reports' ),
+			);
+
 			foreach ( $settings as $index => $setting ) {
-				if ( "{$this->config['id']}_email_message" === $setting['id'] ) {
+				if ( in_array( $setting['id'], array( "{$this->config['id']}_email_message", "_give_{$this->config['id']}_email_message" ), true ) ) {
 					unset( $settings[ $index ] );
-					break;
+				}
+
+				if ( "_give_{$this->config['id']}_notification" === $setting['id'] ) {
+					$settings[ $index ]['options'] = $option;
+					$settings[ $index ]['default'] = 'disabled';
 				}
 			}
 		}

@@ -39,7 +39,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 * @since  2.0
 	 * @access public
 	 *
-	 * @param array $settings
+	 * @param array $settings meta box setting.
 	 * @param int   $form_id Donation Form ID.
 	 *
 	 * @return array

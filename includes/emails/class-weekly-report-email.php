@@ -4,11 +4,17 @@
  * This file has code to handle weekly email reports notification.
  */
 class Give_Weekly_Email_Notification extends Give_Email_Notification {
-	function init() {
+
+	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 */
+	public function init() {
 		$this->load( array(
 			'id'                           => 'weekly-report',
 			'label'                        => __( 'Weekly Email Report', 'give-email-reports' ),
-			'description'                  => __( '', 'give-email-reports' ),
+			'description'                  => '',
 			'notification_status'          => 'disabled',
 			'notification_status_editable' => array(
 				'list_mode' => false,
@@ -18,12 +24,34 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 			'content_type'                 => 'text/html',
 			'email_template'               => 'default',
 			'has_recipient_field'          => true,
-			'form_metabox_setting'         => false,
+			'form_metabox_setting'         => true,
+			'form_metabox_id'              => 'give_email_report_options_metabox_fields',
 			'default_email_subject'        => sprintf( __( 'Weekly Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
 		add_action( 'give_email_reports_weekly_email', array( $this, 'setup_email_notification' ) );
+	}
+
+	/**
+	 * Register email settings to form metabox.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param array $settings meta box setting.
+	 * @param int   $form_id Donation Form ID.
+	 *
+	 * @return array
+	 */
+	public function add_metabox_setting_field( $settings, $form_id ) {
+		$settings[] = array(
+			'id'     => $this->config['id'],
+			'title'  => $this->config['label'],
+			'fields' => $this->get_setting_fields( $form_id ),
+		);
+
+		return $settings;
 	}
 
 	/**
@@ -96,8 +124,31 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 				'name' => __( 'Weekly Email Delivery Time', 'give-email-reports' ),
 				'desc' => __( 'Select when you would like to receive your weekly email report.', 'give-email-reports' ),
 				'type' => 'email_report_weekly_schedule',
+				'callback'    => array( $this, 'email_report_weekly_schedule' ),
+				'row_classes' => 'cmb-type-email-report-weekly-schedule',
 			),
 		);
+	}
+
+	/**
+	 * Fire action to add report weekly schedule
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param array $field custom field.
+	 */
+	public function email_report_weekly_schedule( $field ) {
+
+		global $post;
+
+		$form_id = empty( $post->ID ) ? null : absint( $post->ID );
+
+		/**
+		 * Fire action after before email send.
+		 *
+		 * @since 1.2.1
+		 */
+		do_action( 'give_form_field_email_report_weekly_schedule', $field, $form_id );
 	}
 
 
@@ -113,10 +164,20 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	 */
 	public function unset_email_setting_field( $settings, $email ) {
 		if ( $this->config['id'] === $email->config['id'] ) {
+
+			$option = array(
+				'enabled'  => __( 'Enabled', 'give-email-reports' ),
+				'disabled' => __( 'Disabled', 'give-email-reports' ),
+			);
+
 			foreach ( $settings as $index => $setting ) {
-				if ( "{$this->config['id']}_email_message" === $setting['id'] ) {
+				if ( in_array( $setting['id'], array( "{$this->config['id']}_email_message", "_give_{$this->config['id']}_email_message" ), true ) ) {
 					unset( $settings[ $index ] );
-					break;
+				}
+
+				if ( "_give_{$this->config['id']}_notification" === $setting['id'] ) {
+					$settings[ $index ]['options'] = $option;
+					$settings[ $index ]['default'] = 'disabled';
 				}
 			}
 		}
