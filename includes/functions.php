@@ -426,3 +426,17 @@ function give_get_email_report_recipients() {
 
 	return apply_filters( 'give_get_email_report_recipients', $emails );
 }
+
+/**
+ * Clear Email report hook that are being scheduled to that form.
+ *
+ * @since 1.2.1
+ *
+ * @param $form_id
+ */
+function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
+
+	// check for daily email.
+	$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
+	wp_clear_scheduled_hook( $daily_cron_name );
+}

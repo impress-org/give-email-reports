@@ -33,6 +33,10 @@ class Give_Email_Cron extends Give_Email_Reports {
 		add_action( 'update_option_give_settings', array( $this, 'schedule_daily_email' ), 10, 3 );
 		add_action( 'update_option_give_settings', array( $this, 'schedule_weekly_email' ), 10, 3 );
 		add_action( 'update_option_give_settings', array( $this, 'schedule_monthly_email' ), 10, 3 );
+
+		add_action( 'give_post_process_give_forms_meta', array( $this, 'schedule_form_email' ), 20, 1 );
+
+		add_action( 'before_delete_post', array( $this, 'before_delete_post' ), 20, 1 );
 	}
 
 	/**
@@ -65,6 +69,51 @@ class Give_Email_Cron extends Give_Email_Reports {
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Delete scheduled hook once donation form is deleted
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param int $form_id Donation Form id.
+	 */
+	public function before_delete_post( $form_id ) {
+		give_email_report_clear_scheduled_hook_for_form( $form_id );
+	}
+
+	/**
+	 * Schedule the email report for Donation Form
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param int $form_id Donation Form id.
+	 *
+	 * @return void
+	 */
+	public function schedule_form_email( $form_id ) {
+
+		give_email_report_clear_scheduled_hook_for_form( $form_id );
+
+		$email_report = give_get_meta( $form_id, '_give_email_report_options', true, 'disabled' );
+
+		// check for daily email.
+		$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
+
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance( 'daily-report' )->get_notification_status( $form_id ) );
+
+		if ( 'enabled' === $email_report && $is_active && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+			$time = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true, 1800 );
+
+			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
+			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+			wp_schedule_event(
+				$gmt_time,
+				'daily',
+				$daily_cron_name
+			);
+		}
 	}
 
 	/**
@@ -101,7 +150,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
-			wp_schedule_event(
+			wp_reschedule_event(
 				$gmt_time,
 				'daily',
 				'give_email_reports_daily_email'
