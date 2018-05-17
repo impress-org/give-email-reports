@@ -76,6 +76,7 @@ jQuery(document).ready(function ($) {
     // show or hide sub menu on donation form page.
     $('body.post-type-give_forms').on('change', 'input[name="_give_email_report_options"]', function () {
         $($selector + ' ul').addClass('give-hidden');
+        $($selector + ' ul').removeClass('give-metabox-sub-tabs');
         if ('enabled' === $(this).val()) {
             $($selector + ' ul').removeClass('give-hidden');
             $($selector + ' ul').addClass('give-metabox-sub-tabs');
