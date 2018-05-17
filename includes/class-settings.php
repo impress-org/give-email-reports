@@ -17,15 +17,10 @@ class Give_Email_Reports_Settings {
 		add_action( 'give_admin_field_email_report_weekly_schedule', array( $this, 'add_email_report_weekly_schedule' ), 10, 2 );
 		add_action( 'give_form_field_email_report_weekly_schedule', array( $this, 'form_add_email_report_weekly_schedule' ), 10, 2 );
 
-		add_action( 'give_admin_field_email_report_monthly_schedule', array(
-			$this,
-			'add_email_report_monthly_schedule',
-		), 10, 2 );
+		add_action( 'give_admin_field_email_report_monthly_schedule', array( $this, 'add_email_report_monthly_schedule' ), 10, 2 );
+		add_action( 'give_form_field_email_report_monthly_schedule', array( $this, 'form_add_email_report_monthly_schedule' ), 10, 2 );
 
-		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array(
-			$this,
-			'give_admin_settings_sanitize_option_email_report_emails',
-		), 10, 1 );
+		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array( $this, 'give_admin_settings_sanitize_option_email_report_emails' ), 10, 1 );
 
 		// Register schedule email reports on per form basis.
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
@@ -64,6 +59,17 @@ class Give_Email_Reports_Settings {
 
 		if ( isset( $_POST['give_email_reports_weekly_email_delivery_time'] ) ) {
 			give_update_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', give_clean( $_POST['give_email_reports_weekly_email_delivery_time'] ) );
+		}
+
+		/**
+		 * For saving the monthly email report.
+		 */
+		if ( isset( $_POST['give_email_reports_monthly_email_template'] ) ) {
+			give_update_meta( $form_id, '_give_email_reports_monthly_email_template', give_clean( $_POST['give_email_reports_monthly_email_template'] ) );
+		}
+
+		if ( isset( $_POST['give_email_reports_monthly_email_delivery_time'] ) ) {
+			give_update_meta( $form_id, '_give_email_reports_monthly_email_delivery_time', give_clean( $_POST['give_email_reports_monthly_email_delivery_time'] ) );
 		}
 	}
 
@@ -400,10 +406,7 @@ class Give_Email_Reports_Settings {
 		$times = $this->get_email_report_times();
 
 		// Days.
-		$days = array(
-			'first' => 'First Day',
-			'last'  => 'Last Day',
-		);
+		$days = $this->monthly_days();
 
 		ob_start();
 		?>
@@ -443,7 +446,9 @@ class Give_Email_Reports_Settings {
 
 					<?php $this->print_reset_button( 'give_email_reports_monthly_email' ); ?>
 
-					<p class="give-field-description"><?php _e( 'Select the day of the month and time that would like to receive the monthly report.', 'give-email-reports' ); ?></p>
+                    <p class="give-field-description">
+						<?php echo $field['desc']; ?>
+                    </p>
 
 				</div>
 			</td>
@@ -451,6 +456,84 @@ class Give_Email_Reports_Settings {
 		<?php
 		echo ob_get_clean();
 	}
+
+	/**
+	 * Give add Monthly email reports preview.
+	 *
+	 * @param object $field
+	 * @param array $form_id Donation form id
+     *
+     * @return void
+	 */
+	public function form_add_email_report_monthly_schedule( $field, $form_id ) {
+		$value     = '';
+		$cron_name = 'give_email_reports_monthly_per_form';
+
+		if ( ! empty( $form_id ) ) {
+			$value = give_get_meta( $form_id, '_give_email_reports_monthly_email_delivery_time', true );
+		}
+
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( $cron_name, array( 'form_id' => $form_id ) ) ? ' disabled="disabled"' : '';
+
+		// Times.
+		$times = $this->get_email_report_times();
+
+		// Days.
+		$days = $this->monthly_days();
+
+		ob_start();
+		?>
+        <fieldset
+                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+            <label for="<?php echo "{$field['id']}_day"; ?>"><?php echo $field['name']; ?></label>
+
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?>"
+                    id="<?php echo "{$field['id']}_day"; ?>"<?php echo $disabled_field; ?>>
+				<?php
+				// Day select dropdown.
+				foreach ( $days as $day_code => $day ) {
+					$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
+					echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
+				} ?>
+            </select>
+
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+                    id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+				<?php
+				// Time select options.
+				foreach ( $times as $military => $time ) {
+					$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+					echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
+				} ?>
+            </select>
+
+			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
+
+            <p class="give-field-description">
+				<?php echo $field['desc']; ?>
+            </p>
+        </fieldset>
+		<?php
+		echo ob_get_clean();
+	}
+
+	/**
+	 * Get days for monthly email report
+     *
+     * @since 1.2.
+     *
+     * @return array $days Monthly days
+	 */
+	public function monthly_days() {
+		// Days.
+		$days = array(
+			'first' => __( 'First Day', 'give-email-reports' ),
+			'last' => __( 'Last Day', 'give-email-reports' ),
+		);
+
+		return $days;
+    }
 
 
 	/**

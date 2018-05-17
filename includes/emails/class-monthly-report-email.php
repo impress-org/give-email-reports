@@ -121,7 +121,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 			array(
 				'id'          => 'give_email_reports_monthly_email_delivery_time',
 				'name'        => __( 'Monthly Email Delivery Time', 'give-email-reports' ),
-				'desc'        => __( 'Select when you would like to receive your monthly email report.', 'give-email-reports' ),
+				'desc'        => __( 'Select the day of the month and time that would like to receive the monthly report.', 'give-email-reports' ),
 				'type'        => 'email_report_monthly_schedule',
 				'callback'    => array( $this, 'email_report_monthly_schedule' ),
 				'row_classes' => 'cmb-type-email-report-monthly-schedule',
