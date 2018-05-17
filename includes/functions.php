@@ -440,3 +440,60 @@ function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
 	$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
 	wp_clear_scheduled_hook( $daily_cron_name );
 }
+
+/**
+ * Get all the Donation form with email report is enable
+ *
+ * @since 1.2.1
+ *
+ * @param array $args Argument that need to pass in WP query.
+ *
+ * @return array $form_ids List of Donation Form id.
+ */
+function give_email_report_get_donation_form( $args = array() ) {
+	$form_ids = array();
+
+	$default = array(
+		'post_type'        => 'give_forms',
+		'posts_per_page'   => 10,
+		'meta_key'         => '_give_email_report_options',
+		'meta_value'       => 'enabled',
+		'suppress_filters' => false,
+	);
+
+	/**
+	 * Filter to modify get donation form who email report is being scheduled.
+	 *
+	 * @since 1.2.1
+	 *
+	 * @param array $args $args Argument that need to pass in WP query.
+	 *
+	 * @return array $args $args Argument that need to pass in WP query.
+	 */
+	$args = (array) apply_filters( 'give_email_report_get_donation_form_args', wp_parse_args( $default, $args ) );
+
+	$posts = get_posts( $args );
+	if ( ! empty( $posts ) ) {
+		foreach ( $posts as $post ) {
+			$form_ids[] = $post->ID;
+		}
+	}
+
+	return $form_ids;
+}
+
+/**
+ * Delete all form scheduled.
+ *
+ * @since 1.2.1
+ */
+function give_email_report_delete_all_form_scheduled() {
+	$form_ids = give_email_report_get_donation_form();
+
+	error_log( print_r( $form_ids, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+	if ( ! empty( $form_ids ) ) {
+		foreach ( $form_ids as $form_id ) {
+			give_email_report_clear_scheduled_hook_for_form( $form_id );
+		}
+	}
+}

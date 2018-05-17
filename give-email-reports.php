@@ -260,6 +260,9 @@ function give_email_reports_unschedule_emails() {
 	wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 	wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 	wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
+
+	// delete all scheduled for form.
+	give_email_report_delete_all_form_scheduled();
 }
 
 // Remove from cron if plugin is deactivated.
