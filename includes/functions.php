@@ -432,21 +432,21 @@ function give_get_email_report_recipients() {
  *
  * @since 1.2.1
  *
- * @param $form_id
+ * @param int $form_id Donation Form id.
  */
 function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
 
 	// check for daily email.
-	$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
-	wp_clear_scheduled_hook( $daily_cron_name );
+	$daily_cron_name = 'give_email_reports_daily_per_form';
+	wp_clear_scheduled_hook( $daily_cron_name, array( 'form_id' => $form_id ) );
 
 	// check for weekly email.
-	$weekly_cron_name = 'give_email_reports_weekly_email_for_' . $form_id;
-	wp_clear_scheduled_hook( $weekly_cron_name );
+	$weekly_cron_name = 'give_email_reports_weekly_per_form';
+	wp_clear_scheduled_hook( $weekly_cron_name, array( 'form_id' => $form_id ) );
 
 	// check for monthly email.
-	$monthly_cron_name = 'give_email_reports_monthly_email_for_' . $form_id;
-	wp_clear_scheduled_hook( $monthly_cron_name );
+	$monthly_cron_name = 'give_email_reports_monthly_per_form';
+	wp_clear_scheduled_hook( $monthly_cron_name, array( 'form_id' => $form_id ) );
 }
 
 /**
@@ -505,3 +505,5 @@ function give_email_report_delete_all_form_scheduled() {
 		}
 	}
 }
+
+

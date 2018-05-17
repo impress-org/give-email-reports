@@ -14,10 +14,9 @@ class Give_Email_Reports_Settings {
 		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 2 );
 		add_action( 'give_form_field_email_report_daily_schedule', array( $this, 'form_add_email_report_daily_schedule' ), 10, 2 );
 
-		add_action( 'give_admin_field_email_report_weekly_schedule', array(
-			$this,
-			'add_email_report_weekly_schedule',
-		), 10, 2 );
+		add_action( 'give_admin_field_email_report_weekly_schedule', array( $this, 'add_email_report_weekly_schedule' ), 10, 2 );
+		add_action( 'give_form_field_email_report_weekly_schedule', array( $this, 'form_add_email_report_weekly_schedule' ), 10, 2 );
+
 		add_action( 'give_admin_field_email_report_monthly_schedule', array(
 			$this,
 			'add_email_report_monthly_schedule',
@@ -190,18 +189,149 @@ class Give_Email_Reports_Settings {
 	 */
 	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
 		$value     = '';
-		$cron_name = 'give_email_reports_daily_email';
+		$cron_name = 'give_email_reports_daily_per_form';
 
 		if ( ! empty( $form_id ) ) {
-			$cron_name = '_for_' . $form_id;
 			$value     = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true );
 		}
 
 		// Setting attribute.
-		$disabled_field = $this->is_cron_enabled( $cron_name ) ? ' disabled="disabled"' : '';
+		$disabled_field = $this->is_cron_enabled( $cron_name, array( 'form_id' => $form_id ) ) ? ' disabled="disabled"' : '';
 
 		// Times.
 		$times = $this->get_email_report_times();
+		?>
+        <fieldset
+                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+            <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
+            <select
+                    class="cmb2_select"
+                    name="<?php echo $field['id']; ?>"
+                    id="<?php echo $field['id']; ?>"
+				<?php echo $disabled_field; ?>
+            >
+				<?php
+				//Time select options.
+				foreach ( $times as $military => $time ) {
+					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
+				} ?>
+            </select>
+
+			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
+
+            <p class="give-field-description">
+				<?php echo $field['desc']; ?>
+            </p>
+        </fieldset>
+		<?php
+	}
+
+	/**
+     * Get all the day name.
+     *
+	 * @return array $days get days.
+	 */
+	public function get_days() {
+		// Days.
+		$days = array(
+			'0' => __( 'Sunday', 'give-email-reports' ),
+			'1' => __( 'Monday', 'give-email-reports' ),
+			'2' => __( 'Tuesday', 'give-email-reports' ),
+			'3' => __( 'Wednesday', 'give-email-reports' ),
+			'4' => __( 'Thursday', 'give-email-reports' ),
+			'5' => __( 'Friday', 'give-email-reports' ),
+			'6' => __( 'Saturday', 'give-email-reports' ),
+			'7' => __( 'Sunday', 'give-email-reports' ),
+		);
+
+		return $days;
+	}
+
+	/**
+	 * Give add Weekly email reports preview.
+	 *
+	 * @param object $field
+	 * @param string $value
+	 */
+	public function add_email_report_weekly_schedule( $field, $value ) {
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( 'give_email_reports_weekly_email' ) ? ' disabled="disabled"' : '';
+
+		// Times.
+		$times = $this->get_email_report_times();
+
+		$days = $this->get_days();
+
+		ob_start();
+		?>
+        <tr valign="top">
+			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
+                <th scope="row" class="titledesc">
+                    <label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+                </th>
+			<?php endif; ?>
+            <td class="give-forminp">
+                <div class="give-email-reports-weekly">
+                    <label class="hidden"
+                           for="<?php echo "{$field['id']}_day"; ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
+
+                    <select class="cmb2_select"
+                            name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
+                    "<?php echo $disabled_field; ?>>
+					<?php
+					// Day select dropdown.
+					foreach ( $days as $day_code => $day ) {
+						$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+						echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
+					} ?>
+                    </select>
+
+                    <label class="hidden"
+                           for="<?php echo "{$field['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+
+                    <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+                            id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+						<?php
+						// Time select options.
+						foreach ( $times as $military => $time ) {
+							$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+							echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
+						} ?>
+                    </select>
+
+					<?php $this->print_reset_button( 'give_email_reports_weekly_email' ); ?>
+
+                    <p class="give-field-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
+
+                </div>
+            </td>
+        </tr>
+		<?php
+		echo ob_get_clean();
+	}
+
+	/**
+	 * Give add weekly email reports preview.
+	 *
+	 * @param object   $field Custom fields for weekly schedule on per form basis.
+	 * @param int|null $form_id Donation form ID.
+	 */
+	public function form_add_email_report_weekly_schedule( $field, $form_id = null ) {
+		$value     = '';
+		$cron_name = 'give_email_reports_weekly_email';
+
+		if ( ! empty( $form_id ) ) {
+			$cron_name = '_for_' . $form_id;
+			$value     = give_get_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', true );
+		}
+
+		// Setting attribute.
+		$disabled_field = $this->is_cron_enabled( 'give_email_reports_weekly_email' ) ? ' disabled="disabled"' : '';
+
+		// Times.
+		$times = $this->get_email_report_times();
+
+		$days = $this->get_days();
 		?>
         <fieldset
                 class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
@@ -227,80 +357,6 @@ class Give_Email_Reports_Settings {
         </fieldset>
 		<?php
 	}
-
-	/**
-	 * Give add Weekly email reports preview.
-	 *
-	 * @param object $field
-	 * @param string $value
-	 */
-	public function add_email_report_weekly_schedule( $field, $value ) {
-		// Setting attribute.
-		$disabled_field = $this->is_cron_enabled( 'give_email_reports_weekly_email' ) ? ' disabled="disabled"' : '';
-
-		// Times.
-		$times = $this->get_email_report_times();
-
-		// Days.
-		$days = array(
-			'0' => 'Sunday',
-			'1' => 'Monday',
-			'2' => 'Tuesday',
-			'3' => 'Wednesday',
-			'4' => 'Thursday',
-			'5' => 'Friday',
-			'6' => 'Saturday',
-			'7' => 'Sunday',
-		);
-
-		ob_start();
-		?>
-		<tr valign="top">
-			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
-				<th scope="row" class="titledesc">
-					<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
-				</th>
-			<?php endif; ?>
-			<td class="give-forminp">
-				<div class="give-email-reports-weekly">
-					<label class="hidden"
-						   for="<?php echo "{$field['id']}_day"; ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
-
-					<select class="cmb2_select"
-					        name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
-					"<?php echo $disabled_field; ?>>
-					<?php
-					// Day select dropdown.
-					foreach ( $days as $day_code => $day ) {
-						$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
-						echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
-					} ?>
-					</select>
-
-					<label class="hidden"
-					       for="<?php echo "{$field['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
-
-					<select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
-					        id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
-						<?php
-						// Time select options.
-						foreach ( $times as $military => $time ) {
-							$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
-							echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
-						} ?>
-					</select>
-
-					<?php $this->print_reset_button( 'give_email_reports_weekly_email' ); ?>
-
-					<p class="give-field-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
-
-				</div>
-			</td>
-		</tr>
-		<?php
-		echo ob_get_clean();
-	}
-
 
 	/**
 	 * Give add Monthly email reports preview.
@@ -373,11 +429,12 @@ class Give_Email_Reports_Settings {
 	 * Print cron reset button.
 	 *
 	 * @param string $cron_name Email report cron name.
+	 * @param array $args Cron arguments.
 	 *
 	 * @return void.
 	 */
-	function print_reset_button( $cron_name ) {
-		if ( wp_next_scheduled( $cron_name ) ) : ?>
+	function print_reset_button( $cron_name, $args = array() ) {
+		if ( wp_next_scheduled( $cron_name, $args ) ) : ?>
 			<button
 					class="give-reset-button button-secondary"
 					data-cron="<?php echo $cron_name; ?>"
@@ -394,11 +451,12 @@ class Give_Email_Reports_Settings {
 	 * Check if cron enabled or not.
 	 *
 	 * @param string $cron_name Email report cron name..
+	 * @param array $args Cron argument.
 	 *
 	 * @return bool
 	 */
-	function is_cron_enabled( $cron_name ) {
-		return wp_next_scheduled( $cron_name ) ? true : false;
+	function is_cron_enabled( $cron_name, $args = array() ) {
+		return wp_next_scheduled( $cron_name, $args ) ? true : false;
 	}
 
 	/**
