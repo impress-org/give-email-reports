@@ -117,8 +117,17 @@ class Give_Email_Cron extends Give_Email_Reports {
 			if ( $is_active && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 				$weekly_cron_name = 'give_email_reports_weekly_per_form';
 				$time             = give_get_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', true, 1800 );
-				$local_time       = strtotime( "T{$time}", current_time( 'timestamp' ) );
-				$gmt_time         = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+				$days             = $this->get_week_days();
+
+				// Need $weekly option set to continue.
+				if ( empty( $time ) ) {
+					return false;
+				}
+
+
+				$local_time = strtotime( "this {$days[ $time['day'] ]} T{$time['time']}", current_time( 'timestamp' ) );
+				$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
 				wp_schedule_event( $gmt_time, 'weekly', $weekly_cron_name, array( 'form_id' => $form_id ) );
 			}
 

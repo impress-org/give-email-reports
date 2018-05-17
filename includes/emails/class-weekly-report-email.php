@@ -97,13 +97,12 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 		);
 	}
 
-
 	/**
 	 * Get extra setting field.
 	 *
 	 * @access public
 	 *
-	 * @param null $form_id
+	 * @param null $form_id Donation form id.
 	 *
 	 * @return array
 	 */
@@ -120,10 +119,10 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 				),
 			),
 			array(
-				'id'   => 'give_email_reports_weekly_email_delivery_time',
-				'name' => __( 'Weekly Email Delivery Time', 'give-email-reports' ),
-				'desc' => __( 'Select when you would like to receive your weekly email report.', 'give-email-reports' ),
-				'type' => 'email_report_weekly_schedule',
+				'id'          => 'give_email_reports_weekly_email_delivery_time',
+				'name'        => __( 'Weekly Email Delivery Time', 'give-email-reports' ),
+				'desc'        => __( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ),
+				'type'        => 'email_report_weekly_schedule',
 				'callback'    => array( $this, 'email_report_weekly_schedule' ),
 				'row_classes' => 'cmb-type-email-report-weekly-schedule',
 			),

@@ -43,9 +43,28 @@ class Give_Email_Reports_Settings {
 	 * @return void
 	 */
 	public function save( $form_id ) {
-		give_update_meta( $form_id, '_give_email_reports_daily_email_template', give_clean( $_POST['give_email_reports_daily_email_template'] ) );
 
-		give_update_meta( $form_id, '_give_email_reports_daily_email_delivery_time', give_clean( $_POST['give_email_reports_daily_email_delivery_time'] ) );
+		/**
+		 * For saving the daily email report.
+		 */
+		if ( isset( $_POST['give_email_reports_daily_email_template'] ) ) {
+			give_update_meta( $form_id, '_give_email_reports_daily_email_template', give_clean( $_POST['give_email_reports_daily_email_template'] ) );
+		}
+
+		if ( isset( $_POST['give_email_reports_daily_email_delivery_time'] ) ) {
+			give_update_meta( $form_id, '_give_email_reports_daily_email_delivery_time', give_clean( $_POST['give_email_reports_daily_email_delivery_time'] ) );
+		}
+
+		/**
+		 * For saving the weekly email report.
+		 */
+		if ( isset( $_POST['give_email_reports_weekly_email_template'] ) ) {
+			give_update_meta( $form_id, '_give_email_reports_weekly_email_template', give_clean( $_POST['give_email_reports_weekly_email_template'] ) );
+		}
+
+		if ( isset( $_POST['give_email_reports_weekly_email_delivery_time'] ) ) {
+			give_update_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', give_clean( $_POST['give_email_reports_weekly_email_delivery_time'] ) );
+		}
 	}
 
 	/**
@@ -301,7 +320,10 @@ class Give_Email_Reports_Settings {
 
 					<?php $this->print_reset_button( 'give_email_reports_weekly_email' ); ?>
 
-                    <p class="give-field-description"><?php _e( 'Select the day of the week and time that you would like to receive the weekly report.', 'give-email-reports' ); ?></p>
+
+                    <p class="give-field-description">
+		                <?php echo $field['desc']; ?>
+                    </p>
 
                 </div>
             </td>
@@ -318,38 +340,44 @@ class Give_Email_Reports_Settings {
 	 */
 	public function form_add_email_report_weekly_schedule( $field, $form_id = null ) {
 		$value     = '';
-		$cron_name = 'give_email_reports_weekly_email';
+		$cron_name = 'give_email_reports_weekly_per_form';
 
 		if ( ! empty( $form_id ) ) {
-			$cron_name = '_for_' . $form_id;
 			$value     = give_get_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', true );
 		}
 
 		// Setting attribute.
-		$disabled_field = $this->is_cron_enabled( 'give_email_reports_weekly_email' ) ? ' disabled="disabled"' : '';
+		$disabled_field = $this->is_cron_enabled( $cron_name, array( 'form_id' => $form_id ) ) ? ' disabled="disabled"' : '';
 
 		// Times.
 		$times = $this->get_email_report_times();
 
 		$days = $this->get_days();
 		?>
-        <fieldset
-                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+        <fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
             <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
-            <select
-                    class="cmb2_select"
-                    name="<?php echo $field['id']; ?>"
-                    id="<?php echo $field['id']; ?>"
-				<?php echo $disabled_field; ?>
-            >
-				<?php
-				//Time select options.
-				foreach ( $times as $military => $time ) {
-					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
-				} ?>
+
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
+            "<?php echo $disabled_field; ?>>
+	        <?php
+	        // Day select dropdown.
+            $selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+	        foreach ( $days as $day_code => $day ) {
+		        echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
+	        } ?>
             </select>
 
-			<?php $this->print_reset_button( $cron_name ); ?>
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+                    id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+		        <?php
+		        // Time select options.
+                $selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+		        foreach ( $times as $military => $time ) {
+			        echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
+		        } ?>
+            </select>
+
+			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
 
             <p class="give-field-description">
 				<?php echo $field['desc']; ?>
