@@ -439,6 +439,14 @@ function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
 	// check for daily email.
 	$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
 	wp_clear_scheduled_hook( $daily_cron_name );
+
+	// check for weekly email.
+	$weekly_cron_name = 'give_email_reports_weekly_email_for_' . $form_id;
+	wp_clear_scheduled_hook( $weekly_cron_name );
+
+	// check for monthly email.
+	$monthly_cron_name = 'give_email_reports_monthly_email_for_' . $form_id;
+	wp_clear_scheduled_hook( $monthly_cron_name );
 }
 
 /**
@@ -455,7 +463,7 @@ function give_email_report_get_donation_form( $args = array() ) {
 
 	$default = array(
 		'post_type'        => 'give_forms',
-		'posts_per_page'   => 10,
+		'posts_per_page'   => - 1,
 		'meta_key'         => '_give_email_report_options',
 		'meta_value'       => 'enabled',
 		'suppress_filters' => false,

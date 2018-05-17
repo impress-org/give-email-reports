@@ -97,22 +97,40 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$email_report = give_get_meta( $form_id, '_give_email_report_options', true, 'disabled' );
 
-		// check for daily email.
-		$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
-
+		/**
+		 * Check for daily email.
+		 */
 		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance( 'daily-report' )->get_notification_status( $form_id ) );
-
 		if ( 'enabled' === $email_report && $is_active && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
-			$time = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true, 1800 );
+			$daily_cron_name = 'give_email_reports_daily_email_for_' . $form_id;
+			$time            = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true, 1800 );
+			$local_time      = strtotime( "T{$time}", current_time( 'timestamp' ) );
+			$gmt_time        = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+			wp_schedule_event( $gmt_time, 'daily', $daily_cron_name );
+		}
 
-			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
-			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+		/**
+		 * Check for weekly email.
+		 */
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance( 'weekly-report' )->get_notification_status( $form_id ) );
+		if ( 'enabled' === $email_report && $is_active && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+			$weekly_cron_name = 'give_email_reports_weekly_email_for_' . $form_id;
+			$time             = give_get_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', true, 1800 );
+			$local_time       = strtotime( "T{$time}", current_time( 'timestamp' ) );
+			$gmt_time         = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+			wp_schedule_event( $gmt_time, 'weekly', $weekly_cron_name );
+		}
 
-			wp_schedule_event(
-				$gmt_time,
-				'daily',
-				$daily_cron_name
-			);
+		/**
+		 * Check for monthly email.
+		 */
+		$is_active = give_is_setting_enabled( Give_Email_Notification::get_instance( 'monthly-report' )->get_notification_status( $form_id ) );
+		if ( 'enabled' === $email_report && $is_active && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
+			$monthly_cron_name = 'give_email_reports_monthly_email_for_' . $form_id;
+			$time              = give_get_meta( $form_id, '_give_email_reports_monthly_email_delivery_time', true, 1800 );
+			$local_time        = strtotime( "T{$time}", current_time( 'timestamp' ) );
+			$gmt_time          = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+			wp_schedule_event( $gmt_time, 'monthly', $monthly_cron_name );
 		}
 	}
 
