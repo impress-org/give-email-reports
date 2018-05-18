@@ -184,6 +184,20 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 		return array_values( $settings );
 	}
 
+	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 *
+	 * @param int/null $form_id Donation form ID.
+	 */
+	public function setup_email_notification( $form_id = null ) {
+		$this->send_email_notification( array( 'form_id' => $form_id ) );
+
+		if ( ! empty( $form_id ) ) {
+			$this->reschedule_monthly_email();
+		}
+	}
 
 	/**
 	 * Get default email message
@@ -195,9 +209,16 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	 * @return string
 	 */
 	public function get_email_message( $form_id = null ) {
+
+		if ( empty( $form_id ) ) {
+			$email_template = give_get_option( 'give_email_reports_monthly_email_template', 'report-monthly' );
+		} else {
+			$email_template = give_get_meta( $form_id, '_give_email_reports_monthly_email_template', true, 'report-monthly' );
+		}
+
 		// $message will be rendered during give_email_message filter.
 		ob_start();
-		give_get_template_part( 'emails/body', give_get_option( 'give_email_reports_monthly_email_template', 'report-monthly' ), true );
+		give_get_template_part( 'emails/body', $email_template, true );
 
 		/**
 		 * Filter the message.
@@ -210,33 +231,6 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 			$this,
 			$form_id
 		);
-	}
-
-	/**
-	 *  Setup email data.
-	 *
-	 * @access public
-	 *
-	 * @param int/null $form_id Donation form ID.
-	 */
-	public function setup_email_data( $form_id = null ) {
-		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-	}
-
-	/**
-	 * Setup email notification.
-	 *
-	 * @access public
-	 *
-	 * @param int/null $form_id Donation form ID.
-	 */
-	public function setup_email_notification( $form_id = null ) {
-		$this->setup_email_data( $form_id );
-		$this->send_email_notification();
-
-		if ( ! empty( $form_id ) ) {
-			$this->reschedule_monthly_email();
-		}
 	}
 
 	/**

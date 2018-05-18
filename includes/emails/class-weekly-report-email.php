@@ -56,49 +56,6 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	}
 
 	/**
-	 * Get recipient(s).
-	 *
-	 * Note: in case of admin notification this fx will return array of emails otherwise empty string or email of donor.
-	 *
-	 * @access public
-	 *
-	 * @param int $form_id
-	 *
-	 * @return string|array
-	 */
-	public function get_recipient( $form_id = null ) {
-		if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
-			$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
-		}
-
-		/**
-		 *  Filter the emails
-		 *
-		 * @since 1.0
-		 * @deprecated
-		 */
-		$this->recipient_email = apply_filters(
-			'give_email_reports_recipients',
-			$this->recipient_email,
-			'daily'
-		);
-
-		/**
-		 * Filter the recipients
-		 */
-		return apply_filters(
-			"give_{$this->config['id']}_get_recipients",
-			give_check_variable(
-				$this->recipient_email,
-				'empty',
-				Give()->emails->get_from_address()
-			),
-			$this,
-			$form_id
-		);
-	}
-
-	/**
 	 * Get extra setting field.
 	 *
 	 * @access public
@@ -185,6 +142,16 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 		return array_values( $settings );
 	}
 
+	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 *
+	 * @param int/null $form_id Donation form ID.
+	 */
+	public function setup_email_notification( $form_id = null ) {
+		$this->send_email_notification( array( 'form_id' => $form_id ) );
+	}
 
 	/**
 	 * Get default email message
@@ -196,9 +163,16 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	 * @return string
 	 */
 	public function get_email_message( $form_id = null ) {
+
+		if ( empty( $form_id ) ) {
+			$email_template = give_get_option( 'give_email_reports_weekly_email_template', 'report-weekly' );
+		} else {
+			$email_template = give_get_meta( $form_id, '_give_email_reports_weekly_email_template', true, 'report-weekly' );
+		}
+
 		// $message will be rendered during give_email_message filter.
 		ob_start();
-		give_get_template_part( 'emails/body', give_get_option( 'give_email_reports_weekly_email_template', 'report-weekly' ), true );
+		give_get_template_part( 'emails/body', $email_template, true );
 
 		/**
 		 * Filter the message.
@@ -211,29 +185,6 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 			$this,
 			$form_id
 		);
-	}
-
-	/**
-	 *  Setup email data.
-	 *
-	 * @access public
-	 *
-	 * @param int/null $form_id Donation form ID.
-	 */
-	public function setup_email_data( $form_id = null ) {
-		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-	}
-
-	/**
-	 * Setup email notification.
-	 *
-	 * @access public
-	 *
-	 * @param int/null $form_id Donation form ID.
-	 */
-	public function setup_email_notification( $form_id = null ) {
-		$this->setup_email_data();
-		$this->send_email_notification();
 	}
 }
 

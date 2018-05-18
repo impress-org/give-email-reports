@@ -12,21 +12,16 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 */
 	public function init() {
 		$this->load( array(
-			'id'                           => 'daily-report',
-			'label'                        => __( 'Daily Email Report', 'give-email-reports' ),
-			'description'                  => '',
-			'notification_status'          => 'disabled',
-			'notification_status_editable' => array(
-				'list_mode' => false,
-			),
-			'content_type_editable'        => false,
-			'has_preview_header'           => false,
-			'content_type'                 => 'text/html',
-			'email_template'               => 'default',
-			'has_recipient_field'          => true,
-			'form_metabox_setting'         => true,
-			'form_metabox_id'              => 'give_email_report_options_metabox_fields',
-			'default_email_subject'        => sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
+			'id'                    => 'daily-report',
+			'label'                 => __( 'Daily Email Report', 'give-email-reports' ),
+			'description'           => '',
+			'content_type_editable' => false,
+			'email_template'        => 'default',
+			'has_recipient_field'   => true,
+			'form_metabox_setting'  => true,
+			'form_metabox_id'       => 'give_email_report_options_metabox_fields',
+			'default_email_subject' => sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
+			'content_type'          => 'text/html',
 		) );
 
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
@@ -190,18 +185,36 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	}
 
 	/**
+	 * Setup email notification.
+	 *
+	 * @access public
+	 *
+	 * @param int $form_id Donation form ID.
+	 */
+	public function setup_email_notification( $form_id = null ) {
+		$this->send_email_notification( array( 'form_id' => $form_id ) );
+	}
+
+	/**
 	 * Get default email message
 	 *
 	 * @access public
 	 *
-	 * @param  int $form_id Donation form id.
+	 * @param  int $form_id
 	 *
 	 * @return string
 	 */
 	public function get_email_message( $form_id = null ) {
+
+		if ( empty( $form_id ) ) {
+			$email_template = give_get_option( 'give_email_reports_daily_email_template', 'report-daily' );
+		} else {
+			$email_template = give_get_meta( $form_id, '_give_email_reports_daily_email_template', true, 'report-daily' );
+		}
+
 		// $message will be rendered during give_email_message filter.
 		ob_start();
-		give_get_template_part( 'emails/body', give_get_option( 'give_email_reports_daily_email_template', 'report-daily' ), true );
+		give_get_template_part( 'emails/body', $email_template, true );
 
 		/**
 		 * Filter the message.
@@ -214,29 +227,6 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 			$this,
 			$form_id
 		);
-	}
-
-	/**
-	 *  Setup email data.
-	 *
-	 * @access public
-	 *
-	 * @param int $form_id Donation form ID.
-	 */
-	public function setup_email_data( $form_id = null ) {
-		Give()->emails->heading = __( 'Daily Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
-	}
-
-	/**
-	 * Setup email notification.
-	 *
-	 * @access public
-	 *
-	 * @param int $form_id Donation form ID.
-	 */
-	public function setup_email_notification( $form_id = null ) {
-		$this->setup_email_data( $form_id );
-		$this->send_email_notification();
 	}
 }
 
