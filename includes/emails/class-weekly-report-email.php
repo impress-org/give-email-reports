@@ -154,6 +154,49 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	}
 
 	/**
+	 * Get recipient(s).
+	 *
+	 * Note: in case of admin notification this fx will return array of emails otherwise empty string or email of donor.
+	 *
+	 * @access public
+	 *
+	 * @param int $form_id Donation Form id.
+	 *
+	 * @return string|array
+	 */
+	public function get_recipient( $form_id = null ) {
+		if ( $this->config['has_recipient_field'] ) {
+			$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
+		}
+
+		/**
+		 *  Filter the emails
+		 *
+		 * @since 1.0
+		 * @deprecated
+		 */
+		$this->recipient_email = apply_filters(
+			'give_email_reports_recipients',
+			$this->recipient_email,
+			'weekly'
+		);
+
+		/**
+		 * Filter the recipients
+		 */
+		return apply_filters(
+			"give_{$this->config['id']}_get_recipients",
+			give_check_variable(
+				$this->recipient_email,
+				'empty',
+				Give()->emails->get_from_address()
+			),
+			$this,
+			$form_id
+		);
+	}
+
+	/**
 	 * Get default email message
 	 *
 	 * @access public

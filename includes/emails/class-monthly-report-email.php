@@ -62,12 +62,12 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param int $form_id
+	 * @param int $form_id Donation Form id.
 	 *
 	 * @return string|array
 	 */
 	public function get_recipient( $form_id = null ) {
-		if ( empty( $this->recipient_email ) && $this->config['has_recipient_field'] ) {
+		if ( $this->config['has_recipient_field'] ) {
 			$this->recipient_email = Give_Email_Notification_Util::get_value( $this, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'recipient', $form_id );
 		}
 
@@ -80,7 +80,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 		$this->recipient_email = apply_filters(
 			'give_email_reports_recipients',
 			$this->recipient_email,
-			'daily'
+			'monthly'
 		);
 
 		/**
