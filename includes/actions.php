@@ -24,24 +24,3 @@ function give_reset_email_report_cron(){
 	wp_send_json_success();
 }
 add_action( 'wp_ajax_give_reset_email_report_cron', 'give_reset_email_report_cron' );
-
-/**
- * Schedule cron healthcheck
- *
- * @access public
- *
- * @param array $schedules Schedules.
- *
- * @return array $schedules Schedules.
- */
-function give_email_report_add_monthly_cron_schedules( $schedules ) {
-	$schedules['monthly'] = array(
-		'interval' => 2635200,
-		'display'  => __( 'Once a month', 'give-email-reports' ),
-	);
-
-	return $schedules;
-}
-
-
-add_filter( 'cron_schedules', 'give_email_report_add_monthly_cron_schedules' );

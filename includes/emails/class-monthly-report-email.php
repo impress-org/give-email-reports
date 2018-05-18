@@ -193,10 +193,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	 */
 	public function setup_email_notification( $form_id = null ) {
 		$this->send_email_notification( array( 'form_id' => $form_id ) );
-
-		if ( ! empty( $form_id ) ) {
-			$this->reschedule_monthly_email();
-		}
+		$this->reschedule_monthly_email( $form_id );
 	}
 
 	/**
@@ -236,18 +233,28 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	/**
 	 * Reschedule monthly email.
 	 *
+	 * @param int $form_id Donation form ID.
+	 *
 	 * @return false|string
 	 */
-	private function reschedule_monthly_email() {
-		$monthly = give_get_option( 'give_email_reports_monthly_email_delivery_time' );
+	private function reschedule_monthly_email( $form_id = null ) {
+
+		if ( empty( $form_id ) ) {
+			$monthly           = give_get_option( 'give_email_reports_monthly_email_delivery_time' );
+			$monthly_cron_name = 'give_email_reports_monthly_email';
+		} else {
+			$monthly           = give_get_option( 'give_email_reports_monthly_email_delivery_time' );
+			$monthly_cron_name = 'give_email_reports_monthly_per_form';
+		}
 
 		$local_time = strtotime( "{$monthly['day']} day of next month T{$monthly['time']}", current_time( 'timestamp' ) );
 		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
-		wp_schedule_single_event(
-			$gmt_time,
-			'give_email_reports_monthly_email'
-		);
+		if ( empty( $form_id ) ) {
+			wp_schedule_single_event( $gmt_time, $monthly_cron_name, array( 'form_id' => $form_id ) );
+		} else {
+			wp_schedule_single_event( $gmt_time, $monthly_cron_name );
+		}
 	}
 }
 

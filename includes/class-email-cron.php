@@ -149,7 +149,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 				}
 
 				$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
-				wp_schedule_event( $gmt_time, 'monthly', $monthly_cron_name, array( 'form_id' => $form_id ) );
+				wp_schedule_single_event( $gmt_time, $monthly_cron_name, array( 'form_id' => $form_id ) );
 			}
 		}
 	}
