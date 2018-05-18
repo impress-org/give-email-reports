@@ -251,9 +251,9 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
 		if ( empty( $form_id ) ) {
-			wp_schedule_single_event( $gmt_time, $monthly_cron_name, array( 'form_id' => $form_id ) );
-		} else {
 			wp_schedule_single_event( $gmt_time, $monthly_cron_name );
+		} else {
+			wp_schedule_single_event( $gmt_time, $monthly_cron_name, array( 'form_id' => $form_id ) );
 		}
 	}
 }
