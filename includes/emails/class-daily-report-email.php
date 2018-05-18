@@ -59,7 +59,17 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 * @return array
 	 */
 	public function get_extra_setting_fields( $form_id = null ) {
-		$default = empty( $form_id ) ? 'report-daily' : give_get_meta( $form_id, '_give_email_reports_daily_email_template', true, 'report-daily' );
+		$default = 'report-daily';
+		$option  = array(
+			'report-daily' => __( 'Daily Report', 'give-email-reports' ),
+		);
+
+		if ( ! empty( $form_id ) ) {
+			$default = give_get_meta( $form_id, '_give_email_reports_daily_email_template', true, 'report-per-form-daily' );
+			$option  = array(
+				'report-per-form-daily' => __( 'Form Daily Report', 'give-email-reports' ),
+			);
+		}
 
 		return array(
 			array(
@@ -68,9 +78,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 				'desc'    => __( 'Choose your template from the available registered template types.', 'give-email-reports' ),
 				'type'    => 'select',
 				'default' => $default,
-				'options' => array(
-					'report-daily' => __( 'Daily Report', 'give-email-reports' ),
-				),
+				'options' => $option,
 			),
 			array(
 				'id'          => 'give_email_reports_daily_email_delivery_time',

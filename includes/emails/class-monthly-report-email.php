@@ -103,21 +103,31 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param null $form_id
+	 * @param null $form_id Donation Form ID.
 	 *
-	 * @return array
+	 * @return array extra setting fields.
 	 */
 	public function get_extra_setting_fields( $form_id = null ) {
+		$default = 'report-monthly';
+		$option  = array(
+			'report-monthly' => __( 'Monthly Report', 'give-email-reports' ),
+		);
+
+		if ( ! empty( $form_id ) ) {
+			$default = give_get_meta( $form_id, '_give_email_reports_monthly_email_template', true, 'report-per-form-monthly' );
+			$option  = array(
+				'report-per-form-monthly' => __( 'Form Monthly Report', 'give-email-reports' ),
+			);
+		}
+
 		return array(
 			array(
 				'id'      => 'give_email_reports_monthly_email_template',
 				'name'    => __( 'Email template', 'give-email-reports' ),
 				'desc'    => __( 'Choose your template from the available registered template types.', 'give-email-reports' ),
 				'type'    => 'select',
-				'default' => 'report-monthly',
-				'options' => array(
-					'report-monthly' => __( 'Monthly Report', 'give-email-reports' ),
-				),
+				'default' => $default,
+				'options' => $option,
 			),
 			array(
 				'id'          => 'give_email_reports_monthly_email_delivery_time',

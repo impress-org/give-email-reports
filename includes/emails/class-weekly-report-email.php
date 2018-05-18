@@ -65,16 +65,26 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	 * @return array
 	 */
 	public function get_extra_setting_fields( $form_id = null ) {
+		$default = 'report-weekly';
+		$option  = array(
+			'report-weekly' => __( 'Weekly Report', 'give-email-reports' ),
+		);
+
+		if ( ! empty( $form_id ) ) {
+			$default = give_get_meta( $form_id, '_give_email_reports_weekly_email_template', true, 'report-per-form-weekly' );
+			$option  = array(
+				'report-per-form-weekly' => __( 'Form Weekly Report', 'give-email-reports' ),
+			);
+		}
+
 		return array(
 			array(
 				'id'      => 'give_email_reports_weekly_email_template',
 				'name'    => __( 'Email template', 'give-email-reports' ),
 				'desc'    => __( 'Choose your template from the available registered template types.', 'give-email-reports' ),
 				'type'    => 'select',
-				'default' => 'report-weekly',
-				'options' => array(
-					'report-weekly' => __( 'Weekly Report', 'give-email-reports' ),
-				),
+				'default' => $default,
+				'options' => $option,
 			),
 			array(
 				'id'          => 'give_email_reports_weekly_email_delivery_time',
