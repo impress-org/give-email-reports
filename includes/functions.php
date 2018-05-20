@@ -23,12 +23,14 @@ function give_email_reports_sort_cold_donation_forms( $a, $b ) {
 /**
  * Returns the earnings amount for the past 7 days, including today.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @return string
  */
-function give_email_reports_rolling_weekly_total() {
+function give_email_reports_rolling_weekly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, '6 days ago 00:00', 'now' ) ) );
 
 }
 
@@ -39,10 +41,10 @@ function give_email_reports_rolling_weekly_total() {
  *
  * @return string
  */
-function give_email_reports_rolling_monthly_total( $form_id ) {
+function give_email_reports_rolling_monthly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, '30 days ago 00:00', 'now' ) ) );
 
 }
 
@@ -137,12 +139,14 @@ function give_email_reports_donations( $report_period, $form_id = 0 ) {
 /**
  * Gets the total earnings for the current week.
  *
+ * @param int $form_id Donation form ID.
+ *
  * @return string
  */
-function give_email_reports_weekly_total() {
+function give_email_reports_weekly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, 'this_week' ) ) );
 }
 
 /**
