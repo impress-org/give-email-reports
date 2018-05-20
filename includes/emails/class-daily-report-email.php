@@ -220,7 +220,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 
 		// $message will be rendered during give_email_message filter.
 		ob_start();
-		give_get_template_part( 'emails/body', $email_template, true );
+		include give_get_template_part( 'emails/body', $email_template, false );
 
 		/**
 		 * Filter the message.
