@@ -35,9 +35,11 @@ function give_email_reports_rolling_weekly_total() {
 /**
  * Give Email reports monthly total.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @return string
  */
-function give_email_reports_rolling_monthly_total() {
+function give_email_reports_rolling_monthly_total( $form_id ) {
 	$stats = new Give_Payment_Stats();
 
 	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) );
@@ -75,11 +77,12 @@ function give_email_reports_currency() {
 /**
  * Returns the total earnings for a specific period.
  *
- * @param $report_period string
+ * @param string $report_period Period.
+ * @param int    $form_id Donation form ID.
  *
  * @return string
  */
-function give_email_reports_total( $report_period = 'today' ) {
+function give_email_reports_total( $report_period = 'today', $form_id = 0 ) {
 
 	give_email_reports_delete_stats_transients();
 	$stats = new Give_Payment_Stats();
@@ -99,17 +102,18 @@ function give_email_reports_total( $report_period = 'today' ) {
 			break;
 	}
 
-	return give_format_amount( $stats->get_earnings( 0, $start_date, $end_date ) );
+	return give_format_amount( $stats->get_earnings( $form_id, $start_date, $end_date ) );
 }
 
 /**
  * Returns the number of transactions for today.
  *
- * @param $report_period
+ * @param string $report_period report period.
+ * @param int    $form_id Donation Form ID.
  *
  * @return float|int
  */
-function give_email_reports_donations( $report_period ) {
+function give_email_reports_donations( $report_period, $form_id = 0 ) {
 
 	$stats = new Give_Payment_Stats();
 
@@ -127,7 +131,7 @@ function give_email_reports_donations( $report_period ) {
 			break;
 	}
 
-	return $stats->get_sales( false, $start_date, $end_date );
+	return $stats->get_sales( $form_id, $start_date, $end_date );
 }
 
 /**
@@ -144,23 +148,27 @@ function give_email_reports_weekly_total() {
 /**
  * Gets the total earnings for the current month
  *
+ * @param int $form_id Donation form ID.
+ *
  * @return string
  */
-function give_email_reports_monthly_total() {
+function give_email_reports_monthly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, 'this_month' ) ) );
 }
 
 /**
  * Gets the total earnings for the current month
  *
+ * @param int $form_id Donation form ID.
+ *
  * @return string
  */
-function give_email_reports_yearly_total() {
+function give_email_reports_yearly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, 'this_year' ) ) );
 }
 
 /**
@@ -356,13 +364,16 @@ function give_email_reports_cold_donation_forms() {
 
 
 /**
- * @param $report_period
+ * Get reports Donation difference.
+ *
+ * @param string $report_period report period.
+ * @param int    $form_id Donation Form ID.
  *
  * @return mixed
  */
-function give_email_reports_donation_difference( $report_period ) {
+function give_email_reports_donation_difference( $report_period, $form_id = 0 ) {
 
-	$current_donations = give_email_reports_donations( $report_period );
+	$current_donations = give_email_reports_donations( $report_period, $form_id );
 
 	$stats = new Give_Payment_Stats();
 
@@ -383,7 +394,7 @@ function give_email_reports_donation_difference( $report_period ) {
 			break;
 	}
 
-	$past_donations = $stats->get_sales( false, $start_date, $end_date );
+	$past_donations = $stats->get_sales( $form_id, $start_date, $end_date );
 	$difference     = $current_donations - $past_donations;
 
 	if ( $difference == 0 ) {

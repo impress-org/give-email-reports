@@ -211,7 +211,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param  int $form_id
+	 * @param  int $form_id Donation Form id.
 	 *
 	 * @return string
 	 */
