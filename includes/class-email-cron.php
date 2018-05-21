@@ -95,7 +95,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		$email_report = give_get_meta( $form_id, '_give_email_report_options', true, 'disabled' );
 
-		if ( 'enabled' === $email_report ) {
+		if ( give_is_setting_enabled( $email_report ) ) {
 			/**
 			 * Check for daily email.
 			 */
