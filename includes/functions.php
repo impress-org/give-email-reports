@@ -449,7 +449,7 @@ function give_get_email_report_recipients() {
  *
  * @param int $form_id Donation Form id.
  */
-function ger_clear_scheduled_hook_for_form( $form_id ) {
+function ger_clear_form_cron( $form_id ) {
 	$crons = array(
 		'give_email_reports_daily_per_form',
 		'give_email_reports_weekly_per_form',
@@ -471,7 +471,7 @@ function ger_clear_scheduled_hook_for_form( $form_id ) {
  *
  * @return array $form_ids List of Donation Form id.
  */
-function give_email_report_get_donation_form( $args = array() ) {
+function ger_get_donation_form( $args = array() ) {
 	global $wpdb;
 
 	$form_ids = array();
@@ -499,7 +499,7 @@ function give_email_report_get_donation_form( $args = array() ) {
 	 *
 	 * @return string $query $args Argument that need to pass in SQL query.
 	 */
-	$query = (string) apply_filters( 'give_email_report_get_donation_form_args', $query, $args );
+	$query = (string) apply_filters( 'ger_get_donation_form_args', $query, $args );
 
 	$forms = $wpdb->get_col( $query );
 
@@ -517,12 +517,12 @@ function give_email_report_get_donation_form( $args = array() ) {
  *
  * @since 1.2
  */
-function give_email_report_delete_all_form_scheduled() {
-	$form_ids = give_email_report_get_donation_form();
+function ger_delete_all_form_scheduled() {
+	$form_ids = ger_get_donation_form();
 
 	if ( ! empty( $form_ids ) ) {
 		foreach ( $form_ids as $form_id ) {
-			ger_clear_scheduled_hook_for_form( $form_id );
+			ger_clear_form_cron( $form_id );
 		}
 	}
 }
