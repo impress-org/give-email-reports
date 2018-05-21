@@ -453,7 +453,7 @@ function ger_clear_form_cron( $form_id ) {
 	$crons = array(
 		'give_email_reports_daily_per_form',
 		'give_email_reports_weekly_per_form',
-		'give_email_reports_monthly_per_form'
+		'give_email_reports_monthly_per_form',
 	);
 
 	foreach ( $crons as $cron ) {
@@ -461,26 +461,18 @@ function ger_clear_form_cron( $form_id ) {
 	}
 }
 
-
 /**
- * Get all the Donation form with email report is enable
+ * Delete all form scheduled.
  *
  * @since 1.2
- *
- * @param array $args Argument that need to pass in WP query.
- *
- * @return array $form_ids List of Donation Form id.
  */
-function ger_get_donation_form( $args = array() ) {
+function ger_delete_all_form_scheduled() {
+	$form_ids = array();
 	global $wpdb;
 
-	$form_ids = array();
-
 	$query = "
-        SELECT DISTINCT($wpdb->posts.ID) 
-        FROM $wpdb->posts 
-        LEFT JOIN $wpdb->formmeta 
-        ON $wpdb->posts.ID = $wpdb->formmeta.form_id
+        SELECT DISTINCT($wpdb->formmeta.form_id) 
+        FROM $wpdb->formmeta 
         WHERE 
         $wpdb->formmeta.meta_key = '%s'
         AND
@@ -495,11 +487,10 @@ function ger_get_donation_form( $args = array() ) {
 	 * @since 1.2
 	 *
 	 * @param string $query $args Argument that need to pass in SQL query.
-	 * @param array $args Argument that need to pass in WP query.
 	 *
 	 * @return string $query $args Argument that need to pass in SQL query.
 	 */
-	$query = (string) apply_filters( 'ger_get_donation_form_args', $query, $args );
+	$query = (string) apply_filters( 'ger_get_donation_form_args', $query );
 
 	$forms = $wpdb->get_col( $query );
 
@@ -509,22 +500,9 @@ function ger_get_donation_form( $args = array() ) {
 		}
 	}
 
-	return $form_ids;
-}
-
-/**
- * Delete all form scheduled.
- *
- * @since 1.2
- */
-function ger_delete_all_form_scheduled() {
-	$form_ids = ger_get_donation_form();
-
 	if ( ! empty( $form_ids ) ) {
 		foreach ( $form_ids as $form_id ) {
 			ger_clear_form_cron( $form_id );
 		}
 	}
 }
-
-
