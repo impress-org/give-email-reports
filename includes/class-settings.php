@@ -535,7 +535,6 @@ class Give_Email_Reports_Settings {
 		return $days;
     }
 
-
 	/**
 	 * Print cron reset button.
 	 *
@@ -545,15 +544,17 @@ class Give_Email_Reports_Settings {
 	 * @return void.
 	 */
 	function print_reset_button( $cron_name, $args = array() ) {
+		global $thepostid;
 		if ( wp_next_scheduled( $cron_name, $args ) ) : ?>
-			<button
-					class="give-reset-button button-secondary"
-					data-cron="<?php echo $cron_name; ?>"
-					data-action="give_reset_email_report_cron"
-			>
+            <button
+                    class="give-reset-button button-secondary"
+                    data-cron="<?php echo esc_attr( $cron_name ); ?>"
+                    data-form_id="<?php echo esc_attr( $thepostid ); ?>"
+                    data-action="give_reset_email_report_cron"
+            >
 				<?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?>
-			</button>
-			<span class="give-spinner spinner"></span>
+            </button>
+            <span class="give-spinner spinner"></span>
 		<?php
 		endif;
 	}

@@ -31,36 +31,37 @@ jQuery(document).ready(function ($) {
 
 	}).change();
 
-	/**
-	 * Reset button click
-	 */
-	$('.give-reset-button').on('click', function (e) {
-		e.preventDefault();
+    /**
+     * Reset button click
+     */
+    $('.give-reset-button').on('click', function (e) {
+        e.preventDefault();
 
-		var data         = {
-				action: $(this).data('action'),
-				cron  : $(this).data('cron')
-			},
-			reset_button = $(this),
-			parent       = reset_button.closest('div'),
-			spinner      = $(this).next();
-		
-		$.ajax({
-			method    : 'POST',
-			url       : ajaxurl,
-			data      : data,
-			beforeSend: function () {
-				spinner.addClass('is-active');
-			},
-			success   : function (res) {
-				if (true == res.success) {
-					parent.find('select').removeAttr('disabled');
-					reset_button.hide();
-					spinner.removeClass('is-active');
-				}
-			}
-		});
-	});
+        var data = {
+                action: $(this).data('action'),
+                cron: $(this).data('cron'),
+                form_id: $(this).data('form_id')
+            },
+            reset_button = $(this),
+            parent = reset_button.closest('div'),
+            spinner = $(this).next();
+
+        $.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            data: data,
+            beforeSend: function () {
+                spinner.addClass('is-active');
+            },
+            success: function (res) {
+                if (true == res.success) {
+                    parent.find('select').removeAttr('disabled');
+                    reset_button.hide();
+                    spinner.removeClass('is-active');
+                }
+            }
+        });
+    });
 
     // show or hide sub menu on page load
     var $selector = 'body.post-type-give_forms #give-metabox-form-data li.email_report_options_tab';
