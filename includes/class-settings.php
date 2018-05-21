@@ -20,7 +20,7 @@ class Give_Email_Reports_Settings {
 		add_action( 'give_admin_field_email_report_monthly_schedule', array( $this, 'add_email_report_monthly_schedule' ), 10, 2 );
 		add_action( 'give_form_field_email_report_monthly_schedule', array( $this, 'form_add_email_report_monthly_schedule' ), 10, 2 );
 
-		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array( $this, 'give_admin_settings_sanitize_option_email_report_emails' ), 10, 1 );
+		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array( $this, 'sanitize_settings' ), 10, 1 );
 
 		// Register schedule email reports on per form basis.
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
@@ -106,11 +106,11 @@ class Give_Email_Reports_Settings {
 	 *
 	 * @since 1.0.2
 	 *
-	 * @param array $value From $_POST['email_report_emails] value
+	 * @param array $value From $_POST['email_report_emails] value.
 	 *
 	 * @return array The modified $value From $_POST['email_report_emails] value.
 	 */
-	function give_admin_settings_sanitize_option_email_report_emails( $value = array() ) {
+	public function sanitize_settings( $value = array() ) {
 		// Check if value is not null.
 		if ( is_null( $value ) ) {
 			$value = array();
@@ -154,7 +154,7 @@ class Give_Email_Reports_Settings {
 		<tr valign="top">
 			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
 				<th scope="row" class="titledesc">
-					<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+					<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
 				</th>
 			<?php endif; ?>
 			<td class="give-forminp">
@@ -200,26 +200,19 @@ class Give_Email_Reports_Settings {
 		$cron_name = 'give_email_reports_daily_per_form';
 
 		if ( ! empty( $form_id ) ) {
-			$value     = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true );
+			$value = give_get_meta( $form_id, '_give_email_reports_daily_email_delivery_time', true );
 		}
 
-		// Setting attribute.
 		$disabled_field = $this->is_cron_enabled( $cron_name, array( 'form_id' => $form_id ) ) ? ' disabled="disabled"' : '';
 
-		// Times.
+
 		$times = $this->get_email_report_times();
 		?>
-        <fieldset
-                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-            <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
-            <select
-                    class="cmb2_select"
-                    name="<?php echo $field['id']; ?>"
-                    id="<?php echo $field['id']; ?>"
-				<?php echo $disabled_field; ?>
-            >
+        <fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+            <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
+            <select class="cmb2_select" name="<?php echo esc_attr( $field['id'] ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" <?php echo $disabled_field; ?> >
 				<?php
-				//Time select options.
+				// Time select options.
 				foreach ( $times as $military => $time ) {
 					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
 				} ?>
@@ -228,7 +221,7 @@ class Give_Email_Reports_Settings {
 			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
 
             <p class="give-field-description">
-				<?php echo $field['desc']; ?>
+				<?php echo esc_html( $field['desc'] ); ?>
             </p>
         </fieldset>
 		<?php
@@ -273,11 +266,13 @@ class Give_Email_Reports_Settings {
 		ob_start();
 		?>
         <tr valign="top">
+
 			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
                 <th scope="row" class="titledesc">
                     <label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
                 </th>
 			<?php endif; ?>
+
             <td class="give-forminp">
                 <div class="give-email-reports-weekly">
                     <label class="hidden"
@@ -324,7 +319,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add weekly email reports preview.
 	 *
-	 * @param object   $field Custom fields for weekly schedule on per form basis.
+	 * @param object $field Custom fields for weekly schedule on per form basis.
 	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_weekly_schedule( $field, $form_id = null ) {
@@ -332,7 +327,7 @@ class Give_Email_Reports_Settings {
 		$cron_name = 'give_email_reports_weekly_per_form';
 
 		if ( ! empty( $form_id ) ) {
-			$value     = give_get_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', true );
+			$value = give_get_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', true );
 		}
 
 		// Setting attribute.
@@ -346,24 +341,22 @@ class Give_Email_Reports_Settings {
         <fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
             <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
-            "<?php echo $disabled_field; ?>>
-	        <?php
-	        // Day select dropdown.
-            $selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
-	        foreach ( $days as $day_code => $day ) {
-		        echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
-	        } ?>
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>"<?php echo $disabled_field; ?>>
+			<?php
+			// Day select dropdown.
+			$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+			foreach ( $days as $day_code => $day ) {
+				echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
+			} ?>
             </select>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
-                    id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
-		        <?php
-		        // Time select options.
-                $selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
-		        foreach ( $times as $military => $time ) {
-			        echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
-		        } ?>
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>" id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+				<?php
+				// Time select options.
+				$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
+				foreach ( $times as $military => $time ) {
+					echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
+				} ?>
             </select>
 
 			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
@@ -445,8 +438,8 @@ class Give_Email_Reports_Settings {
 	 *
 	 * @param object $field
 	 * @param array $form_id Donation form id
-     *
-     * @return void
+	 *
+	 * @return void
 	 */
 	public function form_add_email_report_monthly_schedule( $field, $form_id ) {
 		$value     = '';
