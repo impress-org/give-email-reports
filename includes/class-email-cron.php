@@ -79,7 +79,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @param int $form_id Donation Form id.
 	 */
 	public function before_delete_post( $form_id ) {
-		give_email_report_clear_scheduled_hook_for_form( $form_id );
+		ger_clear_scheduled_hook_for_form( $form_id );
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 */
 	public function schedule_form_email( $form_id ) {
 
-		give_email_report_clear_scheduled_hook_for_form( $form_id );
+		ger_clear_scheduled_hook_for_form( $form_id );
 
 		$email_report = give_get_meta( $form_id, '_give_email_report_options', true, 'disabled' );
 
