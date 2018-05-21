@@ -18,6 +18,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 			'content_type_editable' => false,
 			'has_recipient_field'   => true,
 			'form_metabox_setting'  => true,
+			'notification_status'   => 'enabled',
 			'form_metabox_id'       => 'give_email_report_options_metabox_fields',
 			'default_email_subject' => sprintf( __( 'Daily Donation Report for %1$s', 'give-email-reports' ), get_bloginfo( 'name' ) ),
 			'content_type'          => 'text/html',
@@ -26,6 +27,29 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		add_filter( 'give_email_notification_setting_fields', array( $this, 'unset_email_setting_field' ), 10, 2 );
 		add_action( 'give_email_reports_daily_email', array( $this, 'setup_email_notification' ), 10, 0 );
 		add_action( 'give_email_reports_daily_per_form', array( $this, 'setup_email_notification' ), 10, 1 );
+	}
+
+	/**
+	 * Get notification status.
+	 *
+	 * @since  2.0
+	 * @access public
+	 *
+	 * @param int $form_id Donation Form ID.
+	 *
+	 * @return bool
+	 */
+	public function get_notification_status( $form_id = null ) {
+		$notification_status = empty( $form_id )
+			? give_get_option( "{$this->config['id']}_notification", $this->config['notification_status'] )
+			: give_get_meta( $form_id, Give_Email_Setting_Field::get_prefix( $this, $form_id ) . 'notification', true, 'disabled' );
+
+		/**
+		 * Filter the notification status.
+		 *
+		 * @since 1.8
+		 */
+		return apply_filters( "give_{$this->config['id']}_get_notification_status", $notification_status, $this, $form_id );
 	}
 
 	/**
@@ -155,7 +179,29 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 * @param int $form_id Donation form ID.
 	 */
 	public function setup_email_notification( $form_id = null ) {
+
+		if ( ! empty( $form_id ) ) {
+			add_filter( 'give_daily-report_is_email_notification_active', array( $this, 'is_email_notification_active' ), 10, 3 );
+		}
+
 		$this->send_email_notification( array( 'form_id' => $form_id ) );
+	}
+
+	/**
+	 * Filter to modify email notification is the email is send on per form basis.
+	 *
+	 * @param bool                    $notification_status True if notification is enable and false when disable.
+	 * @param Give_Email_Notification $email Class instances Give_Email_Notification.
+	 * @param int                     $form_id Donation Form ID.
+	 *
+	 * @return bool $notification_status True if notification is enable and false when disable.
+	 */
+	public function is_email_notification_active( $notification_status, $email, $form_id ) {
+		if ( empty( $form_id ) ) {
+			return $notification_status;
+		}
+
+		return true;
 	}
 
 	/**
@@ -180,11 +226,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		 * @since 1.0
 		 * @deprecated
 		 */
-		$this->recipient_email = apply_filters(
-			'give_email_reports_recipients',
-			$this->recipient_email,
-			'daily'
-		);
+		$this->recipient_email = apply_filters( 'give_email_reports_recipients', $this->recipient_email, 'daily' );
 
 		/**
 		 * Filter the recipients
@@ -206,7 +248,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 *
 	 * @access public
 	 *
-	 * @param  int $form_id
+	 * @param  int $form_id Donation Form ID.
 	 *
 	 * @return string
 	 */
@@ -227,12 +269,7 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 		 *
 		 * @since 2.0
 		 */
-		return apply_filters(
-			"give_{$this->config['id']}_get_email_message",
-			ob_get_clean(),
-			$this,
-			$form_id
-		);
+		return apply_filters( "give_{$this->config['id']}_get_email_message", ob_get_clean(), $this, $form_id );
 	}
 }
 
