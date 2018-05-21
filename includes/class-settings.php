@@ -38,38 +38,21 @@ class Give_Email_Reports_Settings {
 	 * @return void
 	 */
 	public function save( $form_id ) {
+		$settings = array(
+			'give_email_reports_daily_email_template',
+			'give_email_reports_daily_email_delivery_time',
+			'give_email_reports_weekly_email_template',
+			'give_email_reports_weekly_email_delivery_time',
+			'give_email_reports_monthly_email_template',
+			'give_email_reports_monthly_email_delivery_time'
+		);
 
-		/**
-		 * For saving the daily email report.
-		 */
-		if ( isset( $_POST['give_email_reports_daily_email_template'] ) ) {
-			give_update_meta( $form_id, '_give_email_reports_daily_email_template', give_clean( $_POST['give_email_reports_daily_email_template'] ) );
-		}
+		foreach ( $settings as $setting ) {
+			if ( ! isset( $_POST[ $setting ] ) ) {
+				continue;
+			}
 
-		if ( isset( $_POST['give_email_reports_daily_email_delivery_time'] ) ) {
-			give_update_meta( $form_id, '_give_email_reports_daily_email_delivery_time', give_clean( $_POST['give_email_reports_daily_email_delivery_time'] ) );
-		}
-
-		/**
-		 * For saving the weekly email report.
-		 */
-		if ( isset( $_POST['give_email_reports_weekly_email_template'] ) ) {
-			give_update_meta( $form_id, '_give_email_reports_weekly_email_template', give_clean( $_POST['give_email_reports_weekly_email_template'] ) );
-		}
-
-		if ( isset( $_POST['give_email_reports_weekly_email_delivery_time'] ) ) {
-			give_update_meta( $form_id, '_give_email_reports_weekly_email_delivery_time', give_clean( $_POST['give_email_reports_weekly_email_delivery_time'] ) );
-		}
-
-		/**
-		 * For saving the monthly email report.
-		 */
-		if ( isset( $_POST['give_email_reports_monthly_email_template'] ) ) {
-			give_update_meta( $form_id, '_give_email_reports_monthly_email_template', give_clean( $_POST['give_email_reports_monthly_email_template'] ) );
-		}
-
-		if ( isset( $_POST['give_email_reports_monthly_email_delivery_time'] ) ) {
-			give_update_meta( $form_id, '_give_email_reports_monthly_email_delivery_time', give_clean( $_POST['give_email_reports_monthly_email_delivery_time'] ) );
+			give_update_meta( $form_id, "_{$setting}", give_clean( $_POST[ $setting ] ) );
 		}
 	}
 
