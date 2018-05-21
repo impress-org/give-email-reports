@@ -124,7 +124,7 @@ class Give_Email_Reports_Settings {
 	 *
 	 * @access public
 	 *
-	 * @param $emails
+	 * @param string $emails emails ID.
 	 *
 	 * @return array
 	 */
@@ -139,8 +139,8 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param object $field
-	 * @param string $value
+	 * @param object $field Email fields.
+	 * @param string $value field value.
 	 */
 	public function add_email_report_daily_schedule( $field, $value ) {
 		// Setting attribute.
@@ -192,7 +192,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param object   $field Custom fields for daily schedule on per form basis.
+	 * @param object $field Custom fields for daily schedule on per form basis.
 	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
@@ -208,9 +208,11 @@ class Give_Email_Reports_Settings {
 
 		$times = $this->get_email_report_times();
 		?>
-        <fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+        <fieldset
+                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
             <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
-            <select class="cmb2_select" name="<?php echo esc_attr( $field['id'] ); ?>" id="<?php echo esc_attr( $field['id'] ); ?>" <?php echo $disabled_field; ?> >
+            <select class="cmb2_select" name="<?php echo esc_attr( $field['id'] ); ?>"
+                    id="<?php echo esc_attr( $field['id'] ); ?>" <?php echo $disabled_field; ?> >
 				<?php
 				// Time select options.
 				foreach ( $times as $military => $time ) {
@@ -228,8 +230,8 @@ class Give_Email_Reports_Settings {
 	}
 
 	/**
-     * Get all the day name.
-     *
+	 * Get all the day name.
+	 *
 	 * @return array $days get days.
 	 */
 	public function get_days() {
@@ -338,10 +340,13 @@ class Give_Email_Reports_Settings {
 
 		$days = $this->get_days();
 		?>
-        <fieldset class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+        <fieldset
+                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
             <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>"<?php echo $disabled_field; ?>>
+            <select class="cmb2_select"
+                    name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
+            "<?php echo $disabled_field; ?>>
 			<?php
 			// Day select dropdown.
 			$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
@@ -350,7 +355,8 @@ class Give_Email_Reports_Settings {
 			} ?>
             </select>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>" id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+                    id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Time select options.
 				$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
@@ -496,20 +502,20 @@ class Give_Email_Reports_Settings {
 
 	/**
 	 * Get days for monthly email report
-     *
-     * @since 1.2.
-     *
-     * @return array $days Monthly days
+	 *
+	 * @since 1.2.
+	 *
+	 * @return array $days Monthly days
 	 */
 	public function monthly_days() {
 		// Days.
 		$days = array(
 			'first' => __( 'First Day', 'give-email-reports' ),
-			'last' => __( 'Last Day', 'give-email-reports' ),
+			'last'  => __( 'Last Day', 'give-email-reports' ),
 		);
 
 		return $days;
-    }
+	}
 
 	/**
 	 * Print cron reset button.
