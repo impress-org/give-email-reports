@@ -254,11 +254,10 @@ class Give_Daily_Email_Notification extends Give_Email_Notification {
 	 */
 	public function get_email_message( $form_id = null ) {
 
-		if ( empty( $form_id ) ) {
-			$email_template = give_get_option( 'give_email_reports_daily_email_template', 'report-daily' );
-		} else {
-			$email_template = give_get_meta( $form_id, '_give_email_reports_daily_email_template', true, 'report-daily' );
-		}
+		$email_template = empty( $form_id )
+			? give_get_option( 'give_email_reports_daily_email_template', 'report-daily' )
+			: give_get_meta( $form_id, '_give_email_reports_daily_email_template', true, 'report-daily' );
+
 
 		// $message will be rendered during give_email_message filter.
 		ob_start();
