@@ -34,7 +34,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	/**
 	 * Get notification status.
 	 *
-	 * @since  2.0
+	 * @since  1.2
 	 * @access public
 	 *
 	 * @param int $form_id Donation Form ID.
@@ -57,7 +57,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	/**
 	 * Register email settings to form metabox.
 	 *
-	 * @since  2.0
+	 * @since  1.2
 	 * @access public
 	 *
 	 * @param array $settings meta box setting.
@@ -120,7 +120,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 	/**
 	 * Fire action to add report weekly schedule
 	 *
-	 * @since 1.2.1
+	 * @since 1.2
 	 *
 	 * @param array $field custom field.
 	 */
@@ -133,7 +133,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 		/**
 		 * Fire action after before email send.
 		 *
-		 * @since 1.2.1
+		 * @since 1.2
 		 */
 		do_action( 'give_form_field_email_report_weekly_schedule', $field, $form_id );
 	}
@@ -272,7 +272,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 		/**
 		 * Filter the message.
 		 *
-		 * @since 2.0
+		 * @since 1.2
 		 */
 		return apply_filters(
 			"give_{$this->config['id']}_get_email_message",

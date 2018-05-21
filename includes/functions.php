@@ -445,7 +445,7 @@ function give_get_email_report_recipients() {
 /**
  * Clear Email report hook that are being scheduled to that form.
  *
- * @since 1.2.1
+ * @since 1.2
  *
  * @param int $form_id Donation Form id.
  */
@@ -467,7 +467,7 @@ function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
 /**
  * Get all the Donation form with email report is enable
  *
- * @since 1.2.1
+ * @since 1.2
  *
  * @param array $args Argument that need to pass in WP query.
  *
@@ -487,7 +487,7 @@ function give_email_report_get_donation_form( $args = array() ) {
 	/**
 	 * Filter to modify get donation form who email report is being scheduled.
 	 *
-	 * @since 1.2.1
+	 * @since 1.2
 	 *
 	 * @param array $args $args Argument that need to pass in WP query.
 	 *
@@ -508,7 +508,7 @@ function give_email_report_get_donation_form( $args = array() ) {
 /**
  * Delete all form scheduled.
  *
- * @since 1.2.1
+ * @since 1.2
  */
 function give_email_report_delete_all_form_scheduled() {
 	$form_ids = give_email_report_get_donation_form();

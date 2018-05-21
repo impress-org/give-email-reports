@@ -74,7 +74,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	/**
 	 * Delete scheduled hook once donation form is deleted
 	 *
-	 * @since 1.2.1
+	 * @since 1.2
 	 *
 	 * @param int $form_id Donation Form id.
 	 */
@@ -85,7 +85,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 	/**
 	 * Schedule the email report for Donation Form
 	 *
-	 * @since 1.2.1
+	 * @since 1.2
 	 *
 	 * @param int $form_id Donation Form id.
 	 */

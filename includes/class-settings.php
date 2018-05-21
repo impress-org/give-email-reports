@@ -31,7 +31,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Save Donation form meta value in Email report
 	 *
-	 * @since 1.2.1
+	 * @since 1.2
 	 *
 	 * @param int $form_id Donation Form id.
 	 *
@@ -76,7 +76,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Add Per Form Email report setting.
 	 *
-	 * @since 1.2.1
+	 * @since 1.2
 	 *
 	 * @param array $settings Donation Form edit setting.
 	 * @param array $form_id Donation Form ID.
@@ -105,7 +105,7 @@ class Give_Email_Reports_Settings {
 			/**
 			 * Filter the email notification settings.
 			 *
-			 * @since 1.2.1
+			 * @since 1.2
 			 *
 			 * @param array $sub_menu Sub menu option for email report setting
 			 * @param array $form_id Donation Form ID.
