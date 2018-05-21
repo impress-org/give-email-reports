@@ -513,7 +513,6 @@ function give_email_report_get_donation_form( $args = array() ) {
 function give_email_report_delete_all_form_scheduled() {
 	$form_ids = give_email_report_get_donation_form();
 
-	error_log( print_r( $form_ids, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
 	if ( ! empty( $form_ids ) ) {
 		foreach ( $form_ids as $form_id ) {
 			give_email_report_clear_scheduled_hook_for_form( $form_id );
