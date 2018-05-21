@@ -124,7 +124,7 @@ class Give_Email_Reports_Settings {
 	 *
 	 * @access public
 	 *
-	 * @param string $emails emails ID.
+	 * @param array $emails emails ID.
 	 *
 	 * @return array
 	 */
