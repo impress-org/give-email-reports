@@ -227,6 +227,7 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 			add_filter( 'give_monthly-report_is_email_notification_active', array( $this, 'is_email_notification_active' ), 10, 3 );
 		}
 
+		$this->setup_email_data();
 		$this->send_email_notification( array( 'form_id' => $form_id ) );
 		$this->reschedule_monthly_email( $form_id );
 	}
@@ -246,6 +247,15 @@ class Give_Monthly_Email_Notification extends Give_Email_Notification {
 		}
 
 		return true;
+	}
+
+	/**
+	 *  Setup email data.
+	 *
+	 * @access public
+	 */
+	public function setup_email_data() {
+		Give()->emails->heading = __( 'Monthly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 	}
 
 	/**

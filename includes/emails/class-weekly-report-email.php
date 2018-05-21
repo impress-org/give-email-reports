@@ -185,6 +185,7 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 			add_filter( 'give_weekly-report_is_email_notification_active', array( $this, 'is_email_notification_active' ), 10, 3 );
 		}
 
+		$this->setup_email_data();
 		$this->send_email_notification( array( 'form_id' => $form_id ) );
 	}
 
@@ -246,6 +247,15 @@ class Give_Weekly_Email_Notification extends Give_Email_Notification {
 			$this,
 			$form_id
 		);
+	}
+
+	/**
+	 *  Setup email data.
+	 *
+	 * @access public
+	 */
+	public function setup_email_data() {
+		Give()->emails->heading = __( 'Weekly Donation Report', 'give-email-reports' ) . '<br>' . get_bloginfo( 'name' );
 	}
 
 	/**
