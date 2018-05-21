@@ -461,6 +461,7 @@ function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
 	}
 }
 
+
 /**
  * Get all the Donation form with email report is enable
  *
@@ -471,31 +472,40 @@ function give_email_report_clear_scheduled_hook_for_form( $form_id ) {
  * @return array $form_ids List of Donation Form id.
  */
 function give_email_report_get_donation_form( $args = array() ) {
+	global $wpdb;
+
 	$form_ids = array();
 
-	$default = array(
-		'post_type'        => 'give_forms',
-		'posts_per_page'   => - 1,
-		'meta_key'         => '_give_email_report_options',
-		'meta_value'       => 'enabled',
-		'suppress_filters' => false,
-	);
+	$query = "
+        SELECT DISTINCT($wpdb->posts.ID) 
+        FROM $wpdb->posts 
+        LEFT JOIN $wpdb->formmeta 
+        ON $wpdb->posts.ID = $wpdb->formmeta.form_id
+        WHERE 
+        $wpdb->formmeta.meta_key = '%s'
+        AND
+        $wpdb->formmeta.meta_value = '%s'
+    ";
+
+	$query = $wpdb->prepare( $query, '_give_email_report_options', 'enabled' );
 
 	/**
 	 * Filter to modify get donation form who email report is being scheduled.
 	 *
 	 * @since 1.2
 	 *
-	 * @param array $args $args Argument that need to pass in WP query.
+	 * @param string $query $args Argument that need to pass in SQL query.
+	 * @param array $args Argument that need to pass in WP query.
 	 *
-	 * @return array $args $args Argument that need to pass in WP query.
+	 * @return string $query $args Argument that need to pass in SQL query.
 	 */
-	$args = (array) apply_filters( 'give_email_report_get_donation_form_args', wp_parse_args( $default, $args ) );
+	$query = (string) apply_filters( 'give_email_report_get_donation_form_args', $query, $args );
 
-	$posts = get_posts( $args );
-	if ( ! empty( $posts ) ) {
-		foreach ( $posts as $post ) {
-			$form_ids[] = $post->ID;
+	$forms = $wpdb->get_col( $query );
+
+	if ( ! empty( $forms ) ) {
+		foreach ( $forms as $form ) {
+			$form_ids[] = absint( $form );
 		}
 	}
 
