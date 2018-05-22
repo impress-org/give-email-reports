@@ -201,7 +201,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
-			wp_reschedule_event(
+			wp_schedule_event(
 				$gmt_time,
 				'daily',
 				'give_email_reports_daily_email'
