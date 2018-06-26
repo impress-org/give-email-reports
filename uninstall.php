@@ -14,3 +14,4 @@ wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
 
 // delete all scheduled for form.
 ger_delete_all_form_scheduled();
+ger_delete_settings();
