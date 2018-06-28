@@ -23,24 +23,28 @@ function give_email_reports_sort_cold_donation_forms( $a, $b ) {
 /**
  * Returns the earnings amount for the past 7 days, including today.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @return string
  */
-function give_email_reports_rolling_weekly_total() {
+function give_email_reports_rolling_weekly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '6 days ago 00:00', 'now' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, '6 days ago 00:00', 'now' ) ) );
 
 }
 
 /**
  * Give Email reports monthly total.
  *
+ * @param int $form_id Donation Form ID.
+ *
  * @return string
  */
-function give_email_reports_rolling_monthly_total() {
+function give_email_reports_rolling_monthly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, '30 days ago 00:00', 'now' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, '30 days ago 00:00', 'now' ) ) );
 
 }
 
@@ -75,11 +79,12 @@ function give_email_reports_currency() {
 /**
  * Returns the total earnings for a specific period.
  *
- * @param $report_period string
+ * @param string $report_period Period.
+ * @param int    $form_id Donation form ID.
  *
  * @return string
  */
-function give_email_reports_total( $report_period = 'today' ) {
+function give_email_reports_total( $report_period = 'today', $form_id = 0 ) {
 
 	give_email_reports_delete_stats_transients();
 	$stats = new Give_Payment_Stats();
@@ -99,17 +104,18 @@ function give_email_reports_total( $report_period = 'today' ) {
 			break;
 	}
 
-	return give_format_amount( $stats->get_earnings( 0, $start_date, $end_date ) );
+	return give_format_amount( $stats->get_earnings( $form_id, $start_date, $end_date ) );
 }
 
 /**
  * Returns the number of transactions for today.
  *
- * @param $report_period
+ * @param string $report_period report period.
+ * @param int    $form_id Donation Form ID.
  *
  * @return float|int
  */
-function give_email_reports_donations( $report_period ) {
+function give_email_reports_donations( $report_period, $form_id = 0 ) {
 
 	$stats = new Give_Payment_Stats();
 
@@ -127,40 +133,46 @@ function give_email_reports_donations( $report_period ) {
 			break;
 	}
 
-	return $stats->get_sales( false, $start_date, $end_date );
+	return $stats->get_sales( $form_id, $start_date, $end_date );
 }
 
 /**
  * Gets the total earnings for the current week.
  *
+ * @param int $form_id Donation form ID.
+ *
  * @return string
  */
-function give_email_reports_weekly_total() {
+function give_email_reports_weekly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_week' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, 'this_week' ) ) );
 }
 
 /**
  * Gets the total earnings for the current month
  *
+ * @param int $form_id Donation form ID.
+ *
  * @return string
  */
-function give_email_reports_monthly_total() {
+function give_email_reports_monthly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_month' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, 'this_month' ) ) );
 }
 
 /**
  * Gets the total earnings for the current month
  *
+ * @param int $form_id Donation form ID.
+ *
  * @return string
  */
-function give_email_reports_yearly_total() {
+function give_email_reports_yearly_total( $form_id = 0 ) {
 	$stats = new Give_Payment_Stats();
 
-	return give_currency_filter( give_format_amount( $stats->get_earnings( 0, 'this_year' ) ) );
+	return give_currency_filter( give_format_amount( $stats->get_earnings( $form_id, 'this_year' ) ) );
 }
 
 /**
@@ -356,13 +368,16 @@ function give_email_reports_cold_donation_forms() {
 
 
 /**
- * @param $report_period
+ * Get reports Donation difference.
+ *
+ * @param string $report_period report period.
+ * @param int    $form_id Donation Form ID.
  *
  * @return mixed
  */
-function give_email_reports_donation_difference( $report_period ) {
+function give_email_reports_donation_difference( $report_period, $form_id = 0 ) {
 
-	$current_donations = give_email_reports_donations( $report_period );
+	$current_donations = give_email_reports_donations( $report_period, $form_id );
 
 	$stats = new Give_Payment_Stats();
 
@@ -383,7 +398,7 @@ function give_email_reports_donation_difference( $report_period ) {
 			break;
 	}
 
-	$past_donations = $stats->get_sales( false, $start_date, $end_date );
+	$past_donations = $stats->get_sales( $form_id, $start_date, $end_date );
 	$difference     = $current_donations - $past_donations;
 
 	if ( $difference == 0 ) {
@@ -425,4 +440,69 @@ function give_get_email_report_recipients() {
 	$emails = ! empty( $email_option ) && strlen( trim( $email_option ) ) > 0 ? explode( "\n", $email_option ) : get_bloginfo( 'admin_email' );
 
 	return apply_filters( 'give_get_email_report_recipients', $emails );
+}
+
+/**
+ * Clear Email report hook that are being scheduled to that form.
+ *
+ * @since 1.2
+ *
+ * @param int $form_id Donation Form id.
+ */
+function ger_clear_form_cron( $form_id ) {
+	$crons = array(
+		'give_email_reports_daily_per_form',
+		'give_email_reports_weekly_per_form',
+		'give_email_reports_monthly_per_form',
+	);
+
+	foreach ( $crons as $cron ) {
+		wp_clear_scheduled_hook( $cron, array( 'form_id' => $form_id ) );
+	}
+}
+
+/**
+ * Delete all form scheduled.
+ *
+ * @since 1.2
+ */
+function ger_delete_all_form_scheduled() {
+	$form_ids = array();
+	global $wpdb;
+
+	$query = "
+        SELECT DISTINCT($wpdb->formmeta.form_id) 
+        FROM $wpdb->formmeta 
+        WHERE 
+        $wpdb->formmeta.meta_key = '%s'
+        AND
+        $wpdb->formmeta.meta_value = '%s'
+    ";
+
+	$query = $wpdb->prepare( $query, '_give_email_report_options', 'enabled' );
+
+	/**
+	 * Filter to modify get donation form who email report is being scheduled.
+	 *
+	 * @since 1.2
+	 *
+	 * @param string $query $args Argument that need to pass in SQL query.
+	 *
+	 * @return string $query $args Argument that need to pass in SQL query.
+	 */
+	$query = (string) apply_filters( 'ger_get_donation_form_args', $query );
+
+	$forms = $wpdb->get_col( $query );
+
+	if ( ! empty( $forms ) ) {
+		foreach ( $forms as $form ) {
+			$form_ids[] = absint( $form );
+		}
+	}
+
+	if ( ! empty( $form_ids ) ) {
+		foreach ( $form_ids as $form_id ) {
+			ger_clear_form_cron( $form_id );
+		}
+	}
 }
