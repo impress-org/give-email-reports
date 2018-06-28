@@ -37,12 +37,12 @@ function ger_delete_all_form_scheduled() {
 	global $wpdb;
 
 	$query = "
-        SELECT DISTINCT {$wpdb->prefix}formmeta.form_id
-        FROM {$wpdb->prefix}formmeta 
+        SELECT DISTINCT {$wpdb->prefix}give_formmeta.form_id 
+        FROM {$wpdb->prefix}give_formmeta 
         WHERE 
-        {$wpdb->prefix}formmeta.meta_key = '%s'
+        {$wpdb->prefix}give_formmeta.meta_key = '%s'
         AND
-        {$wpdb->prefix}formmeta.meta_value = '%s'
+        {$wpdb->prefix}give_formmeta.meta_value = '%s'
     ";
 
 	$query = $wpdb->prepare( $query, '_give_email_report_options', 'enabled' );
@@ -93,3 +93,4 @@ function ger_delete_settings() {
 		give_delete_option( "give_email_reports_{$period}_email_delivery_time" );
 	}
 }
+
