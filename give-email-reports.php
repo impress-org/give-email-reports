@@ -250,6 +250,13 @@ function Give_Email_Reports_load() {
 
 add_action( 'plugins_loaded', 'Give_Email_Reports_load' );
 
+/**
+ * This file is included outside the `Give_Email_Reports` class because during
+ * deactivation of Give Core, it will also deactivate Give Email Reports plugin
+ * and the ger_delete_all_form_scheduled() function is dependent on the below file
+ * which runs on the deactivation hook.
+ */
+require_once GIVE_EMAIL_REPORTS_DIR . 'includes/give-independent-functions.php';
 
 /**
  * Unschedule the cron job for the daily email if the plugin is deactivated.
