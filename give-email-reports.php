@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Email Reports
  * Plugin URI:      https://givewp.com/addons/email-reports/
  * Description:     Receive comprehensive donations reports via email.
- * Version:         1.1.1
+ * Version:         1.1.2
  * Author:          WordImpress
  * Author URI:      https://wordimpress.com
  * Text Domain:     give-email-reports
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
-	define( 'GIVE_EMAIL_REPORTS_VERSION', '1.1.1' );
+	define( 'GIVE_EMAIL_REPORTS_VERSION', '1.1.2' );
 }
 
 // Min. Give Core version.
@@ -260,6 +260,9 @@ function give_email_reports_unschedule_emails() {
 	wp_clear_scheduled_hook( 'give_email_reports_daily_email' );
 	wp_clear_scheduled_hook( 'give_email_reports_weekly_email' );
 	wp_clear_scheduled_hook( 'give_email_reports_monthly_email' );
+
+	// delete all scheduled for form.
+	ger_delete_all_form_scheduled();
 }
 
 // Remove from cron if plugin is deactivated.

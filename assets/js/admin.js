@@ -31,35 +31,57 @@ jQuery(document).ready(function ($) {
 
 	}).change();
 
-	/**
-	 * Reset button click
-	 */
-	$('.give-reset-button').on('click', function (e) {
-		e.preventDefault();
+    /**
+     * Reset button click
+     */
+    $('.give-reset-button').on('click', function (e) {
+        e.preventDefault();
 
-		var data         = {
-				action: $(this).data('action'),
-				cron  : $(this).data('cron')
-			},
-			reset_button = $(this),
-			parent       = reset_button.closest('div'),
-			spinner      = $(this).next();
-		
-		$.ajax({
-			method    : 'POST',
-			url       : ajaxurl,
-			data      : data,
-			beforeSend: function () {
-				spinner.addClass('is-active');
-			},
-			success   : function (res) {
-				if (true == res.success) {
-					parent.find('select').removeAttr('disabled');
-					reset_button.hide();
-					spinner.removeClass('is-active');
-				}
-			}
-		});
-	});
+        var data = {
+                action: $(this).data('action'),
+                cron: $(this).data('cron'),
+                form_id: $(this).data('form_id')
+            },
+            reset_button = $(this),
+            parent = reset_button.closest('div'),
+            spinner = $(this).next();
+
+        $.ajax({
+            method: 'POST',
+            url: ajaxurl,
+            data: data,
+            beforeSend: function () {
+                spinner.addClass('is-active');
+            },
+            success: function (res) {
+                if (true == res.success) {
+                    parent.find('select').removeAttr('disabled');
+                    reset_button.hide();
+                    spinner.removeClass('is-active');
+                }
+            }
+        });
+    });
+
+    // show or hide sub menu on page load
+    var $selector = 'body.post-type-give_forms #give-metabox-form-data li.email_report_options_tab';
+    setTimeout(function () {
+        if ('enabled' === $('body.post-type-give_forms input[name="_give_email_report_options"]:checked').val()) {
+            $($selector + ' ul').removeClass('give-hidden');
+        } else {
+            $($selector + ' ul').addClass('give-hidden');
+            $($selector + ' ul').removeClass('give-metabox-sub-tabs');
+        }
+    }, 100);
+
+    // show or hide sub menu on donation form page.
+    $('body.post-type-give_forms').on('change', 'input[name="_give_email_report_options"]', function () {
+        $($selector + ' ul').addClass('give-hidden');
+        $($selector + ' ul').removeClass('give-metabox-sub-tabs');
+        if ('enabled' === $(this).val()) {
+            $($selector + ' ul').removeClass('give-hidden');
+            $($selector + ' ul').addClass('give-metabox-sub-tabs');
+        }
+    });
 
 });
