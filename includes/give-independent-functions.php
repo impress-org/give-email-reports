@@ -72,3 +72,25 @@ function ger_delete_all_form_scheduled() {
 		}
 	}
 }
+
+/**
+ * Deletes all settings created by this plugin.
+ *
+ * @since 1.2
+ */
+function ger_delete_settings() {
+	$periods = array(
+		'daily',
+		'weekly',
+		'monthly',
+	);
+
+	foreach ( $periods as $period ) {
+		give_delete_option( "{$period}-report_notification" );
+		give_delete_option( "{$period}-report_email_subject" );
+		give_delete_option( "{$period}-report_email_header" );
+		give_delete_option( "give_email_reports_{$period}_email_template" );
+		give_delete_option( "give_email_reports_{$period}_email_delivery_time" );
+	}
+}
+
