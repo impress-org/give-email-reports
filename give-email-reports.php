@@ -22,12 +22,12 @@ if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
 
 // Min. Give Core version.
 if ( ! defined( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION' ) ) {
-	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '2.0.0' );
+	define( 'GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION', '2.1.7' );
 }
 
 // Plugin path.
 if ( ! defined( 'GIVE_EMAIL_REPORTS_FILE' ) ) {
-	define( 'GIVE_EMAIL_REPORTS_FILE',  __FILE__ );
+	define( 'GIVE_EMAIL_REPORTS_FILE', __FILE__ );
 }
 
 // Plugin path.
