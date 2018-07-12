@@ -31,6 +31,10 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ## Changelog ##
 
+### 1.1.2: July 5th, 2018 ###
+* New: Added uninstall.php so the plugin will delete all its settings when deleted.
+* Fix: Improvements to report queries and resolved individual form stat discrepancies.
+
 ### 1.1.1: January 23rd, 2018 ###
 * Fix: There was an issue with saving multiple or modifying the report email's recipients. Saving would appear to have to effect modifying the field and only the admin email could be used. Now you can enter any one or additional recipients and save as expected.
 

@@ -24,127 +24,167 @@ msgstr ""
 msgid "%s Donations Report"
 msgstr ""
 
-#: includes/class-settings.php:93, includes/class-settings.php:172, includes/class-settings.php:239
+#: includes/class-settings.php:73, includes/give-email-reports-activation.php:73
+msgid "Email Reports"
+msgstr ""
+
+#: includes/class-settings.php:77
+msgid "Email Report Options"
+msgstr ""
+
+#: includes/class-settings.php:82, includes/emails/class-daily-report-email.php:154, includes/emails/class-monthly-report-email.php:198, includes/emails/class-weekly-report-email.php:156
+msgid "Enabled"
+msgstr ""
+
+#: includes/class-settings.php:83, includes/emails/class-daily-report-email.php:155, includes/emails/class-monthly-report-email.php:199, includes/emails/class-weekly-report-email.php:157
+msgid "Disabled"
+msgstr ""
+
+#: includes/class-settings.php:163, includes/class-settings.php:295, includes/class-settings.php:417
 msgid "Time of Day"
 msgstr ""
 
-#: includes/class-settings.php:112, includes/emails/class-daily-report-email.php:102
-msgid "Select when you would like to receive your daily email report."
+#: includes/class-settings.php:240, includes/class-settings.php:247
+msgid "Sunday"
 msgstr ""
 
-#: includes/class-settings.php:158
+#: includes/class-settings.php:241
+msgid "Monday"
+msgstr ""
+
+#: includes/class-settings.php:242
+msgid "Tuesday"
+msgstr ""
+
+#: includes/class-settings.php:243
+msgid "Wednesday"
+msgstr ""
+
+#: includes/class-settings.php:244
+msgid "Thursday"
+msgstr ""
+
+#: includes/class-settings.php:245
+msgid "Friday"
+msgstr ""
+
+#: includes/class-settings.php:246
+msgid "Saturday"
+msgstr ""
+
+#: includes/class-settings.php:281
 msgid "Day of Week"
 msgstr ""
 
-#: includes/class-settings.php:186
-msgid "Select the day of the week and time that you would like to receive the weekly report."
-msgstr ""
-
-#: includes/class-settings.php:226
+#: includes/class-settings.php:404
 msgid "Day of Month"
 msgstr ""
 
-#: includes/class-settings.php:253
-msgid "Select the day of the month and time that would like to receive the monthly report."
+#: includes/class-settings.php:513
+msgid "First Day"
 msgstr ""
 
-#: includes/class-settings.php:277
+#: includes/class-settings.php:514
+msgid "Last Day"
+msgstr ""
+
+#: includes/class-settings.php:537
 msgid "Reschedule"
 msgstr ""
 
-#: includes/class-settings.php:302
+#: includes/class-settings.php:563
 msgid "1:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:303
+#: includes/class-settings.php:564
 msgid "2:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:304
+#: includes/class-settings.php:565
 msgid "3:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:305
+#: includes/class-settings.php:566
 msgid "4:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:306
+#: includes/class-settings.php:567
 msgid "5:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:307
+#: includes/class-settings.php:568
 msgid "6:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:308
+#: includes/class-settings.php:569
 msgid "7:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:309
+#: includes/class-settings.php:570
 msgid "8:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:310
+#: includes/class-settings.php:571
 msgid "9:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:311
+#: includes/class-settings.php:572
 msgid "10:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:312
+#: includes/class-settings.php:573
 msgid "11:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:313
+#: includes/class-settings.php:574
 msgid "12:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:314
+#: includes/class-settings.php:575
 msgid "1:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:315
+#: includes/class-settings.php:576
 msgid "2:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:316
+#: includes/class-settings.php:577
 msgid "3:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:317
+#: includes/class-settings.php:578
 msgid "4:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:318
+#: includes/class-settings.php:579
 msgid "5:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:319
+#: includes/class-settings.php:580
 msgid "6:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:320
+#: includes/class-settings.php:581
 msgid "7:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:321
+#: includes/class-settings.php:582
 msgid "8:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:322
+#: includes/class-settings.php:583
 msgid "9:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:323
+#: includes/class-settings.php:584
 msgid "10:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:324
+#: includes/class-settings.php:585
 msgid "11:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:325
+#: includes/class-settings.php:586
 msgid "12:00 PM"
 msgstr ""
 
@@ -152,63 +192,79 @@ msgstr ""
 msgid "Daily Email Report"
 msgstr ""
 
-#: includes/emails/class-daily-report-email.php:17, includes/emails/class-monthly-report-email.php:11, includes/emails/class-weekly-report-email.php:11
-msgid ""
-msgstr ""
-
-#: includes/emails/class-daily-report-email.php:27
+#: includes/emails/class-daily-report-email.php:23
 msgid "Daily Donation Report for %1$s"
 msgstr ""
 
-#: includes/emails/class-daily-report-email.php:91, includes/emails/class-monthly-report-email.php:85, includes/emails/class-weekly-report-email.php:85
-msgid "Email template"
-msgstr ""
-
-#: includes/emails/class-daily-report-email.php:92, includes/emails/class-monthly-report-email.php:86, includes/emails/class-weekly-report-email.php:86
-msgid "Choose your template from the available registered template types."
-msgstr ""
-
-#: includes/emails/class-daily-report-email.php:96
+#: includes/emails/class-daily-report-email.php:88
 msgid "Daily Report"
 msgstr ""
 
-#: includes/emails/class-daily-report-email.php:101
+#: includes/emails/class-daily-report-email.php:94
+msgid "Form Daily Report"
+msgstr ""
+
+#: includes/emails/class-daily-report-email.php:101, includes/emails/class-monthly-report-email.php:146, includes/emails/class-weekly-report-email.php:103
+msgid "Email template"
+msgstr ""
+
+#: includes/emails/class-daily-report-email.php:102, includes/emails/class-monthly-report-email.php:147, includes/emails/class-weekly-report-email.php:104
+msgid "Choose your template from the available registered template types."
+msgstr ""
+
+#: includes/emails/class-daily-report-email.php:109
 msgid "Daily Email Delivery Time"
 msgstr ""
 
-#: includes/emails/class-daily-report-email.php:169
-msgid "Daily Donation Report"
+#: includes/emails/class-daily-report-email.php:110
+msgid "Select when you would like to receive your daily email report."
 msgstr ""
 
-#: includes/emails/class-monthly-report-email.php:10
+#: includes/emails/class-daily-report-email.php:256
+msgid "Daily Donation Report <br> %s"
+msgstr ""
+
+#: includes/emails/class-daily-report-email.php:257
+msgid "Daily Donation Report for <br> \"%s\""
+msgstr ""
+
+#: includes/emails/class-monthly-report-email.php:16
 msgid "Monthly Email Report"
 msgstr ""
 
-#: includes/emails/class-monthly-report-email.php:21
+#: includes/emails/class-monthly-report-email.php:26
 msgid "Monthly Donation Report for %1$s"
 msgstr ""
 
-#: includes/emails/class-monthly-report-email.php:90
+#: includes/emails/class-monthly-report-email.php:133
 msgid "Monthly Report"
 msgstr ""
 
-#: includes/emails/class-monthly-report-email.php:95
+#: includes/emails/class-monthly-report-email.php:139
+msgid "Form Monthly Report"
+msgstr ""
+
+#: includes/emails/class-monthly-report-email.php:154
 msgid "Monthly Email Delivery Time"
 msgstr ""
 
-#: includes/emails/class-monthly-report-email.php:96
-msgid "Select when you would like to receive your monthly email report."
+#: includes/emails/class-monthly-report-email.php:155
+msgid "Select the day of the month and time that would like to receive the monthly report."
 msgstr ""
 
-#: includes/emails/class-monthly-report-email.php:160
-msgid "Monthly Donation Report"
+#: includes/emails/class-monthly-report-email.php:261
+msgid "Monthly Donation Report <br> %s"
 msgstr ""
 
-#: includes/emails/class-weekly-report-email.php:10
+#: includes/emails/class-monthly-report-email.php:262
+msgid "Monthly Donation Report for <br> \"%s\""
+msgstr ""
+
+#: includes/emails/class-weekly-report-email.php:16
 msgid "Weekly Email Report"
 msgstr ""
 
-#: includes/emails/class-weekly-report-email.php:21
+#: includes/emails/class-weekly-report-email.php:26
 msgid "Weekly Donation Report for %1$s"
 msgstr ""
 
@@ -216,50 +272,54 @@ msgstr ""
 msgid "Weekly Report"
 msgstr ""
 
-#: includes/emails/class-weekly-report-email.php:95
+#: includes/emails/class-weekly-report-email.php:96
+msgid "Form Weekly Report"
+msgstr ""
+
+#: includes/emails/class-weekly-report-email.php:111
 msgid "Weekly Email Delivery Time"
 msgstr ""
 
-#: includes/emails/class-weekly-report-email.php:96
-msgid "Select when you would like to receive your weekly email report."
+#: includes/emails/class-weekly-report-email.php:112
+msgid "Select the day of the week and time that you would like to receive the weekly report."
 msgstr ""
 
-#: includes/emails/class-weekly-report-email.php:160
-msgid "Weekly Donation Report"
+#: includes/emails/class-weekly-report-email.php:261
+msgid "Weekly Donation Report <br> %s"
 msgstr ""
 
-#: includes/functions.php:275
+#: includes/emails/class-weekly-report-email.php:262
+msgid "Weekly Donation Report for <br> \"%s\""
+msgstr ""
+
+#: includes/functions.php:287
 msgid "donation"
 msgid_plural "donations"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/functions.php:286, includes/functions.php:350, includes/functions.php:353
+#: includes/functions.php:298, includes/functions.php:362, includes/functions.php:365
 msgid "No donations found."
 msgstr ""
 
-#: includes/functions.php:371
+#: includes/functions.php:386
 msgid "Yesterday"
 msgstr ""
 
-#: includes/functions.php:377
+#: includes/functions.php:392
 msgid "last week"
 msgstr ""
 
-#: includes/functions.php:382
+#: includes/functions.php:397
 msgid "last month"
 msgstr ""
 
-#: includes/functions.php:391
+#: includes/functions.php:406
 msgid "Same number donations as %s"
 msgstr ""
 
-#: includes/functions.php:393, includes/functions.php:395
+#: includes/functions.php:408, includes/functions.php:410
 msgid "%1$s donations compared to %2$s"
-msgstr ""
-
-#: includes/give-email-reports-activation.php:73
-msgid "Email Reports"
 msgstr ""
 
 #: includes/give-email-reports-activation.php:97
@@ -282,27 +342,27 @@ msgstr ""
 msgid "Add-ons"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:16, templates/emails/body-report-monthly.php:15, templates/emails/body-report-weekly.php:15
+#: templates/emails/body-report-daily.php:16, templates/emails/body-report-monthly.php:15, templates/emails/body-report-per-form-daily.php:16, templates/emails/body-report-per-form-monthly.php:16, templates/emails/body-report-per-form-weekly.php:15, templates/emails/body-report-weekly.php:15
 msgid "Happy %1$s!"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:29
+#: templates/emails/body-report-daily.php:29, templates/emails/body-report-per-form-daily.php:35
 msgid "donations today"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:30
+#: templates/emails/body-report-daily.php:30, templates/emails/body-report-per-form-daily.php:36
 msgid "past seven days"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:38
+#: templates/emails/body-report-daily.php:38, templates/emails/body-report-per-form-daily.php:44
 msgid "this week"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:43, templates/emails/body-report-monthly.php:40, templates/emails/body-report-weekly.php:40
+#: templates/emails/body-report-daily.php:43, templates/emails/body-report-monthly.php:40, templates/emails/body-report-per-form-daily.php:49, templates/emails/body-report-per-form-monthly.php:48, templates/emails/body-report-per-form-weekly.php:44, templates/emails/body-report-weekly.php:40
 msgid "this month"
 msgstr ""
 
-#: templates/emails/body-report-daily.php:48, templates/emails/body-report-monthly.php:45, templates/emails/body-report-weekly.php:45
+#: templates/emails/body-report-daily.php:48, templates/emails/body-report-monthly.php:45, templates/emails/body-report-per-form-daily.php:54, templates/emails/body-report-per-form-monthly.php:53, templates/emails/body-report-per-form-weekly.php:48, templates/emails/body-report-weekly.php:45
 msgid "past 30 days"
 msgstr ""
 
@@ -314,11 +374,11 @@ msgstr ""
 msgid "These forms have not received a donation in awhile:"
 msgstr ""
 
-#: templates/emails/body-report-monthly.php:28
+#: templates/emails/body-report-monthly.php:28, templates/emails/body-report-per-form-monthly.php:35
 msgid "donations this month"
 msgstr ""
 
-#: templates/emails/body-report-monthly.php:50, templates/emails/body-report-weekly.php:50
+#: templates/emails/body-report-monthly.php:50, templates/emails/body-report-per-form-monthly.php:58, templates/emails/body-report-per-form-weekly.php:52, templates/emails/body-report-weekly.php:50
 msgid "this year"
 msgstr ""
 
@@ -326,7 +386,7 @@ msgstr ""
 msgid "The best performing donation forms this month:"
 msgstr ""
 
-#: templates/emails/body-report-weekly.php:28
+#: templates/emails/body-report-per-form-weekly.php:33, templates/emails/body-report-weekly.php:28
 msgid "donations this week"
 msgstr ""
 
