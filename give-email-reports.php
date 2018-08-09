@@ -87,7 +87,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		}
 
 		/**
-		 * Setup Give Mollie.
+		 * Setup Give Email Report.
 		 *
 		 * @since  1.1.3
 		 * @access private
