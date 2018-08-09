@@ -62,6 +62,15 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		private static $instance;
 
 		/**
+		 * Notices (array)
+		 *
+		 * @since 1.0
+		 *
+		 * @var array
+		 */
+		public $notices = array();
+
+		/**
 		 * Get active instance.
 		 *
 		 * @access      public
@@ -71,12 +80,38 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 		public static function instance() {
 			if ( ! self::$instance ) {
 				self::$instance = new Give_Email_Reports();
-				self::$instance->load_textdomain();
-				self::$instance->includes();
-				self::$instance->hooks();
+				self::$instance->setup();
 			}
 
 			return self::$instance;
+		}
+
+		/**
+		 * Setup Give Mollie.
+		 *
+		 * @since  1.1.3
+		 * @access private
+		 */
+		private function setup() {
+			add_action( 'give_init', array( $this, 'init' ), 10 );
+			add_action( 'admin_init', array( $this, 'check_environment' ), 999 );
+			add_action( 'admin_notices', array( $this, 'admin_notices' ), 15 );
+		}
+
+		/**
+		 * Init the plugin after plugins_loaded so environment variables are set.
+		 *
+		 * @since 1.1.3
+		 */
+		public function init() {
+
+			if ( ! $this->get_environment_warning() ) {
+				return;
+			}
+
+			self::$instance->load_textdomain();
+			self::$instance->includes();
+			self::$instance->hooks();
 		}
 
 		/**
@@ -234,6 +269,109 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			exit;
 
 		}
+
+		/**
+		 * Check plugin environment.
+		 *
+		 * @since  1.0.0
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public function check_environment() {
+			// Flag to check whether plugin file is loaded or not.
+			$is_working = true;
+
+			// Load plugin helper functions.
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				require_once ABSPATH . '/wp-admin/includes/plugin.php';
+			}
+
+			/* Check to see if Give is activated, if it isn't deactivate and show a banner. */
+			// Check for if give plugin activate or not.
+			$is_give_active = defined( 'GIVE_PLUGIN_BASENAME' ) ? is_plugin_active( GIVE_PLUGIN_BASENAME ) : false;
+
+			if ( empty( $is_give_active ) ) {
+				// Show admin notice.
+				$this->add_admin_notice( 'prompt_give_activate', 'error', sprintf( __( '<strong>Activation Error:</strong> You must have the <a href="%s" target="_blank">Give</a> plugin installed and activated for Give - Email Reports to activate.', 'give-email-reports' ), 'https://givewp.com' ) );
+				$is_working = false;
+			}
+
+			return $is_working;
+		}
+
+		/**
+		 * Check plugin for Give environment.
+		 *
+		 * @since  1.1.2
+		 * @access public
+		 *
+		 * @return bool
+		 */
+		public function get_environment_warning() {
+			// Flag to check whether plugin file is loaded or not.
+			$is_working = true;
+
+			// Verify dependency cases.
+			if (
+				defined( 'GIVE_VERSION' )
+				&& version_compare( GIVE_VERSION, GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION, '<' )
+			) {
+
+				/* Min. Give. plugin version. */
+				// Show admin notice.
+				$this->add_admin_notice( 'prompt_give_incompatible', 'error', sprintf( __( '<strong>Activation Error:</strong> You must have the <a href="%s" target="_blank">Give</a> core version %s for the Give - Email Reports add-on to activate.', 'give-email-reports' ), 'https://givewp.com', GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION ) );
+				$is_working = false;
+			}
+
+			return $is_working;
+		}
+
+		/**
+		 * Allow this class and other classes to add notices.
+		 *
+		 * @since 1.1.3
+		 *
+		 * @param $slug
+		 * @param $class
+		 * @param $message
+		 */
+		public function add_admin_notice( $slug, $class, $message ) {
+			$this->notices[ $slug ] = array(
+				'class'   => $class,
+				'message' => $message,
+			);
+		}
+
+		/**
+		 * Display admin notices.
+		 *
+		 * @since 1.1.3
+		 */
+		public function admin_notices() {
+
+			$allowed_tags = array(
+				'a'      => array(
+					'href'  => array(),
+					'title' => array(),
+					'class' => array(),
+					'id'    => array(),
+				),
+				'br'     => array(),
+				'em'     => array(),
+				'span'   => array(
+					'class' => array(),
+				),
+				'strong' => array(),
+			);
+
+			foreach ( (array) $this->notices as $notice_key => $notice ) {
+				echo "<div class='" . esc_attr( $notice['class'] ) . "'><p>";
+				echo wp_kses( $notice['message'], $allowed_tags );
+				echo '</p></div>';
+			}
+
+		}
 	}
 }// End if().
 
@@ -248,7 +386,13 @@ function Give_Email_Reports_load() {
 	return Give_Email_Reports::instance();
 }
 
-add_action( 'plugins_loaded', 'Give_Email_Reports_load' );
+/**
+ * Loads a single instance of Give Email Reports.
+ *
+ * @since   1.1.3
+ * @see     Give_Email_Reports_load()
+ */
+$GLOBALS['give_email_report'] = Give_Email_Reports_load();
 
 /**
  * This file is included outside the `Give_Email_Reports` class because during

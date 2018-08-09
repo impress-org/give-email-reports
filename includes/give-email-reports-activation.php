@@ -22,41 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function give_email_reports_activation_banner() {
 
-	// Check for if give plugin activate or not.
-	$is_give_active = defined( 'GIVE_PLUGIN_BASENAME' ) ? is_plugin_active( GIVE_PLUGIN_BASENAME ) : false;
-
-	//Check to see if Give is activated, if it isn't deactivate and show a banner
-	if ( current_user_can( 'activate_plugins' ) && ! $is_give_active ) {
-
-		add_action( 'admin_notices', 'give_email_reports_activation_notice' );
-
-		//Don't let this plugin activate
-		deactivate_plugins( GIVE_EMAIL_REPORTS_BASENAME );
-
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
-		}
-
-		return false;
-
-	}
-
-	//Check minimum Give version
-	if ( defined( 'GIVE_VERSION' ) && version_compare( GIVE_VERSION, GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION, '<' ) ) {
-
-		add_action( 'admin_notices', 'give_email_reports_min_version_notice' );
-
-		//Don't let this plugin activate
-		deactivate_plugins( GIVE_EMAIL_REPORTS_BASENAME );
-
-		if ( isset( $_GET['activate'] ) ) {
-			unset( $_GET['activate'] );
-		}
-
-		return false;
-
-	}
-
 	// Check for activation banner inclusion.
 	if (
 		! class_exists( 'Give_Addon_Activation_Banner' )
@@ -89,26 +54,6 @@ function give_email_reports_activation_banner() {
 add_action( 'admin_init', 'give_email_reports_activation_banner' );
 
 /**
- * Notice for No Core Activation
- *
- * @since 1.0
- */
-function give_email_reports_activation_notice() {
-	echo '<div class="error"><p>' . __( '<strong>Activation Error:</strong> We noticed Give is not active. Please activate Give in order to use the Email Reports Add-on.', 'give-email-reports' ) . '</p></div>';
-}
-
-/**
- * Notice for No Core Activation
- *
- * @since 1.0
- */
-function give_email_reports_min_version_notice() {
-	echo '<div class="error"><p>' . sprintf( __( '<strong>Activation Error:</strong> You must have <a href="%1$s" target="_blank">Give</a> minimum version %2$s for the Email Reports add-on to activate.', 'give-email-reports' ), 'https://givewp.com', GIVE_EMAIL_REPORTS_MIN_GIVE_VERSION ) . '</p></div>';
-}
-
-
-
-/**
  * Plugins row action links
  *
  * @since 1.0
@@ -137,7 +82,7 @@ add_filter( 'plugin_action_links_' . GIVE_EMAIL_REPORTS_BASENAME, 'give_email_re
  *
  * @since 1.0
  *
- * @param array  $plugin_meta An array of the plugin's metadata.
+ * @param array $plugin_meta An array of the plugin's metadata.
  * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
  *
  * @return array
