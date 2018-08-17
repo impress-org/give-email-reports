@@ -385,14 +385,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 function Give_Email_Reports_load() {
 	return Give_Email_Reports::instance();
 }
-
-/**
- * Loads a single instance of Give Email Reports.
- *
- * @since   1.1.3
- * @see     Give_Email_Reports_load()
- */
-$GLOBALS['give_email_report'] = Give_Email_Reports_load();
+Give_Email_Reports_load();
 
 /**
  * This file is included outside the `Give_Email_Reports` class because during
