@@ -6,30 +6,38 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+$current_time = current_time( 'timestamp' );
 ?>
 <table style="text-align: center !important; width: 100%; table-layout: fixed;">
 	<tbody>
 	<tr>
 		<td colspan="3" style="padding: 0 0 25px;">
-			<h3 style="margin: 0;"><?php echo date( 'M. jS ', strtotime( '-1 month', current_time( 'timestamp' ) ) ); ?><?php echo date( '- M. jS, Y', current_time( 'timestamp' ) ); ?></h3>
-			<p style="margin: 0;"><?php printf( __( 'Happy %1$s!', 'give-email-reports' ), date( 'l', current_time( 'timestamp' ) ) ); ?></p>
+			<h3 style="margin: 0;"><?php echo date( 'M. jS ', strtotime( '-1 month', $current_time ) ); ?><?php echo date( '- M. jS, Y', $current_time ); ?></h3>
+			<p style="margin: 0;"><?php printf( __( 'Happy %1$s!', 'give-email-reports' ), date( 'l', $current_time ) ); ?></p>
 		</td>
 	</tr>
 
 	<tr>
 		<td colspan="3" style="padding: 16px;">
 			<h1 style="font-size: 48px; line-height: 1em; margin: 0; color:#4EAD61;">
-				<?php if ( give_get_option( 'currency_position' ) == 'before' ): ?>
-					<span
-						style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?><?php echo give_email_reports_total( 'monthly' ); ?>
-				<?php if ( give_get_option( 'currency_position' ) == 'after' ): ?><span
-					style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?>
+				<?php
+				$current_html = '<span style="font-size: 20px; vertical-align: super;">' . give_currency_filter( '' ) . '</span>';
+				echo sprintf(
+					'%s%s%s',
+					( give_get_option( 'currency_position' ) === 'before' ? $current_html : '' ),
+					give_email_reports_total( 'monthly' ),
+					( give_get_option( 'currency_position' ) === 'after' ? $current_html : '' )
+				);
+				?>
 			</h1>
 			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_donations( 'monthly' ) . ' ' . __( 'donations this month', 'give-email-reports' ); ?></h2>
-			<h3 style="margin: 0; color: #333;"><?php
+			<h3 style="margin: 0; color: #333;">
+				<?php
 				//Get number of donations increase / decrease week over last month
 				give_email_reports_donation_difference('monthly');
-				?></h3>
+				?>
+			</h3>
 		</td>
 	</tr>
 
