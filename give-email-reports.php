@@ -133,6 +133,7 @@ if ( ! class_exists( 'Give_Email_Reports' ) ) {
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/actions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-settings.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-email-cron.php';
+			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/class-give-email-report-donation-stats.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
 			require_once GIVE_EMAIL_REPORTS_DIR . 'includes/scripts.php';
 		}
