@@ -268,57 +268,42 @@ function give_email_reports_best_performing_forms( $report_period ) {
 	switch ( $report_period ) {
 		case 'weekly':
 			$start_date = '6 days ago 00:00';
-			$end_date   = 'now';
+			$end_date   = 'now 23:59:59';
 			break;
 		case 'monthly':
 			$start_date = '30 days ago 00:00';
-			$end_date   = 'now';
+			$end_date   = 'now 23:59:59';
 			break;
 		case 'yearly':
 			$start_date = 'this_year';
-			$end_date   = 'now';
+			$end_date   = 'now 23:59:59';
 			break;
 	}
 
-	$args     = array(
-		'number'     => - 1,
+	$donation_stats = new Give_Donation_Stats();
+	$donation_stats  = $donation_stats->get_statistics(array(
 		'start_date' => $start_date,
-		'end_date'   => $end_date,
-		'status'     => 'publish',
-	);
-	$query    = new Give_Payments_Query( $args );
-	$payments = $query->get_payments();
-	$stats    = array();
+		'end_date' => $end_date,
+		'statistic_type' => 'form'
+	));
 
-	if ( ! empty( $payments ) ) {
+	ob_start();
 
-		foreach ( $payments as $donation ) {
+	if ( ! empty( $donation_stats->sales ) ) {
 
-			$earnings  = isset( $stats[ $donation->form_id ]['earnings'] ) ? $stats[ $donation->form_id ]['earnings'] : 0;
-			$donations = isset( $stats[ $donation->form_id ]['donations'] ) ? $stats[ $donation->form_id ]['donations'] : 0;
-
-			$stats[ $donation->form_id ] = array(
-				'name'      => $donation->form_title,
-				'earnings'  => $earnings + $donation->total,
-				'donations' => $donations + 1,
-			);
-
-		}
-
-		usort( $stats, 'give_email_reports_sort_best_performing_forms' );
+		arsort( $donation_stats->sales );
 
 		$color_prefix = 99;
 
-		ob_start();
 		echo '<ul style="padding-left: 55px;padding-right: 30px;">';
-		foreach ( $stats as $list_item ) :
+		foreach ( $donation_stats->sales as $form_id => $sales ) :
 
 			printf( '<li style="color: #00%1$s00; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – %3$s (%4$s %5$s)</li>',
 				$color_prefix,
-				$list_item['name'],
-				give_currency_filter( give_format_amount( $list_item['earnings'] ) ),
-				$list_item['donations'],
-				_n( 'donation', 'donations', $list_item['donations'], 'give-email-reports' )
+				get_the_title( $form_id ),
+				give_currency_filter( give_format_amount( $donation_stats->earnings[$form_id] ) ),
+				$sales,
+				_n( 'donation', 'donations', $sales, 'give-email-reports' )
 			);
 
 			if ( $color_prefix > 11 ) {
@@ -327,10 +312,15 @@ function give_email_reports_best_performing_forms( $report_period ) {
 		endforeach;
 		echo '</ul>';
 
-		return ob_get_clean();
+
 	} else {
-		return '<p style="padding-left:40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+		echo sprintf(
+			'<p style="padding-left:40px;">%s</p>',
+			__( 'No donations found.', 'give-email-reports' )
+		);
 	}// End if().
+
+	return ob_get_clean();
 }
 
 
@@ -340,64 +330,42 @@ function give_email_reports_best_performing_forms( $report_period ) {
  * @return string
  */
 function give_email_reports_cold_donation_forms() {
+	$donation_stats = new Give_Email_Report_Donation_Stats();
+	$results = $donation_stats->get_cold_donation_forms( array( 'number' => 6 ) );
 
-	$args = array(
-		'post_type'      => 'give_forms',
-		'post_status'    => 'publish',
-		'posts_per_page' => - 1,
-	);
+	ob_start();
 
-	$result = get_posts( $args );
-
-	$last_donation_dates = array();
-
-	if ( ! empty( $result ) ) {
-
-		foreach ( $result as $form ) {
-
-			$result = new Give_Payments_Query(array(
-				'give_forms'     => $form->ID,
-				'posts_per_page' => 1,
-			) );
-
-			$result = $result->get_payments();
-
-			if ( ! empty( $result ) ) {
-				$last_donation_dates[ $form->post_title ] = $result[0]->post_date;
-			}
-		}
-
-		if ( ! empty( $last_donation_dates ) ) {
-
-			uasort( $last_donation_dates, 'give_email_reports_sort_cold_donation_forms' );
-			$last_donation_dates = array_slice( $last_donation_dates, 0, 6, true );
+	if ( ! empty( $results->result ) ) {
 
 			$color_prefix = 99;
 
-			ob_start();
 			echo '<ul style="padding-left: 55px;padding-right: 30px;">';
-			foreach ( $last_donation_dates as $form => $date ) :
+
+			/* @var stdClass $item */
+			foreach ( $results->result as $item ) :
 
 				printf( '<li style="color: #%1$s0000; padding: 5px 0;"><span style="font-weight: bold;">%2$s</span> – Last donation <strong>%4$s ago</strong> on <strong>%3$s</strong></li>',
 					$color_prefix,
-					$form,
-					date( 'F j, Y', strtotime( $date ) ),
-					human_time_diff( strtotime( $date ) )
+					get_the_title( $item->form ),
+					date( 'F j, Y', strtotime( $item->date ) ),
+					human_time_diff( strtotime( $item->date ) )
 				);
 
 				if ( $color_prefix > 11 ) {
 					$color_prefix -= 11;
 				}
 			endforeach;
+
+
 			echo '</ul>';
 
-			return ob_get_clean();
-		} else {
-			return '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
-		}
 	} else {
-		return '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+		echo '<p style="padding-left: 40px;">' . __( 'No donations found.', 'give-email-reports' ) . '</p>';
+
 	}// End if().
+
+	return ob_get_clean();
+
 }
 
 
