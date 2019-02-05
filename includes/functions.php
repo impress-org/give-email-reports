@@ -166,10 +166,10 @@ function give_email_reports_donations( $report_period, $form_id = 0 ) {
  * @return string
  */
 function give_email_reports_weekly_total( $form_id = 0 ) {
-	$stats = new Give_Donation_Stats();
+	$stats       = new Give_Donation_Stats();
 	$stats_query = array(
 		'give_forms' => array( $form_id ),
-		'start_date' => 'this_week',
+		'range'      => 'this_week',
 	);
 
 	return give_currency_filter( give_format_amount( $stats->get_earnings( $stats_query )->total ) );
