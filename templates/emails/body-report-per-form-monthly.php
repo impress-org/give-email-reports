@@ -20,16 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     <tr>
         <td colspan="3" style="padding: 16px;">
             <h1 style="font-size: 48px; line-height: 1em; margin: 0; color:#4EAD61;">
-				<?php
-				if ( 'before' === give_get_option( 'currency_position' ) ) { ?>
-                    <span style="font-size: 20px; vertical-align: super;"><?php echo esc_attr( give_currency_filter( '' ) ); ?></span> <?php
-				}
-				echo esc_attr( give_email_reports_total( 'monthly', $form_id ) );
-
-				if ( 'after' === give_get_option( 'currency_position' ) ) {
-					?>
-                    <span style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span> <?php
-				} ?>
+	            <?php echo give_email_get_earning_callout( 'monthly' ) ?>
             </h1>
 
             <h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_donations( 'monthly', $form_id ) . ' ' . __( 'donations this month', 'give-email-reports' ); ?></h2>

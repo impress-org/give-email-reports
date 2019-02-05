@@ -19,11 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<tr>
 		<td colspan="3" style="padding: 16px;">
 			<h1 style="font-size: 48px; line-height: 1em; margin: 0; color:#4EAD61;">
-				<?php if ( give_get_option( 'currency_position' ) == 'before' ): ?>
-					<span
-						style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?><?php echo give_email_reports_total( 'weekly' ); ?>
-				<?php if ( give_get_option( 'currency_position' ) == 'after' ): ?><span
-					style="font-size: 20px; vertical-align: super;"><?php echo give_currency_filter( '' ); ?></span><?php endif; ?>
+				<?php echo give_email_get_earning_callout( 'weekly' ) ?>
 			</h1>
 			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_donations( 'weekly' ) . ' ' . __( 'donations this week', 'give-email-reports' ); ?></h2>
 			<h3 style="margin: 0; color: #555;"><?php

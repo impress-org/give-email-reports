@@ -448,3 +448,28 @@ function give_get_email_report_recipients() {
 
 	return apply_filters( 'give_get_email_report_recipients', $emails );
 }
+
+/**
+ * Get earning callout for email template
+ * Note: only for internal use
+ *
+ * @since 1.1.3
+ *
+ * @param $report_period
+ *
+ * @return false|string
+ */
+function give_email_get_earning_callout( $report_period ) {
+	ob_start();
+
+	$current_html = '<span style="font-size: 20px; vertical-align: super;">' . give_currency_filter( '' ) . '</span>';
+
+	echo sprintf(
+		'%s%s%s',
+		( give_get_option( 'currency_position' ) === 'before' ? $current_html : '' ),
+		give_email_reports_total( $report_period ),
+		( give_get_option( 'currency_position' ) === 'after' ? $current_html : '' )
+	);
+
+	return ob_get_clean();
+}

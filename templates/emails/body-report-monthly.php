@@ -21,15 +21,7 @@ $current_time = current_time( 'timestamp' );
 	<tr>
 		<td colspan="3" style="padding: 16px;">
 			<h1 style="font-size: 48px; line-height: 1em; margin: 0; color:#4EAD61;">
-				<?php
-				$current_html = '<span style="font-size: 20px; vertical-align: super;">' . give_currency_filter( '' ) . '</span>';
-				echo sprintf(
-					'%s%s%s',
-					( give_get_option( 'currency_position' ) === 'before' ? $current_html : '' ),
-					give_email_reports_total( 'monthly' ),
-					( give_get_option( 'currency_position' ) === 'after' ? $current_html : '' )
-				);
-				?>
+				<?php echo give_email_get_earning_callout( 'monthly' ) ?>
 			</h1>
 			<h2 style="margin: 8px 0; color: #222;"><?php echo give_email_reports_donations( 'monthly' ) . ' ' . __( 'donations this month', 'give-email-reports' ); ?></h2>
 			<h3 style="margin: 0; color: #333;">
