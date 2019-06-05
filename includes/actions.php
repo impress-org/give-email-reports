@@ -5,7 +5,7 @@
 
 function give_reset_email_report_cron() {
 
-	if ( empty( $_POST['cron'] ) ) {
+	if ( empty( $_POST['cron'] ) || ! current_user_can( 'manage_give_settings' ) ) {
 		wp_send_json_error();
 	}
 

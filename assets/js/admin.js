@@ -60,7 +60,9 @@ jQuery(document).ready(function ($) {
                     spinner.removeClass('is-active');
                 }
             }
-        });
+        }).always(function(){
+			spinner.removeClass('is-active');
+		});
     });
 
     // show or hide sub menu on page load
