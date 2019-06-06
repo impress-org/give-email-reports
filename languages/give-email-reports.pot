@@ -1,14 +1,14 @@
-# Copyright (C) 2018 Give - Email Reports
+# Copyright (C) 2019 Give - Email Reports
 # This file is distributed under the same license as the Give - Email Reports package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Give - Email Reports\n"
-"Report-Msgid-Bugs-To: https://github.com/WordImpress/Give-Email-Reports/issues/new\n"
+"Report-Msgid-Bugs-To: https://github.com/impress-org/give-email-reports/issues/new\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
-"Language-Team: WordImpress <info@wordimpress.com>\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"Language-Team: GiveWP <info@givewp.com>\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
@@ -16,15 +16,23 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: give-email-reports.php:182
+#: give-email-reports.php:217
 msgid "Email Report Template"
 msgstr ""
 
-#: give-email-reports.php:230
+#: give-email-reports.php:265
 msgid "%s Donations Report"
 msgstr ""
 
-#: includes/class-settings.php:73, includes/give-email-reports-activation.php:73
+#: give-email-reports.php:296
+msgid "<strong>Activation Error:</strong> You must have the <a href=\"%s\" target=\"_blank\">Give</a> plugin installed and activated for Give - Email Reports to activate."
+msgstr ""
+
+#: give-email-reports.php:323
+msgid "<strong>Activation Error:</strong> You must have the <a href=\"%s\" target=\"_blank\">Give</a> core version %s for the Give - Email Reports add-on to activate."
+msgstr ""
+
+#: includes/class-settings.php:73, includes/give-email-reports-activation.php:38
 msgid "Email Reports"
 msgstr ""
 
@@ -322,23 +330,15 @@ msgstr ""
 msgid "%1$s donations compared to %2$s"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:97
-msgid "<strong>Activation Error:</strong> We noticed Give is not active. Please activate Give in order to use the Email Reports Add-on."
-msgstr ""
-
-#: includes/give-email-reports-activation.php:106
-msgid "<strong>Activation Error:</strong> You must have <a href=\"%1$s\" target=\"_blank\">Give</a> minimum version %2$s for the Email Reports add-on to activate."
-msgstr ""
-
-#: includes/give-email-reports-activation.php:125
+#: includes/give-email-reports-activation.php:70
 msgid "Settings"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:160
+#: includes/give-email-reports-activation.php:105
 msgid "Documentation"
 msgstr ""
 
-#: includes/give-email-reports-activation.php:170
+#: includes/give-email-reports-activation.php:115
 msgid "Add-ons"
 msgstr ""
 

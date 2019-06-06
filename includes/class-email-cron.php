@@ -4,7 +4,7 @@
  *
  * @package    Give-Email-Reports
  * @subpackage Classes/Give_Email_Cron
- * @copyright  Copyright (c) 2016, WordImpress
+ * @copyright  Copyright (c) 2016, GiveWP
  * @license    https://opensource.org/licenses/gpl-license GNU Public License
  * @since      1.0
  */

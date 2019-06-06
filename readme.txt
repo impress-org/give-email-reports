@@ -2,9 +2,9 @@
 Contributors: wordimpress
 Tags: donation reports, donation, ecommerce, e-commerce, fundraising, fundraiser
 Requires at least: 4.8
-Tested up to: 5.2
+Tested up to: 5.2.1
 Stable tag: 1.1.3
-Requires Give: 2.1.7
+Requires Give: 2.4.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,7 +19,7 @@ This plugin requires the Give plugin activated to function properly. When activa
 = Minimum Requirements =
 
 * WordPress 4.8 or greater
-* PHP version 5.3 or greater
+* PHP version 5.6 or greater
 * MySQL version 5.0 or greater
 * Some payment gateways require fsockopen support (for IPN access)
 
@@ -38,6 +38,9 @@ The manual installation method involves downloading our donation plugin and uplo
 Automatic updates should work like a charm; as always though, ensure you backup your site just in case.
 
 == Changelog ==
+
+= 1.1.3: June 6th, 2019 =
+* Fix: Add role check for when cron jobs are run as a routine security hardening.
 
 = 1.1.2: July 5th, 2018 =
 * New: Added uninstall.php so the plugin will delete all its settings when deleted.
@@ -59,7 +62,7 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 = 1.0.1 =
 * New: The plugin now checks to see if Give is active and up to the minimum version required to run the plugin
-* Fix: PHP Warning - Missing argument 1 for give_email_reports_total() - https://github.com/WordImpress/Give-Email-Reports/issues/15
+* Fix: PHP Warning - Missing argument 1 for give_email_reports_total() - https://github.com/impress-org/give-email-reports/issues/15
 * Fix: Incorrectly passing weekly total in the monthly report.
 * Fix: PHP notices displayed if give email reports option have yet to be set.
 

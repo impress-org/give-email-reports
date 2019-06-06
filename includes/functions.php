@@ -419,7 +419,7 @@ function give_email_reports_donation_difference( $report_period, $form_id = 0 ) 
  *
  * Used before sending emails so we can get all the latest stats without worrying about outdated transient data.
  *
- * @see: https://github.com/WordImpress/Give/issues/1117
+ * @see: https://github.com/impress-org/give/issues/1117
  */
 function give_email_reports_delete_stats_transients() {
 	global $wpdb;

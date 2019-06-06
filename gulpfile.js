@@ -21,9 +21,9 @@ gulp.task( 'pot', function() {
 			package: 'Give - Email Reports',
 			domain: 'give-email-reports', //textdomain
 			destFile: 'give-email-reports.pot',
-			bugReport: 'https://github.com/WordImpress/Give-Email-Reports/issues/new',
+			bugReport: 'https://github.com/impress-org/give-email-reports/issues/new',
 			lastTranslator: '',
-			team: 'WordImpress <info@wordimpress.com>'
+			team: 'GiveWP <info@givewp.com>'
 		} ) )
 		.pipe( gulp.dest( 'languages' ) );
 } );
