@@ -287,7 +287,7 @@ class Give_Email_Reports_Settings {
 					<?php
 					// Day select dropdown.
 					foreach ( $days as $day_code => $day ) {
-						$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+						$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
 						echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 					}
 					?>
@@ -352,7 +352,7 @@ class Give_Email_Reports_Settings {
 			"<?php echo $disabled_field; ?>>
 			<?php
 			// Day select dropdown.
-			$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+			$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
 			foreach ( $days as $day_code => $day ) {
 				echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 			}
