@@ -127,7 +127,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 					return;
 				}
 
-				$days       = $this->get_week_days();
+				$days       = ger_get_week_days();
 				$local_time = strtotime( "this {$days[ $time['day'] ]} T{$time['time']}", current_time( 'timestamp' ) );
 				$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
@@ -242,7 +242,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
 			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : array( 'day' => 0, 'time' => 1900 );
-			$days          = $this->get_week_days();
+			$days          = ger_get_week_days();
 
 			// Need $weekly option set to continue.
 			if ( empty( $weekly_option ) ) {
@@ -319,21 +319,15 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 	/**
 	 * Get list of weekdays.
+	 * @deprecated 1.1.4
 	 *
 	 * @return array
 	 */
 	public function get_week_days() {
+		give_doing_it_wrong( __FUNCTION__, __( 'Use ger_get_week_days function instead', 'give-email-reports' ), '1.1.4' );
+
 		// Days.
-		return array(
-			'0' => 'Sunday',
-			'1' => 'Monday',
-			'2' => 'Tuesday',
-			'3' => 'Wednesday',
-			'4' => 'Thursday',
-			'5' => 'Friday',
-			'6' => 'Saturday',
-			'7' => 'Sunday',
-		);
+		return ger_get_week_days();
 	}
 }
 
