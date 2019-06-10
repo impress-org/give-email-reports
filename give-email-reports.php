@@ -420,11 +420,6 @@ register_deactivation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_unsched
  * @since 1.1.4
  */
 function give_email_reports_schedule_emails() {
-	// Exit if not a fresh install.
-	if ( get_option( 'give_email_reports_plugin_version' ) ) {
-		return;
-	}
-
 	if( ! function_exists( 'ger_get_week_days' ) ) {
 		require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
 	}
