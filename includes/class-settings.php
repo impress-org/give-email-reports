@@ -413,7 +413,7 @@ class Give_Email_Reports_Settings {
 						<?php
 						// Day select dropdown.
 						foreach ( $days as $day_code => $day ) {
-							$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
+							$selected_day = isset( $value['day'] ) ? $value['day'] : 'first';
 							echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 						}
 						?>
@@ -482,7 +482,7 @@ class Give_Email_Reports_Settings {
 				<?php
 				// Day select dropdown.
 				foreach ( $days as $day_code => $day ) {
-					$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
+					$selected_day = isset( $value['day'] ) ? $value['day'] : 'first';
 					echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
 				}
 				?>
