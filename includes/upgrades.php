@@ -20,7 +20,7 @@ function give_email_reports_do_automatic_upgrades() {
 			$did_upgrade = true;
 	}
 
-	if ( $did_upgrade ) {
+	if ( $did_upgrade || version_compare( $plugin_version, GIVE_EMAIL_REPORTS_VERSION, '<' ) ) {
 		update_option( 'give_email_reports_plugin_version', GIVE_EMAIL_REPORTS_VERSION );
 	}
 }
