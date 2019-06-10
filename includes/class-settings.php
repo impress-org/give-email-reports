@@ -255,7 +255,7 @@ class Give_Email_Reports_Settings {
 	 * Give add Weekly email reports preview.
 	 *
 	 * @param object $field
-	 * @param string $value
+	 * @param array $value
 	 */
 	public function add_email_report_weekly_schedule( $field, $value ) {
 		// Setting attribute.
