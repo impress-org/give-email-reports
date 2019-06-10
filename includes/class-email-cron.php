@@ -198,7 +198,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		if ( ! wp_next_scheduled( 'give_email_reports_daily_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$time = isset( $value['give_email_reports_daily_email_delivery_time'] ) ? $value['give_email_reports_daily_email_delivery_time'] : 1800;
+			$time = isset( $value['give_email_reports_daily_email_delivery_time'] ) ? $value['give_email_reports_daily_email_delivery_time'] : 1900;
 
 			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
@@ -241,7 +241,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		// Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : '';
+			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : array( 'day' => 0, 'time' => 1900 );
 			$days          = $this->get_week_days();
 
 			// Need $weekly option set to continue.
@@ -292,7 +292,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		// Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! $this->is_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : '';
+			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : array( 'day' => 'first', 'time' => 1900 );
 
 			// Must have $monthly to continue.
 			if ( empty( $monthly ) ) {
