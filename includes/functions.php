@@ -441,3 +441,23 @@ function give_get_email_report_recipients() {
 
 	return apply_filters( 'give_get_email_report_recipients', $emails );
 }
+
+
+/**
+ * Get week days
+ * Since 1.1.4
+ * @return array
+ */
+function ger_get_week_days() {
+	return array(
+		'0' => 'Sunday',
+		'1' => 'Monday',
+		'2' => 'Tuesday',
+		'3' => 'Wednesday',
+		'4' => 'Thursday',
+		'5' => 'Friday',
+		'6' => 'Saturday',
+		'7' => 'Sunday',
+	);
+}
+
