@@ -450,6 +450,10 @@ function give_email_reports_schedule_emails() {
 	);
 
 	foreach ( $cron_array as $cron ) {
+		if( ! give_is_setting_enabled( give_get_option( "{$cron['interval']}-report_notification", 'enabled' ) ) ) {
+			continue;
+		}
+
 		$setting = $cron['time'];
 
 		if ( false !== strpos( $cron['hook'], 'monthly' ) ) {
