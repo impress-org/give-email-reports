@@ -148,6 +148,7 @@ class Give_Email_Reports_Settings {
 
 		// Times.
 		$times = $this->get_email_report_times();
+		$value = ! empty( $value ) ? $value : '1900';
 
 		ob_start();
 		?>
