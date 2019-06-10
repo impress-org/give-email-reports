@@ -396,7 +396,8 @@ Give_Email_Reports_load();
 require_once GIVE_EMAIL_REPORTS_DIR . 'includes/give-independent-functions.php';
 
 /**
- * Unschedule the cron job for the daily email if the plugin is deactivated.
+ * Unschedule the cron job for the report email if the plugin is deactivated.
+ * Note: only for internal use
  *
  * @since 1.0
  */
