@@ -412,3 +412,83 @@ function give_email_reports_unschedule_emails() {
 
 // Remove from cron if plugin is deactivated.
 register_deactivation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_unschedule_emails' );
+
+/**
+ * Schedule the cron job for the daily report email if the plugin is activated.
+ * Note: only for internal use
+ *
+ * @since 1.1.4
+ */
+function give_email_reports_schedule_emails() {
+	// Exit if not a fresh install.
+	if ( get_option( 'give_email_reports_plugin_version' ) ) {
+		return;
+	}
+
+	if( ! function_exists( 'ger_get_week_days' ) ) {
+		require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
+	}
+
+	// Setup initial cron jobs.
+
+	$cron_array = array(
+		// Daily.
+		array(
+			'time' => 1900,
+			'interval' => 'daily',
+			'hook' => 'give_email_reports_daily_email',
+		),
+		// Weekly.
+		array(
+			'day'  => 0,
+			'time' => 1900,
+			'interval' => 'weekly',
+			'hook' => 'give_email_reports_weekly_email',
+		),
+		// Monthly.
+		array(
+			'day'  => 'first',
+			'time' => 1900,
+			'hook' => 'give_email_reports_monthly_email',
+		),
+	);
+
+	foreach ( $cron_array as $cron ) {
+		if ( false !== strpos( $cron['hook'], 'monthly' ) ) {
+			$local_time = strtotime( "{$cron['day']} day of this month T{$cron['time']}", current_time( 'timestamp' ) );
+
+			if ( current_time( 'timestamp' ) > $local_time ) {
+				$local_time = strtotime( "{$cron['day']} day of next month T{$cron['time']}", current_time( 'timestamp' ) );
+			}
+
+			$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+			// Schedule cron.
+			wp_schedule_single_event(
+				$gmt_time,
+				'give_email_reports_monthly_email'
+			);
+
+			continue;
+		}
+
+		$time_str = "T{$cron['time']}";
+
+		if ( false !== strpos( $cron['hook'], 'weekly' ) ) {
+			$days     = ger_get_week_days();
+			$time_str = "this {$days[ $cron['day'] ]} " . $time_str;
+		}
+
+		$local_time = strtotime( $time_str, current_time( 'timestamp' ) );
+		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+		wp_schedule_event(
+			$gmt_time,
+			$cron['interval'],
+			$cron['hook']
+		);
+	}
+
+}
+
+register_activation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_schedule_emails' );
