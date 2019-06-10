@@ -429,27 +429,35 @@ function give_email_reports_schedule_emails() {
 	$cron_array = array(
 		// Daily.
 		array(
-			'time' => 1900,
+			'time'     => 1900,
 			'interval' => 'daily',
-			'hook' => 'give_email_reports_daily_email',
+			'hook'     => 'give_email_reports_daily_email',
 		),
 		// Weekly.
 		array(
-			'day'  => 0,
-			'time' => 1900,
+			'day'      => 0,
+			'time'     => 1900,
 			'interval' => 'weekly',
-			'hook' => 'give_email_reports_weekly_email',
+			'hook'     => 'give_email_reports_weekly_email',
 		),
 		// Monthly.
 		array(
-			'day'  => 'first',
-			'time' => 1900,
-			'hook' => 'give_email_reports_monthly_email',
+			'day'      => 'first',
+			'time'     => 1900,
+			'interval' => 'monthly',
+			'hook'     => 'give_email_reports_monthly_email',
 		),
 	);
 
 	foreach ( $cron_array as $cron ) {
+		$setting = $cron['time'];
+
 		if ( false !== strpos( $cron['hook'], 'monthly' ) ) {
+			$setting = array(
+				'day' => $cron['day'],
+				'time' => $cron['time'],
+			);
+
 			$local_time = strtotime( "{$cron['day']} day of this month T{$cron['time']}", current_time( 'timestamp' ) );
 
 			if ( current_time( 'timestamp' ) > $local_time ) {
@@ -464,24 +472,31 @@ function give_email_reports_schedule_emails() {
 				'give_email_reports_monthly_email'
 			);
 
-			continue;
+		} else{
+			$time_str = "T{$cron['time']}";
+
+			if ( false !== strpos( $cron['hook'], 'weekly' ) ) {
+				$days     = ger_get_week_days();
+				$time_str = "this {$days[ $cron['day'] ]} " . $time_str;
+
+				$setting = array(
+					'day' => $cron['day'],
+					'time' => $cron['time'],
+				);
+			}
+
+			$local_time = strtotime( $time_str, current_time( 'timestamp' ) );
+			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+			wp_schedule_event(
+				$gmt_time,
+				$cron['interval'],
+				$cron['hook']
+			);
 		}
 
-		$time_str = "T{$cron['time']}";
+		give_update_option( "give_email_reports_{$cron['interval']}_email_delivery_time", $setting );
 
-		if ( false !== strpos( $cron['hook'], 'weekly' ) ) {
-			$days     = ger_get_week_days();
-			$time_str = "this {$days[ $cron['day'] ]} " . $time_str;
-		}
-
-		$local_time = strtotime( $time_str, current_time( 'timestamp' ) );
-		$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
-
-		wp_schedule_event(
-			$gmt_time,
-			$cron['interval'],
-			$cron['hook']
-		);
 	}
 
 }
