@@ -429,43 +429,42 @@ function give_email_reports_schedule_emails() {
 	$cron_array = array(
 		// Daily.
 		array(
-			'time'     => 1900,
+			'setting'  => give_get_option( 'give_email_reports_daily_email_delivery_time', 1900 ),
 			'interval' => 'daily',
 			'hook'     => 'give_email_reports_daily_email',
 		),
 		// Weekly.
 		array(
-			'day'      => 0,
-			'time'     => 1900,
+			'setting'  => give_get_option( 'give_email_reports_weekly_email_delivery_time', array(
+				'day'  => 0,
+				'time' => 1900,
+			) ),
 			'interval' => 'weekly',
 			'hook'     => 'give_email_reports_weekly_email',
 		),
 		// Monthly.
 		array(
-			'day'      => 'first',
-			'time'     => 1900,
+			'setting'  => give_get_option( 'give_email_reports_monthly_email_delivery_time', array(
+				'day'  => 'first',
+				'time' => 1900,
+			) ),
 			'interval' => 'monthly',
 			'hook'     => 'give_email_reports_monthly_email',
 		),
 	);
 
+	error_log( print_r( $cron_array, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
+
 	foreach ( $cron_array as $cron ) {
-		if( ! give_is_setting_enabled( give_get_option( "{$cron['interval']}-report_notification", 'enabled' ) ) ) {
+		if ( ! give_is_setting_enabled( give_get_option( "{$cron['interval']}-report_notification", 'enabled' ) ) ) {
 			continue;
 		}
 
-		$setting = $cron['time'];
-
 		if ( false !== strpos( $cron['hook'], 'monthly' ) ) {
-			$setting = array(
-				'day'  => $cron['day'],
-				'time' => $cron['time'],
-			);
-
-			$local_time = strtotime( "{$cron['day']} day of this month T{$cron['time']}", current_time( 'timestamp' ) );
+			$local_time = strtotime( "{$cron['setting']['day']} day of this month T{$cron['setting']['time']}", current_time( 'timestamp' ) );
 
 			if ( current_time( 'timestamp' ) > $local_time ) {
-				$local_time = strtotime( "{$cron['day']} day of next month T{$cron['time']}", current_time( 'timestamp' ) );
+				$local_time = strtotime( "{$cron['setting']['day']} day of next month T{$cron['setting']['time']}", current_time( 'timestamp' ) );
 			}
 
 			$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
@@ -477,16 +476,11 @@ function give_email_reports_schedule_emails() {
 			);
 
 		} else {
-			$time_str = "T{$cron['time']}";
-
 			if ( false !== strpos( $cron['hook'], 'weekly' ) ) {
 				$days     = ger_get_week_days();
-				$time_str = "this {$days[ $cron['day'] ]} " . $time_str;
-
-				$setting = array(
-					'day'  => $cron['day'],
-					'time' => $cron['time'],
-				);
+				$time_str = "this {$days[ $cron['setting']['day'] ]} T{$cron['setting']['time']}";
+			}else{
+				$time_str = "T{$cron['setting']}";
 			}
 
 			$local_time = strtotime( $time_str, current_time( 'timestamp' ) );
@@ -499,7 +493,7 @@ function give_email_reports_schedule_emails() {
 			);
 		}
 
-		give_update_option( "give_email_reports_{$cron['interval']}_email_delivery_time", $setting );
+		give_update_option( "give_email_reports_{$cron['interval']}_email_delivery_time", $cron['setting'] );
 
 	}
 
