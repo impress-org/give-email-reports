@@ -79,7 +79,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @param int $form_id Donation Form id.
 	 */
 	public function before_delete_post( $form_id ) {
-		ger_clear_form_cron( $form_id );
+		if( 'give_forms' === get_post_type( $form_id ) ) {
+			ger_clear_form_cron( $form_id );
+		}
 	}
 
 	/**
