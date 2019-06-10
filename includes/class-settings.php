@@ -11,13 +11,8 @@ class Give_Email_Reports_Settings {
 	public function __construct() {
 		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
 
-		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 2 );
 		add_action( 'give_form_field_email_report_daily_schedule', array( $this, 'form_add_email_report_daily_schedule' ), 10, 2 );
-
-		add_action( 'give_admin_field_email_report_weekly_schedule', array( $this, 'add_email_report_weekly_schedule' ), 10, 2 );
 		add_action( 'give_form_field_email_report_weekly_schedule', array( $this, 'form_add_email_report_weekly_schedule' ), 10, 2 );
-
-		add_action( 'give_admin_field_email_report_monthly_schedule', array( $this, 'add_email_report_monthly_schedule' ), 10, 2 );
 		add_action( 'give_form_field_email_report_monthly_schedule', array( $this, 'form_add_email_report_monthly_schedule' ), 10, 2 );
 
 		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array( $this, 'sanitize_settings' ), 10, 1 );
