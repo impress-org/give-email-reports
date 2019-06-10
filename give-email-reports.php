@@ -420,7 +420,7 @@ register_deactivation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_unsched
  * @since 1.1.4
  */
 function give_email_reports_schedule_emails() {
-	if( ! function_exists( 'ger_get_week_days' ) ) {
+	if ( ! function_exists( 'ger_get_week_days' ) ) {
 		require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
 	}
 
@@ -454,7 +454,7 @@ function give_email_reports_schedule_emails() {
 
 		if ( false !== strpos( $cron['hook'], 'monthly' ) ) {
 			$setting = array(
-				'day' => $cron['day'],
+				'day'  => $cron['day'],
 				'time' => $cron['time'],
 			);
 
@@ -472,7 +472,7 @@ function give_email_reports_schedule_emails() {
 				'give_email_reports_monthly_email'
 			);
 
-		} else{
+		} else {
 			$time_str = "T{$cron['time']}";
 
 			if ( false !== strpos( $cron['hook'], 'weekly' ) ) {
@@ -480,7 +480,7 @@ function give_email_reports_schedule_emails() {
 				$time_str = "this {$days[ $cron['day'] ]} " . $time_str;
 
 				$setting = array(
-					'day' => $cron['day'],
+					'day'  => $cron['day'],
 					'time' => $cron['time'],
 				);
 			}
