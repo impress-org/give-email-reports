@@ -44,7 +44,7 @@ class Give_Email_Reports_Settings {
 			'give_email_reports_weekly_email_template',
 			'give_email_reports_weekly_email_delivery_time',
 			'give_email_reports_monthly_email_template',
-			'give_email_reports_monthly_email_delivery_time'
+			'give_email_reports_monthly_email_delivery_time',
 		);
 
 		foreach ( $settings as $setting ) {
@@ -148,6 +148,7 @@ class Give_Email_Reports_Settings {
 
 		// Times.
 		$times = $this->get_email_report_times();
+		$value = ! empty( $value ) ? $value : '1900';
 
 		ob_start();
 		?>
@@ -170,10 +171,11 @@ class Give_Email_Reports_Settings {
 						<?php echo $disabled_field; ?>
 					>
 						<?php
-						//Time select options.
+						// Time select options.
 						foreach ( $times as $military => $time ) {
 							echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
-						} ?>
+						}
+						?>
 					</select>
 
 					<?php $this->print_reset_button( 'give_email_reports_daily_email' ); ?>
@@ -192,7 +194,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param object $field Custom fields for daily schedule on per form basis.
+	 * @param object   $field Custom fields for daily schedule on per form basis.
 	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
@@ -205,27 +207,27 @@ class Give_Email_Reports_Settings {
 
 		$disabled_field = $this->is_cron_enabled( $cron_name, array( 'form_id' => $form_id ) ) ? ' disabled="disabled"' : '';
 
-
 		$times = $this->get_email_report_times();
 		?>
-        <fieldset
-                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-            <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
-            <select class="cmb2_select" name="<?php echo esc_attr( $field['id'] ); ?>"
-                    id="<?php echo esc_attr( $field['id'] ); ?>" <?php echo $disabled_field; ?> >
+		<fieldset
+				class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+			<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
+			<select class="cmb2_select" name="<?php echo esc_attr( $field['id'] ); ?>"
+					id="<?php echo esc_attr( $field['id'] ); ?>" <?php echo $disabled_field; ?> >
 				<?php
 				// Time select options.
 				foreach ( $times as $military => $time ) {
 					echo '<option value="' . $military . '" ' . selected( $value, $military, false ) . '>' . $time . '</option>';
-				} ?>
-            </select>
+				}
+				?>
+			</select>
 
 			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
 
-            <p class="give-field-description">
+			<p class="give-field-description">
 				<?php echo esc_html( $field['desc'] ); ?>
-            </p>
-        </fieldset>
+			</p>
+		</fieldset>
 		<?php
 	}
 
@@ -254,7 +256,7 @@ class Give_Email_Reports_Settings {
 	 * Give add Weekly email reports preview.
 	 *
 	 * @param object $field
-	 * @param string $value
+	 * @param array $value
 	 */
 	public function add_email_report_weekly_schedule( $field, $value ) {
 		// Setting attribute.
@@ -267,53 +269,55 @@ class Give_Email_Reports_Settings {
 
 		ob_start();
 		?>
-        <tr valign="top">
+		<tr valign="top">
 
 			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
-                <th scope="row" class="titledesc">
-                    <label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
-                </th>
+				<th scope="row" class="titledesc">
+					<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo $field['title']; ?></label>
+				</th>
 			<?php endif; ?>
 
-            <td class="give-forminp">
-                <div class="give-email-reports-weekly">
-                    <label class="hidden"
-                           for="<?php echo "{$field['id']}_day"; ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
+			<td class="give-forminp">
+				<div class="give-email-reports-weekly">
+					<label class="hidden"
+						   for="<?php echo "{$field['id']}_day"; ?>"><?php _e( 'Day of Week', 'give-email-reports' ); ?></label>
 
-                    <select class="cmb2_select"
-                            name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
-                    "<?php echo $disabled_field; ?>>
+					<select class="cmb2_select"
+							name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
+					"<?php echo $disabled_field; ?>>
 					<?php
 					// Day select dropdown.
 					foreach ( $days as $day_code => $day ) {
-						$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+						$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
 						echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
-					} ?>
-                    </select>
+					}
+					?>
+					</select>
 
-                    <label class="hidden"
-                           for="<?php echo "{$field['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
+					<label class="hidden"
+						   for="<?php echo "{$field['id']}_time"; ?>'"><?php _e( 'Time of Day', 'give-email-reports' ); ?></label>
 
-                    <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
-                            id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+					<select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+							id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 						<?php
 						// Time select options.
 						foreach ( $times as $military => $time ) {
 							$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
 							echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
-						} ?>
-                    </select>
+						}
+						?>
+					</select>
 
 					<?php $this->print_reset_button( 'give_email_reports_weekly_email' ); ?>
 
 
-                    <p class="give-field-description">
-		                <?php echo $field['desc']; ?>
-                    </p>
+					<p class="give-field-description">
+						<?php echo $field['desc']; ?>
+					</p>
 
-                </div>
-            </td>
-        </tr>
+				</div>
+			</td>
+		</tr>
 		<?php
 		echo ob_get_clean();
 	}
@@ -321,7 +325,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add weekly email reports preview.
 	 *
-	 * @param object $field Custom fields for weekly schedule on per form basis.
+	 * @param object   $field Custom fields for weekly schedule on per form basis.
 	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_weekly_schedule( $field, $form_id = null ) {
@@ -340,37 +344,39 @@ class Give_Email_Reports_Settings {
 
 		$days = $this->get_days();
 		?>
-        <fieldset
-                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-            <label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
+		<fieldset
+				class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+			<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
 
-            <select class="cmb2_select"
-                    name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
-            "<?php echo $disabled_field; ?>>
+			<select class="cmb2_select"
+					name="<?php echo "{$field['id']}[day]"; ?> id="<?php echo "{$field['id']}_day"; ?>
+			"<?php echo $disabled_field; ?>>
 			<?php
 			// Day select dropdown.
-			$selected_day = isset( $value['day'] ) ? $value['day'] : 'sunday';
+			$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
 			foreach ( $days as $day_code => $day ) {
 				echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
-			} ?>
-            </select>
+			}
+			?>
+			</select>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
-                    id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+			<select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+					id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Time select options.
 				$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
 				foreach ( $times as $military => $time ) {
 					echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
-				} ?>
-            </select>
+				}
+				?>
+			</select>
 
 			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
 
-            <p class="give-field-description">
+			<p class="give-field-description">
 				<?php echo $field['desc']; ?>
-            </p>
-        </fieldset>
+			</p>
+		</fieldset>
 		<?php
 	}
 
@@ -408,9 +414,10 @@ class Give_Email_Reports_Settings {
 						<?php
 						// Day select dropdown.
 						foreach ( $days as $day_code => $day ) {
-							$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
+							$selected_day = isset( $value['day'] ) ? $value['day'] : 'first';
 							echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
-						} ?>
+						}
+						?>
 					</select>
 
 					<label class="hidden"
@@ -423,14 +430,15 @@ class Give_Email_Reports_Settings {
 						foreach ( $times as $military => $time ) {
 							$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
 							echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
-						} ?>
+						}
+						?>
 					</select>
 
 					<?php $this->print_reset_button( 'give_email_reports_monthly_email' ); ?>
 
-                    <p class="give-field-description">
+					<p class="give-field-description">
 						<?php echo $field['desc']; ?>
-                    </p>
+					</p>
 
 				</div>
 			</td>
@@ -443,7 +451,7 @@ class Give_Email_Reports_Settings {
 	 * Give add Monthly email reports preview.
 	 *
 	 * @param object $field
-	 * @param array $form_id Donation form id
+	 * @param array  $form_id Donation form id
 	 *
 	 * @return void
 	 */
@@ -466,36 +474,38 @@ class Give_Email_Reports_Settings {
 
 		ob_start();
 		?>
-        <fieldset
-                class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
-            <label for="<?php echo "{$field['id']}_day"; ?>"><?php echo $field['name']; ?></label>
+		<fieldset
+				class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+			<label for="<?php echo "{$field['id']}_day"; ?>"><?php echo $field['name']; ?></label>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?>"
-                    id="<?php echo "{$field['id']}_day"; ?>"<?php echo $disabled_field; ?>>
+			<select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?>"
+					id="<?php echo "{$field['id']}_day"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Day select dropdown.
 				foreach ( $days as $day_code => $day ) {
-					$selected_day = isset( $value['day'] ) ? $value['day'] : '0';
+					$selected_day = isset( $value['day'] ) ? $value['day'] : 'first';
 					echo '<option value="' . $day_code . '" ' . selected( $selected_day, $day_code, true ) . '>' . $day . '</option>';
-				} ?>
-            </select>
+				}
+				?>
+			</select>
 
-            <select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
-                    id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
+			<select class="cmb2_select" name="<?php echo "{$field['id']}[time]"; ?>"
+					id="<?php echo "{$field['id']}_time"; ?>"<?php echo $disabled_field; ?>>
 				<?php
 				// Time select options.
 				foreach ( $times as $military => $time ) {
 					$selected_time = isset( $value['time'] ) ? $value['time'] : '1900';
 					echo '<option value="' . $military . '" ' . selected( $selected_time, $military, false ) . '>' . $time . '</option>';
-				} ?>
-            </select>
+				}
+				?>
+			</select>
 
 			<?php $this->print_reset_button( $cron_name, array( 'form_id' => $form_id ) ); ?>
 
-            <p class="give-field-description">
+			<p class="give-field-description">
 				<?php echo $field['desc']; ?>
-            </p>
-        </fieldset>
+			</p>
+		</fieldset>
 		<?php
 		echo ob_get_clean();
 	}
@@ -521,23 +531,24 @@ class Give_Email_Reports_Settings {
 	 * Print cron reset button.
 	 *
 	 * @param string $cron_name Email report cron name.
-	 * @param array $args Cron arguments.
+	 * @param array  $args Cron arguments.
 	 *
 	 * @return void.
 	 */
 	function print_reset_button( $cron_name, $args = array() ) {
 		global $thepostid;
-		if ( wp_next_scheduled( $cron_name, $args ) ) : ?>
-            <button
-                    class="give-reset-button button-secondary"
-                    data-cron="<?php echo esc_attr( $cron_name ); ?>"
-                    data-form_id="<?php echo esc_attr( $thepostid ); ?>"
-                    data-action="give_reset_email_report_cron"
-            >
+		if ( wp_next_scheduled( $cron_name, $args ) ) :
+			?>
+			<button
+					class="give-reset-button button-secondary"
+					data-cron="<?php echo esc_attr( $cron_name ); ?>"
+					data-form_id="<?php echo esc_attr( $thepostid ); ?>"
+					data-action="give_reset_email_report_cron"
+			>
 				<?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?>
-            </button>
-            <span class="give-spinner spinner"></span>
-		<?php
+			</button>
+			<span class="give-spinner spinner"></span>
+			<?php
 		endif;
 	}
 
@@ -545,7 +556,7 @@ class Give_Email_Reports_Settings {
 	 * Check if cron enabled or not.
 	 *
 	 * @param string $cron_name Email report cron name..
-	 * @param array $args Cron argument.
+	 * @param array  $args Cron argument.
 	 *
 	 * @return bool
 	 */
@@ -559,32 +570,35 @@ class Give_Email_Reports_Settings {
 	 * @return array
 	 */
 	public function get_email_report_times() {
-		return apply_filters( 'give_email_report_times', array(
-			'0100' => __( '1:00 AM', 'give-email-reports' ),
-			'0200' => __( '2:00 AM', 'give-email-reports' ),
-			'0300' => __( '3:00 AM', 'give-email-reports' ),
-			'0400' => __( '4:00 AM', 'give-email-reports' ),
-			'0500' => __( '5:00 AM', 'give-email-reports' ),
-			'0600' => __( '6:00 AM', 'give-email-reports' ),
-			'0700' => __( '7:00 AM', 'give-email-reports' ),
-			'0800' => __( '8:00 AM', 'give-email-reports' ),
-			'0900' => __( '9:00 AM', 'give-email-reports' ),
-			'1000' => __( '10:00 AM', 'give-email-reports' ),
-			'1100' => __( '11:00 AM', 'give-email-reports' ),
-			'1200' => __( '12:00 AM', 'give-email-reports' ),
-			'1300' => __( '1:00 PM', 'give-email-reports' ),
-			'1400' => __( '2:00 PM', 'give-email-reports' ),
-			'1500' => __( '3:00 PM', 'give-email-reports' ),
-			'1600' => __( '4:00 PM', 'give-email-reports' ),
-			'1700' => __( '5:00 PM', 'give-email-reports' ),
-			'1800' => __( '6:00 PM', 'give-email-reports' ),
-			'1900' => __( '7:00 PM', 'give-email-reports' ),
-			'2000' => __( '8:00 PM', 'give-email-reports' ),
-			'2100' => __( '9:00 PM', 'give-email-reports' ),
-			'2200' => __( '10:00 PM', 'give-email-reports' ),
-			'2300' => __( '11:00 PM', 'give-email-reports' ),
-			'2400' => __( '12:00 PM', 'give-email-reports' ),
-		) );
+		return apply_filters(
+			'give_email_report_times',
+			array(
+				'0100' => __( '1:00 AM', 'give-email-reports' ),
+				'0200' => __( '2:00 AM', 'give-email-reports' ),
+				'0300' => __( '3:00 AM', 'give-email-reports' ),
+				'0400' => __( '4:00 AM', 'give-email-reports' ),
+				'0500' => __( '5:00 AM', 'give-email-reports' ),
+				'0600' => __( '6:00 AM', 'give-email-reports' ),
+				'0700' => __( '7:00 AM', 'give-email-reports' ),
+				'0800' => __( '8:00 AM', 'give-email-reports' ),
+				'0900' => __( '9:00 AM', 'give-email-reports' ),
+				'1000' => __( '10:00 AM', 'give-email-reports' ),
+				'1100' => __( '11:00 AM', 'give-email-reports' ),
+				'1200' => __( '12:00 AM', 'give-email-reports' ),
+				'1300' => __( '1:00 PM', 'give-email-reports' ),
+				'1400' => __( '2:00 PM', 'give-email-reports' ),
+				'1500' => __( '3:00 PM', 'give-email-reports' ),
+				'1600' => __( '4:00 PM', 'give-email-reports' ),
+				'1700' => __( '5:00 PM', 'give-email-reports' ),
+				'1800' => __( '6:00 PM', 'give-email-reports' ),
+				'1900' => __( '7:00 PM', 'give-email-reports' ),
+				'2000' => __( '8:00 PM', 'give-email-reports' ),
+				'2100' => __( '9:00 PM', 'give-email-reports' ),
+				'2200' => __( '10:00 PM', 'give-email-reports' ),
+				'2300' => __( '11:00 PM', 'give-email-reports' ),
+				'2400' => __( '12:00 PM', 'give-email-reports' ),
+			)
+		);
 	}
 }
 

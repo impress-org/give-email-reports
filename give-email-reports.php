@@ -3,7 +3,7 @@
  * Plugin Name:     Give - Email Reports
  * Plugin URI:      https://givewp.com/addons/email-reports/
  * Description:     Receive comprehensive donations reports via email.
- * Version:         1.1.3
+ * Version:         1.1.4
  * Author:          GiveWP
  * Author URI:      https://wordimpress.com
  * Text Domain:     give-email-reports
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Plugin version.
 if ( ! defined( 'GIVE_EMAIL_REPORTS_VERSION' ) ) {
-	define( 'GIVE_EMAIL_REPORTS_VERSION', '1.1.3' );
+	define( 'GIVE_EMAIL_REPORTS_VERSION', '1.1.4' );
 }
 
 // Min. Give Core version.
@@ -396,7 +396,8 @@ Give_Email_Reports_load();
 require_once GIVE_EMAIL_REPORTS_DIR . 'includes/give-independent-functions.php';
 
 /**
- * Unschedule the cron job for the daily email if the plugin is deactivated.
+ * Unschedule the cron job for the report email if the plugin is deactivated.
+ * Note: only for internal use
  *
  * @since 1.0
  */
@@ -411,3 +412,89 @@ function give_email_reports_unschedule_emails() {
 
 // Remove from cron if plugin is deactivated.
 register_deactivation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_unschedule_emails' );
+
+/**
+ * Schedule the cron job for the daily report email if the plugin is activated.
+ * Note: only for internal use
+ *
+ * @since 1.1.4
+ */
+function give_email_reports_schedule_emails() {
+	if ( ! function_exists( 'ger_get_week_days' ) ) {
+		require_once GIVE_EMAIL_REPORTS_DIR . 'includes/functions.php';
+	}
+
+	// Setup initial cron jobs.
+
+	$cron_array = array(
+		// Daily.
+		array(
+			'setting'  => give_get_option( 'give_email_reports_daily_email_delivery_time', 1900 ),
+			'interval' => 'daily',
+			'hook'     => 'give_email_reports_daily_email',
+		),
+		// Weekly.
+		array(
+			'setting'  => give_get_option( 'give_email_reports_weekly_email_delivery_time', array(
+				'day'  => 0,
+				'time' => 1900,
+			) ),
+			'interval' => 'weekly',
+			'hook'     => 'give_email_reports_weekly_email',
+		),
+		// Monthly.
+		array(
+			'setting'  => give_get_option( 'give_email_reports_monthly_email_delivery_time', array(
+				'day'  => 'first',
+				'time' => 1900,
+			) ),
+			'interval' => 'monthly',
+			'hook'     => 'give_email_reports_monthly_email',
+		),
+	);
+
+	foreach ( $cron_array as $cron ) {
+		if ( ! give_is_setting_enabled( give_get_option( "{$cron['interval']}-report_notification", 'enabled' ) ) ) {
+			continue;
+		}
+
+		if ( false !== strpos( $cron['hook'], 'monthly' ) ) {
+			$local_time = strtotime( "{$cron['setting']['day']} day of this month T{$cron['setting']['time']}", current_time( 'timestamp' ) );
+
+			if ( current_time( 'timestamp' ) > $local_time ) {
+				$local_time = strtotime( "{$cron['setting']['day']} day of next month T{$cron['setting']['time']}", current_time( 'timestamp' ) );
+			}
+
+			$gmt_time = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+			// Schedule cron.
+			wp_schedule_single_event(
+				$gmt_time,
+				'give_email_reports_monthly_email'
+			);
+
+		} else {
+			if ( false !== strpos( $cron['hook'], 'weekly' ) ) {
+				$days     = ger_get_week_days();
+				$time_str = "this {$days[ $cron['setting']['day'] ]} T{$cron['setting']['time']}";
+			}else{
+				$time_str = "T{$cron['setting']}";
+			}
+
+			$local_time = strtotime( $time_str, current_time( 'timestamp' ) );
+			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
+
+			wp_schedule_event(
+				$gmt_time,
+				$cron['interval'],
+				$cron['hook']
+			);
+		}
+
+		give_update_option( "give_email_reports_{$cron['interval']}_email_delivery_time", $cron['setting'] );
+
+	}
+
+}
+
+register_activation_hook( GIVE_EMAIL_REPORTS_FILE, 'give_email_reports_schedule_emails' );

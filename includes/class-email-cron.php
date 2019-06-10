@@ -79,7 +79,9 @@ class Give_Email_Cron extends Give_Email_Reports {
 	 * @param int $form_id Donation Form id.
 	 */
 	public function before_delete_post( $form_id ) {
-		ger_clear_form_cron( $form_id );
+		if( 'give_forms' === get_post_type( $form_id ) ) {
+			ger_clear_form_cron( $form_id );
+		}
 	}
 
 	/**
@@ -125,7 +127,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 					return;
 				}
 
-				$days       = $this->get_week_days();
+				$days       = ger_get_week_days();
 				$local_time = strtotime( "this {$days[ $time['day'] ]} T{$time['time']}", current_time( 'timestamp' ) );
 				$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
 
@@ -196,7 +198,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 		if ( ! wp_next_scheduled( 'give_email_reports_daily_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$time = isset( $value['give_email_reports_daily_email_delivery_time'] ) ? $value['give_email_reports_daily_email_delivery_time'] : 1800;
+			$time = isset( $value['give_email_reports_daily_email_delivery_time'] ) ? $value['give_email_reports_daily_email_delivery_time'] : 1900;
 
 			$local_time = strtotime( "T{$time}", current_time( 'timestamp' ) );
 			$gmt_time   = get_gmt_from_date( date( 'Y-m-d H:i:s', $local_time ), 'U' );
@@ -239,8 +241,8 @@ class Give_Email_Cron extends Give_Email_Reports {
 		// Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! wp_next_scheduled( 'give_email_reports_weekly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : '';
-			$days          = $this->get_week_days();
+			$weekly_option = isset( $value['give_email_reports_weekly_email_delivery_time'] ) ? $value['give_email_reports_weekly_email_delivery_time'] : array( 'day' => 0, 'time' => 1900 );
+			$days          = ger_get_week_days();
 
 			// Need $weekly option set to continue.
 			if ( empty( $weekly_option ) ) {
@@ -290,7 +292,7 @@ class Give_Email_Cron extends Give_Email_Reports {
 		// Ensure the cron isn't already scheduled and constant isn't set.
 		if ( ! $this->is_next_scheduled( 'give_email_reports_monthly_email' ) && ! defined( 'GIVE_DISABLE_EMAIL_REPORTS' ) ) {
 
-			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : '';
+			$monthly = isset( $value['give_email_reports_monthly_email_delivery_time'] ) ? $value['give_email_reports_monthly_email_delivery_time'] : array( 'day' => 'first', 'time' => 1900 );
 
 			// Must have $monthly to continue.
 			if ( empty( $monthly ) ) {
@@ -317,21 +319,15 @@ class Give_Email_Cron extends Give_Email_Reports {
 
 	/**
 	 * Get list of weekdays.
+	 * @deprecated 1.1.4
 	 *
 	 * @return array
 	 */
 	public function get_week_days() {
+		give_doing_it_wrong( __FUNCTION__, __( 'Use ger_get_week_days function instead', 'give-email-reports' ), '1.1.4' );
+
 		// Days.
-		return array(
-			'0' => 'Sunday',
-			'1' => 'Monday',
-			'2' => 'Tuesday',
-			'3' => 'Wednesday',
-			'4' => 'Thursday',
-			'5' => 'Friday',
-			'6' => 'Saturday',
-			'7' => 'Sunday',
-		);
+		return ger_get_week_days();
 	}
 }
 
