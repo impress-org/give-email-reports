@@ -453,8 +453,6 @@ function give_email_reports_schedule_emails() {
 		),
 	);
 
-	error_log( print_r( $cron_array, true ) . "\n", 3, WP_CONTENT_DIR . '/debug_new.log' );
-
 	foreach ( $cron_array as $cron ) {
 		if ( ! give_is_setting_enabled( give_get_option( "{$cron['interval']}-report_notification", 'enabled' ) ) ) {
 			continue;
