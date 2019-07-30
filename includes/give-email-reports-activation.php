@@ -66,7 +66,7 @@ function give_email_reports_plugin_action_links( $actions ) {
 	$new_actions = array(
 		'settings' => sprintf(
 			'<a href="%1$s">%2$s</a>',
-			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails' ),
+			admin_url( 'edit.php?post_type=give_forms&page=give-settings&tab=emails&section=admin-email' ),
 			esc_html__( 'Settings', 'give-email-reports' )
 		),
 	);
