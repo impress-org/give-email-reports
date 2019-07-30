@@ -11,16 +11,51 @@ class Give_Email_Reports_Settings {
 	public function __construct() {
 		add_filter( 'give_email_notifications', array( $this, 'register_emails' ) );
 
-		add_action( 'give_admin_field_email_report_daily_schedule', array( $this, 'add_email_report_daily_schedule' ), 10, 2 );
-		add_action( 'give_form_field_email_report_daily_schedule', array( $this, 'form_add_email_report_daily_schedule' ), 10, 2 );
+		add_action(
+			'give_admin_field_email_report_daily_schedule', array(
+				$this,
+				'add_email_report_daily_schedule',
+			), 10, 2
+		);
+		add_action(
+			'give_form_field_email_report_daily_schedule', array(
+				$this,
+				'form_add_email_report_daily_schedule',
+			), 10, 2
+		);
 
-		add_action( 'give_admin_field_email_report_weekly_schedule', array( $this, 'add_email_report_weekly_schedule' ), 10, 2 );
-		add_action( 'give_form_field_email_report_weekly_schedule', array( $this, 'form_add_email_report_weekly_schedule' ), 10, 2 );
+		add_action(
+			'give_admin_field_email_report_weekly_schedule', array(
+				$this,
+				'add_email_report_weekly_schedule',
+			), 10, 2
+		);
+		add_action(
+			'give_form_field_email_report_weekly_schedule', array(
+				$this,
+				'form_add_email_report_weekly_schedule',
+			), 10, 2
+		);
 
-		add_action( 'give_admin_field_email_report_monthly_schedule', array( $this, 'add_email_report_monthly_schedule' ), 10, 2 );
-		add_action( 'give_form_field_email_report_monthly_schedule', array( $this, 'form_add_email_report_monthly_schedule' ), 10, 2 );
+		add_action(
+			'give_admin_field_email_report_monthly_schedule', array(
+				$this,
+				'add_email_report_monthly_schedule',
+			), 10, 2
+		);
+		add_action(
+			'give_form_field_email_report_monthly_schedule', array(
+				$this,
+				'form_add_email_report_monthly_schedule',
+			), 10, 2
+		);
 
-		add_filter( 'give_admin_settings_sanitize_option_email_report_emails', array( $this, 'sanitize_settings' ), 10, 1 );
+		add_filter(
+			'give_admin_settings_sanitize_option_email_report_emails', array(
+				$this,
+				'sanitize_settings',
+			), 10, 1
+		);
 
 		// Register schedule email reports on per form basis.
 		add_filter( 'give_metabox_form_data_settings', array( $this, 'per_form_settings' ), 10, 2 );
@@ -31,11 +66,10 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Save Donation form meta value in Email report
 	 *
-	 * @since 1.2
-	 *
 	 * @param int $form_id Donation Form id.
 	 *
 	 * @return void
+	 * @since 1.2
 	 */
 	public function save( $form_id ) {
 		$settings = array(
@@ -59,12 +93,11 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Add Per Form Email report setting.
 	 *
-	 * @since 1.2
-	 *
 	 * @param array $settings Donation Form edit setting.
-	 * @param array $form_id Donation Form ID.
+	 * @param array $form_id  Donation Form ID.
 	 *
 	 * @return array $settings Donation Form edit setting
+	 * @since 1.2
 	 */
 	public function per_form_settings( $settings, $form_id ) {
 		// Email notification setting.
@@ -89,12 +122,11 @@ class Give_Email_Reports_Settings {
 			/**
 			 * Filter the email notification settings.
 			 *
-			 * @since 1.2
-			 *
 			 * @param array $sub_menu Sub menu option for email report setting
-			 * @param array $form_id Donation Form ID.
+			 * @param array $form_id  Donation Form ID.
 			 *
 			 * @return array $sub_menu Sub menu option for email report setting
+			 * @since 1.2
 			 */
 			'sub-fields' => apply_filters( 'give_email_report_options_metabox_fields', array(), $form_id ),
 		);
@@ -105,11 +137,10 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Check if email_report_emails is empty or not.
 	 *
-	 * @since 1.0.2
-	 *
 	 * @param array $value From $_POST['email_report_emails] value.
 	 *
 	 * @return array The modified $value From $_POST['email_report_emails] value.
+	 * @since 1.0.2
 	 */
 	public function sanitize_settings( $value = array() ) {
 		// Check if value is not null.
@@ -156,7 +187,8 @@ class Give_Email_Reports_Settings {
 		<tr valign="top">
 			<?php if ( ! empty( $field['name'] ) && ! in_array( $field['name'], array( '&nbsp;' ) ) ) : ?>
 				<th scope="row" class="titledesc">
-					<label for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
+					<label
+						for="<?php echo esc_attr( $field['name'] ); ?>"><?php echo esc_html( $field['title'] ); ?></label>
 				</th>
 			<?php endif; ?>
 			<td class="give-forminp">
@@ -166,9 +198,9 @@ class Give_Email_Reports_Settings {
 					</label>
 
 					<select
-							class="cmb2_select"
-							name="<?php echo $field['id']; ?>"
-							id="<?php echo $field['id']; ?>"
+						class="cmb2_select"
+						name="<?php echo $field['id']; ?>"
+						id="<?php echo $field['id']; ?>"
 						<?php echo $disabled_field; ?>
 					>
 						<?php
@@ -195,7 +227,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add daily email reports preview.
 	 *
-	 * @param object   $field Custom fields for daily schedule on per form basis.
+	 * @param object   $field   Custom fields for daily schedule on per form basis.
 	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_daily_schedule( $field, $form_id = null ) {
@@ -211,7 +243,7 @@ class Give_Email_Reports_Settings {
 		$times = $this->get_email_report_times();
 		?>
 		<fieldset
-				class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+			class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 			<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo esc_html( $field['name'] ); ?></label>
 			<select class="cmb2_select" name="<?php echo esc_attr( $field['id'] ); ?>"
 					id="<?php echo esc_attr( $field['id'] ); ?>" <?php echo $disabled_field; ?> >
@@ -257,7 +289,7 @@ class Give_Email_Reports_Settings {
 	 * Give add Weekly email reports preview.
 	 *
 	 * @param object $field
-	 * @param array $value
+	 * @param array  $value
 	 */
 	public function add_email_report_weekly_schedule( $field, $value ) {
 		// Setting attribute.
@@ -326,7 +358,7 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Give add weekly email reports preview.
 	 *
-	 * @param object   $field Custom fields for weekly schedule on per form basis.
+	 * @param object   $field   Custom fields for weekly schedule on per form basis.
 	 * @param int|null $form_id Donation form ID.
 	 */
 	public function form_add_email_report_weekly_schedule( $field, $form_id = null ) {
@@ -346,7 +378,7 @@ class Give_Email_Reports_Settings {
 		$days = $this->get_days();
 		?>
 		<fieldset
-				class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+			class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 			<label for="<?php echo esc_attr( $field['id'] ); ?>"><?php echo $field['name']; ?></label>
 
 			<select class="cmb2_select"
@@ -476,7 +508,7 @@ class Give_Email_Reports_Settings {
 		ob_start();
 		?>
 		<fieldset
-				class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
+			class="give-field-wrap <?php echo esc_attr( $field['id'] ); ?>_field <?php echo esc_attr( $field['wrapper_class'] ); ?>">
 			<label for="<?php echo "{$field['id']}_day"; ?>"><?php echo $field['name']; ?></label>
 
 			<select class="cmb2_select" name="<?php echo "{$field['id']}[day]"; ?>"
@@ -514,9 +546,8 @@ class Give_Email_Reports_Settings {
 	/**
 	 * Get days for monthly email report
 	 *
-	 * @since 1.2.
-	 *
 	 * @return array $days Monthly days
+	 * @since 1.2.
 	 */
 	public function monthly_days() {
 		// Days.
@@ -532,7 +563,7 @@ class Give_Email_Reports_Settings {
 	 * Print cron reset button.
 	 *
 	 * @param string $cron_name Email report cron name.
-	 * @param array  $args Cron arguments.
+	 * @param array  $args      Cron arguments.
 	 *
 	 * @return void.
 	 */
@@ -541,15 +572,15 @@ class Give_Email_Reports_Settings {
 		if ( wp_next_scheduled( $cron_name, $args ) ) :
 			?>
 			<button
-					class="give-reset-button button-secondary"
-					data-cron="<?php echo esc_attr( $cron_name ); ?>"
-					data-form_id="<?php echo esc_attr( $thepostid ); ?>"
-					data-action="give_reset_email_report_cron"
+				class="give-reset-button button-secondary"
+				data-cron="<?php echo esc_attr( $cron_name ); ?>"
+				data-form_id="<?php echo esc_attr( $thepostid ); ?>"
+				data-action="give_reset_email_report_cron"
 			>
 				<?php echo esc_html__( 'Reschedule', 'give-email-reports' ); ?>
 			</button>
 			<span class="give-spinner spinner"></span>
-			<?php
+		<?php
 		endif;
 	}
 
@@ -557,7 +588,7 @@ class Give_Email_Reports_Settings {
 	 * Check if cron enabled or not.
 	 *
 	 * @param string $cron_name Email report cron name..
-	 * @param array  $args Cron argument.
+	 * @param array  $args      Cron argument.
 	 *
 	 * @return bool
 	 */
