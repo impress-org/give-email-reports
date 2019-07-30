@@ -32,6 +32,10 @@ msgstr ""
 msgid "<strong>Activation Error:</strong> You must have the <a href=\"%s\" target=\"_blank\">Give</a> core version %s for the Give - Email Reports add-on to activate."
 msgstr ""
 
+#: includes/class-email-cron.php:327
+msgid "Use ger_get_week_days function instead"
+msgstr ""
+
 #: includes/class-settings.php:73, includes/give-email-reports-activation.php:38
 msgid "Email Reports"
 msgstr ""
@@ -48,151 +52,151 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: includes/class-settings.php:163, includes/class-settings.php:295, includes/class-settings.php:417
+#: includes/class-settings.php:164, includes/class-settings.php:298, includes/class-settings.php:424
 msgid "Time of Day"
 msgstr ""
 
-#: includes/class-settings.php:240, includes/class-settings.php:247
+#: includes/class-settings.php:242, includes/class-settings.php:249
 msgid "Sunday"
 msgstr ""
 
-#: includes/class-settings.php:241
+#: includes/class-settings.php:243
 msgid "Monday"
 msgstr ""
 
-#: includes/class-settings.php:242
+#: includes/class-settings.php:244
 msgid "Tuesday"
 msgstr ""
 
-#: includes/class-settings.php:243
+#: includes/class-settings.php:245
 msgid "Wednesday"
 msgstr ""
 
-#: includes/class-settings.php:244
+#: includes/class-settings.php:246
 msgid "Thursday"
 msgstr ""
 
-#: includes/class-settings.php:245
+#: includes/class-settings.php:247
 msgid "Friday"
 msgstr ""
 
-#: includes/class-settings.php:246
+#: includes/class-settings.php:248
 msgid "Saturday"
 msgstr ""
 
-#: includes/class-settings.php:281
+#: includes/class-settings.php:283
 msgid "Day of Week"
 msgstr ""
 
-#: includes/class-settings.php:404
+#: includes/class-settings.php:410
 msgid "Day of Month"
 msgstr ""
 
-#: includes/class-settings.php:513
+#: includes/class-settings.php:523
 msgid "First Day"
 msgstr ""
 
-#: includes/class-settings.php:514
+#: includes/class-settings.php:524
 msgid "Last Day"
 msgstr ""
 
-#: includes/class-settings.php:537
+#: includes/class-settings.php:548
 msgid "Reschedule"
 msgstr ""
 
-#: includes/class-settings.php:563
+#: includes/class-settings.php:576
 msgid "1:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:564
+#: includes/class-settings.php:577
 msgid "2:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:565
+#: includes/class-settings.php:578
 msgid "3:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:566
+#: includes/class-settings.php:579
 msgid "4:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:567
+#: includes/class-settings.php:580
 msgid "5:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:568
+#: includes/class-settings.php:581
 msgid "6:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:569
+#: includes/class-settings.php:582
 msgid "7:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:570
+#: includes/class-settings.php:583
 msgid "8:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:571
+#: includes/class-settings.php:584
 msgid "9:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:572
+#: includes/class-settings.php:585
 msgid "10:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:573
+#: includes/class-settings.php:586
 msgid "11:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:574
+#: includes/class-settings.php:587
 msgid "12:00 AM"
 msgstr ""
 
-#: includes/class-settings.php:575
+#: includes/class-settings.php:588
 msgid "1:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:576
+#: includes/class-settings.php:589
 msgid "2:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:577
+#: includes/class-settings.php:590
 msgid "3:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:578
+#: includes/class-settings.php:591
 msgid "4:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:579
+#: includes/class-settings.php:592
 msgid "5:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:580
+#: includes/class-settings.php:593
 msgid "6:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:581
+#: includes/class-settings.php:594
 msgid "7:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:582
+#: includes/class-settings.php:595
 msgid "8:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:583
+#: includes/class-settings.php:596
 msgid "9:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:584
+#: includes/class-settings.php:597
 msgid "10:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:585
+#: includes/class-settings.php:598
 msgid "11:00 PM"
 msgstr ""
 
-#: includes/class-settings.php:586
+#: includes/class-settings.php:599
 msgid "12:00 PM"
 msgstr ""
 

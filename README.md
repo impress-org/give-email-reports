@@ -31,6 +31,9 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ## Changelog ##
 
+### 1.1.4: July 29th, 2019 ###
+* Fix: Ensure that cron jobs are set up properly for new installs without requiring the settings to be saved.
+
 ### 1.1.3: June 6th, 2019 ###
 * Fix: Add role check for when cron jobs are run as a routine security hardening.
 
