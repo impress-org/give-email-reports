@@ -75,6 +75,7 @@ class Give_Email_Reports_Settings {
 			'fields'     => array(
 				array(
 					'name'    => __( 'Email Report Options', 'give-email-reports' ),
+					'description'    => __( 'This option enables an email report for just this donation form. Once enabled you will see additional subtab options for daily, weekly, and monthly email reports.', 'give-email-reports'),
 					'id'      => '_give_email_report_options',
 					'type'    => 'radio_inline',
 					'default' => 'disabled',
